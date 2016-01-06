@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('JSON', 'DownloadVideoInformation@UpdateInformation');
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
