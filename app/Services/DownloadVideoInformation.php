@@ -22,7 +22,6 @@ class DownloadVideoInformation
         }
         else {
             Log::critical(__METHOD__." HTTP Call to ".$JSONUrl." failed, recieved this back".$res->getStatusCode().$res->getReasonPhrase());
-            //report("HTTP Call to ".$JSONUrl." failed, recieved this back".$res, 1);
         }
     }
 
@@ -35,7 +34,7 @@ class DownloadVideoInformation
 
     function CheckIfVideoIsInDatabase($VideoDetails) {
         Log::info(__METHOD__." Checking if Video ".$VideoDetails->name." is in database");
-        $DatabaseResults = \App\VideoDownloadStatus::where('name', $VideoDetails->name)->get();
+        $DatabaseResults = \App\VideoStatus::where('name', $VideoDetails->name)->get();
         Log::info(__METHOD__." Database returned: ".print_r($DatabaseResults, true));
 
         if($DatabaseResults->isEmpty()) {
@@ -51,7 +50,7 @@ class DownloadVideoInformation
     function AddVideoToDatabase($VideoDetails) {
         Log::info(__METHOD__." Adding Video ".$VideoDetails->name." into database");
 
-        $newVideoDownloadStatus = new VideoDownloadStatus;
+        $newVideoDownloadStatus = new VideoStatus;
         $newVideoDownloadStatus->name = $VideoDetails->name;
         $newVideoDownloadStatus->gb_Id = $VideoDetails->id;
         $newVideoDownloadStatus->url = $VideoDetails->hd_url;
