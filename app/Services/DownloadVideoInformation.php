@@ -9,6 +9,17 @@ use Log;
 class DownloadVideoInformation
 {
     
+
+    public function UpdateVideosInDatabase($URL, $QUERY, $API_KEY)
+    {
+        
+        $RequestURL = "$URL".str_replace("KEY_HERE", $API_KEY, $QUERY);
+
+        $JSONResponse = $this->GetJSON($RequestURL);
+
+        echo "<pre>".print_r($JSONResponse,true)."</pre>";
+    }
+
     function GetJSON($JSONUrl){
 
         Log::info(__METHOD__." Performing GET using Guzzle to ".$JSONUrl);
