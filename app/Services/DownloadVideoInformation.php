@@ -17,7 +17,23 @@ class DownloadVideoInformation
 
         $JSONResponse = $this->GetJSON($RequestURL);
 
-        echo "<pre>".print_r($JSONResponse,true)."</pre>";
+        $VideoResultsArray = $JSONResponse->results;
+
+        foreach ($VideoResultsArray as $Video) 
+        {
+            if($this->CheckIfVideoIsInDatabase($Video))
+            {
+                Log::info(__METHOD__." ".$Video->name." already exists in database, not adding");
+                echo $Video->name." already exists in database, not adding";
+            } else 
+            {
+                Log::info(__METHOD__." ".$Video->name." doesn't exists in database, adding");
+                echo $Video->name." doesn't exists in database, adding";
+                $this->AddVideoToDatabase($Video);
+            }
+        }
+
+        echo "<pre>".print_r($VideoResultsArray,true)."</pre>";
     }
 
     function GetJSON($JSONUrl){
