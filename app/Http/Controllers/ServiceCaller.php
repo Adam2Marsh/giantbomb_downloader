@@ -17,8 +17,8 @@ class ServiceCaller extends Controller
 
 		Log::info(__METHOD__." Controller has been called to retireve all new videos and add into database");
 		
-		// $DVI->UpdateVideosInDatabase(config('gb.Website_Address'), config('gb.Latest_Video_Query'), config('gb.api_key'));
-		$DVI->UpdateVideosInDatabase(config('gb.Test_JSON_URL'),"","");
+		$DVI->UpdateVideosInDatabase(config('gb.Website_Address'), config('gb.Latest_Video_Query'), config('gb.api_key'));
+		// $DVI->UpdateVideosInDatabase(config('gb.Test_JSON_URL'),"","");
 
 	}
 

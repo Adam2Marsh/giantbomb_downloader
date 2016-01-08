@@ -31,9 +31,10 @@ class DownloadVideoInformation
                 echo $Video->name." doesn't exists in database, adding";
                 $this->AddVideoToDatabase($Video);
             }
+            echo "<br>";
         }
 
-        echo "<pre>".print_r($VideoResultsArray,true)."</pre>";
+        // echo "<pre>".print_r($VideoResultsArray,true)."</pre>";
     }
 
     function GetJSON($JSONUrl){
