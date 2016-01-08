@@ -44,9 +44,6 @@ class DownloadVideoInformationTest extends TestCase
     */
     public function test_AddVideoToDatabase()
     {
-        // $JSON = $this->DVI->GetJSON('http://localhost/GB_Example_One.json');
-        // $LocalVideoDetails = $JSON->results[0];
-
         $LocalVideoDetails = new \stdClass();
         $LocalVideoDetails -> hd_url = 'http://123/testing.co.uk';
         $LocalVideoDetails -> id = 12345;

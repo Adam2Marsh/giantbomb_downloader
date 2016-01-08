@@ -15,7 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('JSON', 'DownloadVideoInformation@UpdateInformation');
+Route::get('NewVideos', 'ServiceCaller@NewVideos');
+Route::get('ScheduleVideos', 'ServiceCaller@ScheduleVideos');
 
 /*
 |--------------------------------------------------------------------------
