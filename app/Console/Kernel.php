@@ -5,6 +5,8 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
+use Log;
+
 class Kernel extends ConsoleKernel
 {
     /**
@@ -26,5 +28,13 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+
+
+        $schedule->call(function () {
+            $DVI = new \App\Services\DownloadVideoInformation;
+            Log::info(__METHOD__." Schedule has been called to retireve all new videos and add into database");
+            $DVI->UpdateVideosInDatabase(config('gb.Website_Address'), config('gb.Latest_Video_Query'), config('gb.api_key'));
+        })->everyMinute();
+
     }
 }
