@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
             $DVI = new \App\Services\DownloadVideoInformation;
             Log::info(__METHOD__." Schedule has been called to retireve all new videos and add into database");
             $DVI->UpdateVideosInDatabase(config('gb.Website_Address'), config('gb.Latest_Video_Query'), config('gb.api_key'));
-        })->everyMinute();
+        })->dailyAt('00:00');
 
     }
 }
