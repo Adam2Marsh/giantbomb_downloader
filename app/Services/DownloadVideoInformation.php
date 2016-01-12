@@ -28,7 +28,7 @@ class DownloadVideoInformation
             {
                 Log::info(__METHOD__." ".$video->name." doesn't exists in database, adding");
                 echo $video->name." doesn't exists in database, adding";
-                $vsr->addVideoToDatabase($Video);
+                $vsr->addVideoToDatabase($video);
             }
             echo "<br>";
         }
