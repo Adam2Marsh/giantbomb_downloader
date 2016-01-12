@@ -34,7 +34,7 @@ class DownloadVideoInformationTest extends TestCase
     */
     public function test_GetJSON_Success()
     {
-    	$ResponseJSON = $this->DVI->GetJSON('http://localhost/GB_Example_One.json');
+    	$ResponseJSON = $this->DVI->GetJSON(env('TEST_JSON_URL',config('gb.Website_Address')));
         $this->assertEquals($ResponseJSON->results[0]->id,10924);
     }
 

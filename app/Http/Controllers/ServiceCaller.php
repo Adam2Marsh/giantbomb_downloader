@@ -11,15 +11,19 @@ use Log;
 class ServiceCaller extends Controller
 {
     
-	public function NewVideos()
+	public function newVideos()
 	{
-		$DVI = new \App\Services\DownloadVideoInformation;
+		$dvi = new \App\Services\DownloadVideoInformation;
 
 		Log::info(__METHOD__." Controller has been called to retireve all new videos and add into database");
 		
-		$DVI->UpdateVideosInDatabase(config('gb.Website_Address'), config('gb.Latest_Video_Query'), config('gb.api_key'));
-		// $DVI->UpdateVideosInDatabase(config('gb.Test_JSON_URL'),"","");
+		// $dvi->UpdateVideosInDatabase(config('gb.Website_Address'), config('gb.Latest_Video_Query'), config('gb.api_key'));
 
+		$url=env('TEST_JSON_URL',config('gb.Website_Address'));
+		$query=env('LATEST_VIDEO_QUERY',config('gb.Latest_Video_Query'));
+		$apiKey=env('GB_API_KEY',config('gb.api_key'));
+
+		$dvi->UpdateVideosInDatabase($url,$query,$apiKey);
 	}
 
 	public function ScheduleVideos()
