@@ -12,7 +12,10 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+	$videos = App\VideoStatus::paginate();
+    return view('main',compact('videos'));
+    // return $videos;
 });
 
 Route::get('NewVideos', 'ServiceCaller@newVideos');
