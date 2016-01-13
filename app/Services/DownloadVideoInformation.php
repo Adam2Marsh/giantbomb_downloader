@@ -11,7 +11,7 @@ class DownloadVideoInformation
 
     public function updateVideosInDatabase($url, $query, $api_key)
     {
-        
+        $response = "";
         $vsr = new \App\Repositories\VideoStatusRepo;
 
         $requestURL = "$url".str_replace("KEY_HERE", $api_key, $query);
@@ -24,15 +24,17 @@ class DownloadVideoInformation
             {
                 Log::info(__METHOD__." ".$video->name." already exists in database, not adding");
                 echo $video->name." already exists in database, not adding";
+                $response = $video->name." already exists in database, not adding";
             } else 
             {
                 Log::info(__METHOD__." ".$video->name." doesn't exists in database, adding");
                 echo $video->name." doesn't exists in database, adding";
+                $response = $video->name." doesn't exists in database, adding";
                 $vsr->addVideoToDatabase($video);
             }
             echo "<br>";
         }
-
+        return $response;
         // echo "<pre>".print_r($VideoResultsArray,true)."</pre>";
     }
 

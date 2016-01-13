@@ -20,13 +20,10 @@ class DownloadVideoInformationTest extends TestCase
     * Check on 200 function returns true
     * @return void
     */
-    public function test_checkHTTPCallSucessful()
+    public function test_checkHTTPCallSucessful_TrueResponse()
     {
         $this->assertTrue($this->dvi->checkHTTPCallSucessful(200));
     }
-
-
-    //Intergration Tests.......................
 
     /**
     * Test getting JSON via localhost
@@ -36,6 +33,22 @@ class DownloadVideoInformationTest extends TestCase
     {
     	$responseJSON = $this->dvi->getJSON(env('TEST_JSON_URL',config('gb.Website_Address')));
         $this->assertEquals($responseJSON->results[0]->id,10924);
+    }
+
+    //Intergration Tests.......................
+    public function test_updateVideosInDatabase_AddVideo()
+    {
+        $deletedRow = App\VideoStatus::where('gb_Id', '10924')->delete();
+        $response = $this->dvi->updateVideosInDatabase('http://127.0.0.1/Test_Json','','');
+        $this->assertRegexp('/doesn\'t exists/i',strval($response));
+    }
+
+    public function test_updateVideosInDatabase_VideoAlreadyExists()
+    {
+        $deletedRow = App\VideoStatus::where('gb_Id', '10924')->delete();
+        $addResponse = $this->dvi->updateVideosInDatabase('http://127.0.0.1/Test_Json','','');
+        $dupResponse = $this->dvi->updateVideosInDatabase('http://127.0.0.1/Test_Json','','');
+        $this->assertRegexp('/already exists/i',strval($dupResponse));
     }
 
 }
