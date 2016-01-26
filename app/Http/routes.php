@@ -12,6 +12,10 @@
 */
 
 
+Route::get('/', function() {
+	return redirect ('/Videos');
+});
+
 
 Route::resource('/Videos','VideoController');
 

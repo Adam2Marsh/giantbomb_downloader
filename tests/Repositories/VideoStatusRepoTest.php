@@ -37,13 +37,13 @@ class VideoStatusRepoTest extends TestCase
     */
     public function test_CheckVideoDoesntExist()
     {
-        $localVideoDetails = new \stdClass();
-        $localVideoDetails -> hd_url = 'http://123/testing.co.uk';
-        $localVideoDetails -> id = 12345;
-        $localVideoDetails -> name = '123 Testing 321';
-        $localVideoDetails -> publish_date = '2015-12-18 20:00:00';
+        // $localVideoDetails = new \stdClass();
+        // $localVideoDetails -> hd_url = 'http://123/testing.co.uk';
+        // $localVideoDetails -> id = 12345;
+        // $localVideoDetails -> name = '123 Testing 321';
+        // $localVideoDetails -> publish_date = '2015-12-18 20:00:00';
         
-        $this->assertFalse($this->vsr->CheckIfVideoIsInDatabase($localVideoDetails));
+        $this->assertFalse($this->vsr->CheckIfVideoIsInDatabase('123 Testing 321'));
     }
 
 }

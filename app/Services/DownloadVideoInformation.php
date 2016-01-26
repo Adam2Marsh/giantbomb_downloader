@@ -20,7 +20,7 @@ class DownloadVideoInformation
 
         foreach ($videoResultsArray as $video) 
         {
-            if($vsr->checkIfVideoIsInDatabase($video))
+            if($vsr->checkIfVideoIsInDatabase($video->name))
             {
                 Log::info(__METHOD__." ".$video->name." already exists in database, not adding");
                 echo $video->name." already exists in database, not adding";

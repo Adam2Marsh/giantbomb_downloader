@@ -22,9 +22,9 @@ class VideoStatusRepo
         Log::info(__METHOD__." Video ".$videoDetails->name." inserted into database");
     }
 
-    public function checkIfVideoIsInDatabase($videoDetails) {
-        Log::info(__METHOD__." Checking if Video ".$videoDetails->name." is in database");
-        $databaseResults = \App\VideoStatus::where('name', $videoDetails->name)->get();
+    public function checkIfVideoIsInDatabase($videoName) {
+        Log::info(__METHOD__." Checking if Video ".$videoName." is in database");
+        $databaseResults = \App\VideoStatus::where('name', $videoName)->get();
         
         Log::info(__METHOD__." Database returned: ".print_r($databaseResults, true));
 
