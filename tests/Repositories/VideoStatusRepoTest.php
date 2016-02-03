@@ -4,7 +4,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class VideoStatusRepoTest extends TestCase
+class videoStatusRepoTest extends TestCase
 {
 
 	protected $vsr;
@@ -18,16 +18,16 @@ class VideoStatusRepoTest extends TestCase
     * Test adding and checking for video is in database
     * @return void
     */
-    public function test_AddVideoToDatabase()
+    public function test_addVideoToDatabase()
     {
         $localVideoDetails = new \stdClass();
-        $localVideoDetails -> hd_url = 'http://123/testing.co.uk';
-        $localVideoDetails -> id = 12345;
-        $localVideoDetails -> name = '123 Testing 321';
-        $localVideoDetails -> publish_date = '2015-12-18 20:00:00';
+        $localVideoDetails->hd_url = 'http://123/testing.co.uk';
+        $localVideoDetails->id = 12345;
+        $localVideoDetails->name = '123 Testing 321';
+        $localVideoDetails->publish_date = '2015-12-18 20:00:00';
 
-        $this->vsr->AddVideoToDatabase($localVideoDetails);
-        $this->assertTrue($this->vsr->CheckIfVideoIsInDatabase($localVideoDetails));
+        $this->vsr->addVideoToDatabase($localVideoDetails);
+        $this->assertTrue($this->vsr->CheckIfVideoIsInDatabase($localVideoDetails->name));
         $deletedRow = App\VideoStatus::where('gb_Id', $localVideoDetails->id)->delete();
     }
 
