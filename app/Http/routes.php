@@ -26,18 +26,15 @@ Route::get('ScheduleVideos', 'ServiceCaller@scheduleVideos');
 Route::get('/TestVideo', function() {
 
 	if (!File::exists("Frontend_Vid_YouTube.mov")) {
-                    return Response::make("File does not exist.", 404);
-                }
+        return Response::make("File does not exist.", 404);
+    }
 
-                $fileContents = File::get("Frontend_Vid_YouTube.mov");
+    // $fileContents = File::get("Frontend_Vid_YouTube.mov");
+    // $response = Response::make($fileContents, 200);
+    // $response->header('Content-Type', "video/mp4");
+    // return $response;
 
-                $response = Response::make($fileContents, 200);
-
-                $response->header('Content-Type', "video/mp4");
-
-                $i = 0 ;
-
-                return $response;
+    return Response::download("Frontend_Vid_YouTube.mov");
 });
 
 Route::get('/Test_Json', function() {

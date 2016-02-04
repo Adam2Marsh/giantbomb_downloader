@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -67,7 +68,8 @@ class VideoController extends Controller
      */
     public function show($id)
     {
-        //
+        $video = VideoStatus::findOrFail($id);
+        return response()->download(storage_path("app/gb_videos/$video->file_name"));
     }
 
     /**
