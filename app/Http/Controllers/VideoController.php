@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use App\VideoStatus;
 use Log;
 
+use App\Repositories\VideoStatusRepo;
+
 class VideoController extends Controller
 {
     /**
@@ -86,15 +88,11 @@ class VideoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(VideoStatusRepo $vsr, $id)
     {
-        $video = VideoStatus::findOrFail($id);
+        $videoName = $vsr->deleteVideoFromDatabase($id);
 
-        Log::info(__METHOD__." Been asked to delete the following video $video->name");
-        $video->delete();
-
-        Log::info(__METHOD__." Video deleted");
         return redirect('/Videos')
-            ->withSuccess("The  '$video->name' tag has been deleted.");
+            ->withSuccess("The  '$videoName' tag has been deleted.");
     }
 }

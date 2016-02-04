@@ -8,7 +8,13 @@ use Log;
 class VideoStatusRepo
 {
 
-	public function addVideoToDatabase($videoDetails) {
+    /**
+    * Add video into database
+    *
+    * @param VideoDetails Object
+    */
+	public function addVideoToDatabase($videoDetails) 
+    {
         Log::info(__METHOD__." Adding Video ".$videoDetails->name." into database");
 
         $newVideoDownloadStatus = new VideoStatus;
@@ -22,7 +28,13 @@ class VideoStatusRepo
         Log::info(__METHOD__." Video ".$videoDetails->name." inserted into database");
     }
 
-    public function checkIfVideoIsInDatabase($videoName) {
+    /**
+    * Check if video is in database
+    *
+    * @param string VideoName
+    */
+    public function checkIfVideoIsInDatabase($videoName) 
+    {
         Log::info(__METHOD__." Checking if Video ".$videoName." is in database");
         $databaseResults = \App\VideoStatus::where('name', $videoName)->get();
         
@@ -37,4 +49,36 @@ class VideoStatusRepo
             return true;
         }
     }
+
+    /**
+    * Remove video from database
+    *
+    * @param interger id
+    */
+    public function deleteVideoFromDatabase($id) 
+    {
+        $video = VideoStatus::findOrFail($id);
+
+        Log::info(__METHOD__." Been asked to delete the following video $video->name");
+        $video->delete();
+        Log::info(__METHOD__." Video deleted");
+
+        return $video->name;
+    }
+
+    /**
+    * Update Video Status in Database to Downloaded
+    *
+    * @param interger id
+    */
+    public function updateVideoToDownloadedStatus($id)
+    {
+        $video = VideoStatus::findOrFail($id);
+
+        Log::info(__METHOD__." Been asked to update video->name to downloaded status");
+        $video->status = "DOWNLOADED";
+        $video->save();
+        Log::info(__METHOD__." video->name updated to downloaded status");
+    }
+
 }

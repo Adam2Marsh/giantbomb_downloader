@@ -4,7 +4,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class downloadVideoTest extends TestCase
+class videoStorageTest extends TestCase
 {
 
 
@@ -12,7 +12,7 @@ class downloadVideoTest extends TestCase
 
 	public function setup() 
 	{
-		$this->dv = new \App\Services\downloadVideo;;
+		$this->dv = new \App\Services\videoStorage;
 	}
 
     /**
@@ -31,9 +31,9 @@ class downloadVideoTest extends TestCase
      *
      * @return void
      */
-    public function test_checkForDownloadedVideo_Success()
+    public function test_checkForVideo_Success()
     {
-        $this->assertTrue($this->dv->checkForDownloadedVideo("test","TestVideo.mp4"));
+        $this->assertTrue($this->dv->checkForVideo("test","TestVideo.mp4"));
     }
 
      /**
@@ -41,8 +41,19 @@ class downloadVideoTest extends TestCase
      *
      * @return void
      */
-    public function test_checkForDownloadedVideo_Failure()
+    public function test_checkForVideo_Failure()
     {
-		$this->assertFalse($this->dv->checkForDownloadedVideo("test","WontBeFound.mp4"));
+		$this->assertFalse($this->dv->checkForVideo("test","WontBeFound.mp4"));
+    }
+
+     /**
+     * Delete video downloaded for testing
+     *
+     * @return void
+     */
+    public function test_deleteVideo_Success()
+    {
+    	$this->dv->deleteVideo("test","TestVideo.mp4");
+		$this->assertFalse($this->dv->checkForVideo("test","TestVideo.mp4"));
     }
 }

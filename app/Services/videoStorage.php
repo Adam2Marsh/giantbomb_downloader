@@ -7,11 +7,22 @@ use Log;
 
 use Storage;
 
-class downloadVideo
+class videoStorage
 {
 
     /**
+    * Download Video from URL and Update DB
+    *
+    * @param VideoObject Video
+    */
+	public function SaveVideo($video)
+	{
+
+	}
+
+    /**
     * Download Video from URL
+    *
     * @return bool
     */
 	public function downloadVideofromURL($url, $directory, $name)
@@ -23,9 +34,11 @@ class downloadVideo
 
     /**
     * Has the requested video been downloaded
-    * @return bool
+    *
+    * @param string directory
+    * @param string name
     */
-    public function checkForDownloadedVideo($directory, $name)
+    public function checkForVideo($directory, $name)
     {
     	Log::info(__METHOD__." Checking if video called $name has been downloaded");
     	if(Storage::has("$directory/$name")) {
@@ -36,4 +49,18 @@ class downloadVideo
     	Log::info(__METHOD__." Video hasn't been downloaded, returning fasle");
     	return false;
     }
+
+    /**
+    * Delete Video if on storage
+    *
+    * @param string directory
+    * @param string name
+    */
+    public function deleteVideo($directory, $name)
+    {
+    	Log::info(__METHOD__." Been asked to delete $directory/$name from storage");
+    	Storage::delete("$directory/$name");
+    	Log::info(__METHOD__." $directory/$name deleted from storage");
+    }
+
 }
