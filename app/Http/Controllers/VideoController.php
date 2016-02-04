@@ -11,6 +11,8 @@ use App\VideoStatus;
 use Log;
 
 use App\Repositories\VideoStatusRepo;
+use App\Jobs\DownloadVideoJob;
+use App\Services\videoStorage;
 
 class VideoController extends Controller
 {
@@ -38,14 +40,23 @@ class VideoController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Download Video manually
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, VideoStatusRepo $vsr)
     {
-        
+        $videoID = $request->get('id');
+
+        $video = VideoStatus::findOrFail($videoID);
+        Log::Info(__METHOD__." I've been asked to download the following $video->name manually, adding to queue");
+        $this->dispatch(new DownloadVideoJob($video));
+
+        $videoName = $vsr->updateVideoToDownloadedStatus($videoID, "DOWNLOADING");
+
+        return redirect('/Videos')
+            ->withSuccess("$video->name added to queue");
     }
 
     /**
@@ -88,9 +99,14 @@ class VideoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(VideoStatusRepo $vsr, $id)
+    public function destroy(VideoStatusRepo $vsr, videoStorage $vs, $id)
     {
-        $videoName = $vsr->deleteVideoFromDatabase($id);
+        $video = VideoStatus::findOrFail($id);
+        $videoName = $vsr->deleteVideoFromDatabase($video->id);
+
+        if ($vs->checkForVideo("gb_videos", $video->file_name)) {
+            $vs->deleteVideo("gb_videos", $video->file_name);
+        }
 
         return redirect('/Videos')
             ->withSuccess("The  '$videoName' tag has been deleted.");

@@ -19,6 +19,7 @@ class VideoStatusRepo
 
         $newVideoDownloadStatus = new VideoStatus;
         $newVideoDownloadStatus->name = $videoDetails->name;
+        $newVideoDownloadStatus->file_name = str_replace(" ", "_", $videoDetails->name).".mp4";
         $newVideoDownloadStatus->gb_Id = $videoDetails->id;
         $newVideoDownloadStatus->url = $videoDetails->hd_url;
         $newVideoDownloadStatus->published_date = $videoDetails->publish_date;
@@ -71,14 +72,14 @@ class VideoStatusRepo
     *
     * @param interger id
     */
-    public function updateVideoToDownloadedStatus($id)
+    public function updateVideoToDownloadedStatus($id, $status)
     {
         $video = VideoStatus::findOrFail($id);
 
-        Log::info(__METHOD__." Been asked to update video->name to downloaded status");
-        $video->status = "DOWNLOADED";
+        Log::info(__METHOD__." Been asked to update video->name to $status status");
+        $video->status = $status;
         $video->save();
-        Log::info(__METHOD__." video->name updated to downloaded status");
+        Log::info(__METHOD__." video->name updated to $status status");
     }
 
 }

@@ -47,11 +47,9 @@ class videoStatusRepoTest extends TestCase
     public function test_updateVideoToDownloadedStatus_Success()
     {
         $video = App\VideoStatus::where('gb_Id', 12345)->first();
-        print_r($video->status);
-        $this->vsr->updateVideoToDownloadedStatus($video->id);
+        $this->vsr->updateVideoToDownloadedStatus($video->id, "DOWNLOADED");
 
         $video = App\VideoStatus::where('gb_Id', 12345)->first();
-        print_r($video->status);
         $this->assertEquals($video->status, "DOWNLOADED");
     }
 

@@ -15,6 +15,7 @@ class CreateVideoStatusesTable extends Migration
         Schema::create('video_statuses', function (Blueprint $table) {
             $table->increments('id')->index();
             $table->string('name');
+            $table->string('file_name');
             $table->string('gb_Id')->index();
             $table->string('url');
             $table->timestamp('published_date');
