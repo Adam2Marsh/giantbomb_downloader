@@ -18,6 +18,16 @@ class videoStatusRepoTest extends TestCase
     * Test adding and checking for video is in database
     * @return void
     */
+    public function test_removeSpecialCharactersFromString_Success()
+    {
+        $newString = $this->vsr->removeSpecialCharactersFromString("Te/s t:");
+        $this->assertEquals("Te-s_t", $newString);
+    }
+
+    /**
+    * Test adding and checking for video is in database
+    * @return void
+    */
     public function test_addVideoToDatabase_Success()
     {
         $localVideoDetails = new \stdClass();

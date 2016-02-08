@@ -19,7 +19,7 @@ class VideoStatusRepo
 
         $newVideoDownloadStatus = new VideoStatus;
         $newVideoDownloadStatus->name = $videoDetails->name;
-        $newVideoDownloadStatus->file_name = str_replace(" ", "_", $videoDetails->name).".mp4";
+        $newVideoDownloadStatus->file_name = $this->removeSpecialCharactersFromString($videoDetails->name).".mp4";
         $newVideoDownloadStatus->gb_Id = $videoDetails->id;
         $newVideoDownloadStatus->url = $videoDetails->hd_url;
         $newVideoDownloadStatus->published_date = $videoDetails->publish_date;
@@ -80,6 +80,21 @@ class VideoStatusRepo
         $video->status = $status;
         $video->save();
         Log::info(__METHOD__." video->name updated to $status status");
+    }
+
+    /**
+    * Remove Special Characters for filename
+    * @return string
+    */
+    public function removeSpecialCharactersFromString($string)
+    {
+        $removeChars = [
+            " " => "_",
+            "/" => "-",
+            ":" => "",
+        ];
+
+        return str_replace(array_keys($removeChars), array_values($removeChars), $string);
     }
 
 }
