@@ -17,6 +17,7 @@ class CreateVideoDetailsTable extends Migration
             $table->string('local_path');
             $table->string('image_path');
             $table->bigInteger('file_size');
+            $table->bigInteger('video_statuses_id');
         });
     }
 
