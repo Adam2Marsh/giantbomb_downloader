@@ -52,4 +52,10 @@ class downloadVideoInformationTest extends TestCase
         $this->assertRegexp('/already exists/i',strval($dupResponse));
     }
 
+    public function test_getVideoFileSize()
+    {
+        $fileSize = $this->dvi->getVideoFileSize(env('TEST_VIDEO_URL',""));
+        $this->assertRegexp("/\d+/", $fileSize);
+    }
+
 }

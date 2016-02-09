@@ -30,15 +30,17 @@ class videoStatusRepoTest extends TestCase
     */
     public function test_addVideoToDatabase_Success()
     {
-        $localVideoDetails = new \stdClass();
-        $localVideoDetails->hd_url = 'http://123/testing.co.uk';
-        $localVideoDetails->id = 12345;
-        $localVideoDetails->name = '123 Testing 321';
-        $localVideoDetails->publish_date = '2015-12-18 20:00:00';
+        $localVideo = new \stdClass();
+        $localVideo->hd_url = 'http://123/testing.co.uk';
+        $localVideo->id = 12345;
+        $localVideo->name = '123 Testing 321';
+        $localVideo->publish_date = '2015-12-18 20:00:00';
 
-        $this->vsr->addVideoToDatabase($localVideoDetails);
-        $this->assertTrue($this->vsr->CheckIfVideoIsInDatabase($localVideoDetails->name));
-        // $deletedRow = App\VideoStatus::where('gb_Id', $localVideoDetails->id)->delete();
+        $localDetails = new \stdClass();
+
+        $this->vsr->addVideoToDatabase($localVideo, $localDetails);
+        $this->assertTrue($this->vsr->CheckIfVideoIsInDatabase($localVideo->name));
+        // $deletedRow = App\VideoStatus::where('gb_Id', $localVideo->id)->delete();
     }
 
     /**

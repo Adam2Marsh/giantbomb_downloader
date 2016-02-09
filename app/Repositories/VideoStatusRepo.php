@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\VideoStatus;
+use App\VideoDetails;
 use Log;
 
 class VideoStatusRepo
@@ -13,20 +14,30 @@ class VideoStatusRepo
     *
     * @param VideoDetails Object
     */
-	public function addVideoToDatabase($videoDetails) 
+	public function addVideoToDatabase($video, $details)
     {
-        Log::info(__METHOD__." Adding Video ".$videoDetails->name." into database");
+        Log::info(__METHOD__." Adding Video ".$video->name." into database");
 
         $newVideoDownloadStatus = new VideoStatus;
-        $newVideoDownloadStatus->name = $videoDetails->name;
-        $newVideoDownloadStatus->file_name = $this->removeSpecialCharactersFromString($videoDetails->name).".mp4";
-        $newVideoDownloadStatus->gb_Id = $videoDetails->id;
-        $newVideoDownloadStatus->url = $videoDetails->hd_url;
-        $newVideoDownloadStatus->published_date = $videoDetails->publish_date;
+        $newVideoDownloadStatus->name = $video->name;
+
+        $videoFilename = $this->removeSpecialCharactersFromString($video->name).".mp4";
+
+        $newVideoDownloadStatus->file_name = $videoFilename;
+        $newVideoDownloadStatus->gb_Id = $video->id;
+        $newVideoDownloadStatus->url = $video->hd_url;
+        $newVideoDownloadStatus->published_date = $video->publish_date;
         $newVideoDownloadStatus->status = 'NEW';
         $newVideoDownloadStatus->save();
 
-        Log::info(__METHOD__." Video ".$videoDetails->name." inserted into database");
+        $newVideoDetails = new VideoDetails([
+                'local_path' => "gb_videos/$videoFilename",
+                'file_size' => "",
+                'image_path' => "",
+                ]);
+        $newVideoDownloadStatus->videoDetail()->save($newVideoDetails);
+
+        Log::info(__METHOD__." Video ".$video->name." inserted into database");
     }
 
     /**

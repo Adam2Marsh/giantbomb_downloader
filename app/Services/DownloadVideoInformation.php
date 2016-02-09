@@ -30,7 +30,8 @@ class DownloadVideoInformation
                 Log::info(__METHOD__." ".$video->name." doesn't exists in database, adding");
                 echo $video->name." doesn't exists in database, adding";
                 $response = $video->name." doesn't exists in database, adding";
-                $vsr->addVideoToDatabase($video);
+                $details = "";
+                $vsr->addVideoToDatabase($video, $details);
             }
             echo "<br>";
         }
@@ -59,6 +60,22 @@ class DownloadVideoInformation
             return false;
         }
         return true;
+    }
+
+    function getVideoFileSize($url)
+    {
+        Log::info(__METHOD__." Fetching Video Size for video at $url");
+        $client = new \GuzzleHttp\Client();
+
+        $res = $client->request('HEAD', $url);
+
+        if($this->CheckHTTPCallSucessful($res->getStatusCode())) {
+            Log::info(__METHOD__." Guzzle HEAD Request responded with: ".$res->getHeader('Content-Length')[0]);
+            return $res->getHeader('Content-Length')[0];
+        }
+        else {
+            Log::critical(__METHOD__." HTTP Call to ".$JSONUrl." failed, recieved this back".$res->getStatusCode().$res->getReasonPhrase());
+        }
     }
 
 }
