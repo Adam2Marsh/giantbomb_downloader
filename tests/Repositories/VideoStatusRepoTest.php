@@ -36,7 +36,7 @@ class videoStatusRepoTest extends TestCase
         $localVideo->name = '123 Testing 321';
         $localVideo->publish_date = '2015-12-18 20:00:00';
 
-        $localDetails = new \stdClass();
+        $localDetails = 123456;
 
         $this->vsr->addVideoToDatabase($localVideo, $localDetails);
         $this->assertTrue($this->vsr->CheckIfVideoIsInDatabase($localVideo->name));

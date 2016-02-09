@@ -31,7 +31,7 @@ class DownloadVideoInformation
                 echo $video->name." doesn't exists in database, adding";
                 $response = $video->name." doesn't exists in database, adding";
                 $details = "";
-                $vsr->addVideoToDatabase($video, $details);
+                $vsr->addVideoToDatabase($video, $this->getVideoFileSize($video->hd_url));
             }
             echo "<br>";
         }

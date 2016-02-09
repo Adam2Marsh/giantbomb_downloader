@@ -14,7 +14,7 @@ class VideoStatusRepo
     *
     * @param VideoDetails Object
     */
-	public function addVideoToDatabase($video, $details)
+	public function addVideoToDatabase($video, $fileSize)
     {
         Log::info(__METHOD__." Adding Video ".$video->name." into database");
 
@@ -32,7 +32,7 @@ class VideoStatusRepo
 
         $newVideoDetails = new VideoDetails([
                 'local_path' => "gb_videos/$videoFilename",
-                'file_size' => "",
+                'file_size' => $fileSize,
                 'image_path' => "",
                 ]);
         $newVideoDownloadStatus->videoDetail()->save($newVideoDetails);
