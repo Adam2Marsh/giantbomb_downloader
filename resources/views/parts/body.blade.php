@@ -2,7 +2,18 @@
 	<div class="container">
 		<hr>
 		<div class="panel panel-default">
-			<div class="panel-heading"><h4>All Videos Known</h4></div>
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-md-4">
+						<h4 class="text-center">All Videos Known</h4>
+					</div>
+					<div class="col-md-8">
+						<div class="btn-group pull-right">
+							{!! $videos->links() !!}
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="table-responsive">
 				<table class="table table-condensed text-center">
 					<thead>
@@ -45,8 +56,4 @@
 		</div>
 		<hr>
 	</div>
-
-
-
-
 </body>
