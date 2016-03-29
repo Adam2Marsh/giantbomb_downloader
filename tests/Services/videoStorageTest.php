@@ -13,6 +13,7 @@ class videoStorageTest extends TestCase
 	public function setup() 
 	{
 		$this->dv = new \App\Services\videoStorage;
+        parent::setUp();
 	}
 
     /**
@@ -51,9 +52,20 @@ class videoStorageTest extends TestCase
      *
      * @return void
      */
+    public function test_videoStorageSize_Success()
+    {
+        $this->assertEquals(1636779, $this->dv->videoStorageSize("test"));
+    }
+
+     /**
+     * Delete video downloaded for testing
+     *
+     * @return void
+     */
     public function test_deleteVideo_Success()
     {
     	$this->dv->deleteVideo("test","TestVideo.mp4");
 		$this->assertFalse($this->dv->checkForVideo("test","TestVideo.mp4"));
     }
+
 }

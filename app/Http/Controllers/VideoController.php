@@ -24,13 +24,15 @@ class VideoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(videoStorage $vs)
     {
         $currentDate = Carbon::now();
 
+        $dirSize = $vs->videoStorageSize("gb_videos");
+
         $videos = VideoStatus::whereDate("published_date", ">", $currentDate->subDays(config('gb.index_show_days_video')))->orWhere("status", "=", "DOWNLOADED")->orderBy('published_date','desc')
                 ->paginate();
-        return view('main',compact('videos'));
+        return view('main',['videos' => $videos,  'dirSize' => $dirSize]);
     }
 
     /**

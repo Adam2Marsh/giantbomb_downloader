@@ -4,7 +4,6 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use Log;
-
 use Storage;
 use App\Repositories\VideoStatusRepo;
 
@@ -79,6 +78,24 @@ class videoStorage
     	Log::info(__METHOD__." Been asked to delete $directory/$file_name from storage");
     	Storage::delete("$directory/$file_name");
     	Log::info(__METHOD__." $directory/$file_name deleted from storage");
+    }
+
+    /**
+    * Return Video Storage Directory Size
+    *
+    * @param string directory
+    */
+    public function videoStorageSize($directory)
+    {
+        Log::info(__METHOD__." Been asked to size $directory from storage");
+
+        $directorySize = 0;
+
+        foreach (Storage::allFiles("$directory") as $file) {
+            $directorySize += Storage::size($file);
+        }
+
+        return $directorySize;
     }
 
 }
