@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\VideoStatus;
+use Carbon\Carbon;
 
 class FillVideoTable extends Seeder
 {
@@ -12,13 +13,26 @@ class FillVideoTable extends Seeder
      */
     public function run()
     {
-    	for ($i=0; $i < 50; $i++) { 
-    		$this->CreateVideo("Kerbal_Project_B.E.A.S.T_-_Part_$i", $i, "test.com", '2016-01-01');
-    	}
+    	// for ($i=0; $i < 50; $i++) { 
+    	// 	$this->CreateVideo("Kerbal_Project_B.E.A.S.T_-_Part_$i", $i, "test.com", '2016-01-01');
+    	// }
+        
+        $currentDate = Carbon::now();
+        $this->CreateVideo("Kerbal_Project_B.E.A.S.T_-_Part_1", 1, "test.com", "DOWNLOADED",$currentDate->subDays(100));
+
+        $currentDate = Carbon::now();        
+        $this->CreateVideo("Kerbal_Project_B.E.A.S.T_-_Part_2", 2, "test.com", "NEW",$currentDate->subDays(200));
+
+        $currentDate = Carbon::now();        
+        $this->CreateVideo("Kerbal_Project_B.E.A.S.T_-_Part_3", 3, "test.com", "NEW",$currentDate->subDays(10));
+
+        $currentDate = Carbon::now();        
+        $this->CreateVideo("Kerbal_Project_B.E.A.S.T_-_Part_4", 4, "test.com", "DOWNLOADED",$currentDate->subDays(1));
+
     }
 
 
-    public function CreateVideo($name, $id, $url, $publish_date)
+    public function CreateVideo($name, $id, $url, $status, $publish_date)
     {
     	$newVideoDownloadStatus = new VideoStatus;
 
@@ -33,7 +47,7 @@ class FillVideoTable extends Seeder
 
         $newVideoDownloadStatus->published_date = $publish_date;
 
-        $newVideoDownloadStatus->status = 'NEW';
+        $newVideoDownloadStatus->status = $status;
 
         $newVideoDownloadStatus->save();
     }

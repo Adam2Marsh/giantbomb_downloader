@@ -15,6 +15,8 @@ use App\Repositories\VideoStatusRepo;
 use App\Jobs\DownloadVideoJob;
 use App\Services\videoStorage;
 
+use Carbon\Carbon;
+
 class VideoController extends Controller
 {
     /**
@@ -24,9 +26,10 @@ class VideoController extends Controller
      */
     public function index()
     {
-        $videos = VideoStatus::orderBy('published_date','desc')
-                ->paginate();
+        $currentDate = Carbon::now();
 
+        $videos = VideoStatus::whereDate("published_date", ">", $currentDate->subDays(config('gb.index_show_days_video')))->orWhere("status", "=", "DOWNLOADED")->orderBy('published_date','desc')
+                ->paginate();
         return view('main',compact('videos'));
     }
 
