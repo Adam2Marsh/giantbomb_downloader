@@ -44,7 +44,8 @@ class videoStorage
     */
 	public function downloadVideofromURL($url, $directory, $file_name)
 	{
-		Log::info(__METHOD__." I've been asked to download a video from $url and save in $directory");
+        Log::info(__METHOD__." I've been asked to download a video from $url"."?api_key=".config('gb.api_key')." and save in $directory");
+		// Log::info(__METHOD__." I've been asked to download a video from $url and sav«e in $directory");
 		Storage::put("$directory/$file_name", fopen($url."?api_key=".config('gb.api_key'),"r"));
 	}
 
