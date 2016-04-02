@@ -94,7 +94,11 @@ class videoStorage
         $directorySize = 0;
 
         foreach (Storage::allFiles("$directory") as $file) {
-            $directorySize += Storage::size($file);
+            $file_size = Storage::size($file);
+            $file_size = $file_size >= 0 ? $file_size : 4*1024*1024*1024 + $file_size;
+            // var_dump($file);
+            // var_dump($file_size);
+            $directorySize += $file_size;
         }
 
         return $directorySize;
