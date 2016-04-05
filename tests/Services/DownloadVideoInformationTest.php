@@ -12,6 +12,7 @@ class downloadVideoInformationTest extends TestCase
 	public function setup()
 	{
 		$this->dvi = new \App\Services\DownloadVideoInformation;
+        parent::setUp();
 	}
 
 
@@ -56,6 +57,12 @@ class downloadVideoInformationTest extends TestCase
     {
         $fileSize = $this->dvi->getVideoFileSize(env('TEST_VIDEO_URL',""));
         $this->assertRegexp("/\d+/", $fileSize);
+    }
+
+    public function test_getVideoFileSize_404Response()
+    {
+        $fileSize = $this->dvi->getVideoFileSize("http://127.0.0.1/Error");
+        $this->assertEquals($fileSize, 0);
     }
 
 }

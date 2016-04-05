@@ -22,7 +22,6 @@ Route::resource('/Videos','VideoController');
 Route::get('NewVideos', 'ServiceCaller@newVideos');
 Route::get('ScheduleVideos', 'ServiceCaller@scheduleVideos');
 
-
 Route::get('/TestVideo', function() {
 
 	if (!File::exists("Frontend_Vid_YouTube.mov")) {
@@ -39,6 +38,10 @@ Route::get('/TestVideo', function() {
 
 Route::get('/Test_Json', function() {
 	return '{"error":"OK","limit":1,"offset":0,"number_of_page_results":1,"number_of_total_results":10427,"status_code":1,"results":[{"hd_url":"http:\/\/localhost\/Frontend_Vid_YouTube.mov","id":10924,"name":"Unprofessional Fridays: 02/05/2016","publish_date":"2015-12-18 20:00:00"}],"version":"1.0"}';
+});
+
+Route::get('Error', function() {
+    abort (404);
 });
 
 /*

@@ -67,14 +67,18 @@ class DownloadVideoInformation
         Log::info(__METHOD__." Fetching Video Size for video at $url");
         $client = new \GuzzleHttp\Client();
 
-        $res = $client->request('HEAD', $url);
-
-        if($this->CheckHTTPCallSucessful($res->getStatusCode())) {
-            Log::info(__METHOD__." Guzzle HEAD Request responded with: ".$res->getHeader('Content-Length')[0]);
-            return $res->getHeader('Content-Length')[0];
-        }
-        else {
-            Log::critical(__METHOD__." HTTP Call to ".$JSONUrl." failed, recieved this back".$res->getStatusCode().$res->getReasonPhrase());
+        try {
+            $res = $client->request('HEAD', $url);
+            if($this->CheckHTTPCallSucessful($res->getStatusCode())) {
+                Log::info(__METHOD__." Guzzle HEAD Request responded with: ".$res->getHeader('Content-Length')[0]);
+                return $res->getHeader('Content-Length')[0];
+            }
+            else {
+                Log::critical(__METHOD__." HTTP Call to ".$JSONUrl." failed, recieved this back".$res->getStatusCode().$res->getReasonPhrase());
+                return 0;
+            }
+        } catch (\Exception $e) {
+            Log::error($e);
         }
     }
 
