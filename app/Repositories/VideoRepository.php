@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
-use App\VideoStatus;
+use App\Video;
 use App\VideoDetails;
 use Log;
 
-class VideoStatusRepo
+class VideoRepository
 {
 
     /**
@@ -18,7 +18,7 @@ class VideoStatusRepo
     {
         Log::info(__METHOD__." Adding Video ".$video->name." into database");
 
-        $newVideoDownloadStatus = new VideoStatus;
+        $newVideoDownloadStatus = new Video;
         $newVideoDownloadStatus->name = $video->name;
 
         $videoFilename = $this->removeSpecialCharactersFromString($video->name).".mp4";
@@ -45,11 +45,11 @@ class VideoStatusRepo
     *
     * @param string VideoName
     */
-    public function checkIfVideoIsInDatabase($videoName) 
+    public function checkIfVideoIsInDatabase($videoName)
     {
         Log::info(__METHOD__." Checking if Video ".$videoName." is in database");
-        $databaseResults = \App\VideoStatus::where('name', $videoName)->get();
-        
+        $databaseResults = \App\Video::where('name', $videoName)->get();
+
         Log::info(__METHOD__." Database returned: ".print_r($databaseResults, true));
 
         if($databaseResults->isEmpty()) {
@@ -67,9 +67,9 @@ class VideoStatusRepo
     *
     * @param interger id
     */
-    public function deleteVideoFromDatabase($id) 
+    public function deleteVideoFromDatabase($id)
     {
-        $video = VideoStatus::findOrFail($id);
+        $video = Video::findOrFail($id);
 
         Log::info(__METHOD__." Been asked to delete the following video $video->name");
         $video->delete();
@@ -85,7 +85,7 @@ class VideoStatusRepo
     */
     public function updateVideoToDownloadedStatus($id, $status)
     {
-        $video = VideoStatus::findOrFail($id);
+        $video = Video::findOrFail($id);
 
         Log::info(__METHOD__." Been asked to update video->name to $status status");
         $video->status = $status;

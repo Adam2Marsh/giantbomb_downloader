@@ -4,7 +4,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class downloadVideoInformationTest extends TestCase
+class DownloadVideoInformationTest extends TestCase
 {
 
 	protected $dvi;
@@ -37,14 +37,14 @@ class downloadVideoInformationTest extends TestCase
     //Intergration Tests.......................
     public function test_updateVideosInDatabase_AddVideo()
     {
-        $deletedRow = App\VideoStatus::where('gb_Id', '11408')->delete();
+        $deletedRow = App\Video::where('gb_Id', '11408')->delete();
         $response = $this->dvi->updateVideosInDatabase('http://127.0.0.1/Test_Json','','');
         $this->assertRegexp('/doesn\'t exists/i',strval($response));
     }
 
     public function test_updateVideosInDatabase_VideoAlreadyExists()
     {
-        $deletedRow = App\VideoStatus::where('gb_Id', '11408')->delete();
+        $deletedRow = App\Video::where('gb_Id', '11408')->delete();
         $addResponse = $this->dvi->updateVideosInDatabase('http://127.0.0.1/Test_Json','','');
         $dupResponse = $this->dvi->updateVideosInDatabase('http://127.0.0.1/Test_Json','','');
         $this->assertRegexp('/already exists/i',strval($dupResponse));

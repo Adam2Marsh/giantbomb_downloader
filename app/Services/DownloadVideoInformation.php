@@ -12,7 +12,7 @@ class DownloadVideoInformation
     public function updateVideosInDatabase($url, $query, $api_key)
     {
         $response = "";
-        $vsr = new \App\Repositories\VideoStatusRepo;
+        $vsr =  new \App\Repositories\VideoRepository;
 
         $requestURL = "$url".str_replace("KEY_HERE", $api_key, $query);
         $jsonResponse = $this->getJSON($requestURL);

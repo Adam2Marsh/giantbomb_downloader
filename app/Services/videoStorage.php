@@ -5,16 +5,16 @@ namespace App\Services;
 use GuzzleHttp\Client;
 use Log;
 use Storage;
-use App\Repositories\VideoStatusRepo;
+use App\Repositories\VideoRepository;
 
-class videoStorage
+class VideoStorage
 {
 
 	protected $vsr;
 
 	public function __construct()
 	{
-		$this->vsr = new \App\Repositories\VideoStatusRepo;
+		$this->vsr = new \App\Repositories\VideoRepository;
 	}
 
     /**

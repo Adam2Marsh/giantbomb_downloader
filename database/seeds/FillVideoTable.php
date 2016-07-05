@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\VideoStatus;
+use App\Video;
 use Carbon\Carbon;
 
 class FillVideoTable extends Seeder
@@ -34,7 +34,7 @@ class FillVideoTable extends Seeder
 
     public function CreateVideo($name, $id, $url, $status, $publish_date)
     {
-    	$newVideoDownloadStatus = new VideoStatus;
+    	$newVideoDownloadStatus = new Video;
 
         $newVideoDownloadStatus->name = $name;
 

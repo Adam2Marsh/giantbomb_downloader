@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class VideoStatus extends Model
+class Video extends Model
 {
     protected $dates = [
     	'created_at',
@@ -21,5 +21,5 @@ class VideoStatus extends Model
     }
 
 
-    
+
 }
