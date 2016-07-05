@@ -35,6 +35,9 @@ class videoStatusRepoTest extends TestCase
         $localVideo->id = 12345;
         $localVideo->name = '123 Testing 321';
         $localVideo->publish_date = '2015-12-18 20:00:00';
+				
+				$localVideo->image = new \stdClass();
+				$localVideo->image->thumb_url = "http://thumburl.co.uk";
 
         $localDetails = 123456;
 
@@ -48,7 +51,7 @@ class videoStatusRepoTest extends TestCase
     * @return void
     */
     public function test_checkVideoDoesExist_Success()
-    {   
+    {
         $this->assertTrue($this->vsr->CheckIfVideoIsInDatabase('123 Testing 321'));
     }
 
@@ -82,7 +85,7 @@ class videoStatusRepoTest extends TestCase
     * @return void
     */
     public function test_checkVideoDoesExist_Fail()
-    {   
+    {
         $this->assertFalse($this->vsr->CheckIfVideoIsInDatabase('123 Testing 321'));
     }
 

@@ -7,7 +7,7 @@ use Log;
 
 class DownloadVideoInformation
 {
-    
+
 
     public function updateVideosInDatabase($url, $query, $api_key)
     {
@@ -18,14 +18,14 @@ class DownloadVideoInformation
         $jsonResponse = $this->getJSON($requestURL);
         $videoResultsArray = $jsonResponse->results;
 
-        foreach ($videoResultsArray as $video) 
+        foreach ($videoResultsArray as $video)
         {
             if($vsr->checkIfVideoIsInDatabase($video->name))
             {
                 Log::info(__METHOD__." ".$video->name." already exists in database, not adding");
                 echo $video->name." already exists in database, not adding";
                 $response = $video->name." already exists in database, not adding";
-            } else 
+            } else
             {
                 Log::info(__METHOD__." ".$video->name." doesn't exists in database, adding");
                 echo $video->name." doesn't exists in database, adding";
@@ -47,7 +47,7 @@ class DownloadVideoInformation
         $res = $client->request('GET', $JSONUrl);
 
         if($this->CheckHTTPCallSucessful($res->getStatusCode())) {
-            Log::info(__METHOD__." Guzzle Get Request responded with: ".print_r(json_decode($res->getBody()), true));
+            Log::info(__METHOD__." Guzzle Get Request responded with: ".$res->getBody());
             return json_decode($res->getBody());
         }
         else {
