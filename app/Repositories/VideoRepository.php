@@ -33,7 +33,7 @@ class VideoRepository
         $newVideoDetails = new VideoDetails([
                 'local_path' => "gb_videos/$videoFilename",
                 'file_size' => $fileSize,
-                'image_path' => $video->image->thumb_url,
+                'image_path' => $video->image->small_url,
                 ]);
         $newVideoDownloadStatus->videoDetail()->save($newVideoDetails);
 

@@ -15,9 +15,10 @@
 				</div>
 			</div>
 			<div class="table-responsive">
-				<table class="table table-condensed text-center">
+				<table class="table table-hover text-center">
 					<thead>
 						<tr>
+							<th class="text-center">Video Image</th>
 							<th class="text-center">Video Name</th>
 							<th class="text-center">Video Status</th>
 							<th class="text-center">Video Date</th>
@@ -27,13 +28,14 @@
 					<tbody>
 						@foreach ($videos as $video)
 						<tr>
-							<td> <a href="{{ $video->url }}"> {{ $video->name }} </a> </td>
-							<td>{{ $video->status }}</td>
-							<td>{{ $video->published_date->format('d/m/Y') }}</td>
-							<td>
+							<td><img class="img-thumbnail" src="{{ $video->videoDetail->image_path }}"></td>
+							<td style="vertical-align: middle;"><a href="{{ $video->url }}"> {{ $video->name }} </a> </td>
+							<td style="vertical-align: middle;">{{ $video->status }}</td>
+							<td style="vertical-align: middle;">{{ $video->published_date->format('d/m/Y') }}</td>
+							<td style="vertical-align: middle;">
 								@if ($video->status == 'NEW')
 								{{ Form::open(['route' => 'Videos.store', 'method' => 'post']) }}
-								{{ Form::hidden('id',$video->id) }}	
+								{{ Form::hidden('id',$video->id) }}
 								<button type="submit" class="btn btn-success">Download</button>
 								{{ Form::close() }}
 								@endif
