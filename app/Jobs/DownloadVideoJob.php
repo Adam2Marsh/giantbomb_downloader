@@ -7,7 +7,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-use App\VideoStatus;
+use App\Video;
 use App\Services\videoStorage;
 
 class DownloadVideoJob extends Job implements ShouldQueue
@@ -21,7 +21,7 @@ class DownloadVideoJob extends Job implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(VideoStatus $video)
+    public function __construct(Video $video)
     {
         $this->video = $video;
     }

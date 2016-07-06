@@ -4,15 +4,15 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class videoStorageTest extends TestCase
+class VideoStorageTest extends TestCase
 {
 
 
 	protected $dv;
 
-	public function setup() 
+	public function setup()
 	{
-		$this->dv = new \App\Services\videoStorage;
+		$this->dv = new \App\Services\VideoStorage;
         parent::setUp();
 	}
 

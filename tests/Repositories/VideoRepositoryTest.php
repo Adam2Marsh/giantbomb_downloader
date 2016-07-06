@@ -4,14 +4,14 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class videoStatusRepoTest extends TestCase
+class VideoRepositoryTest extends TestCase
 {
 
 	protected $vsr;
 
 	public function setup()
 	{
-		$this->vsr = new \App\Repositories\VideoStatusRepo;
+		$this->vsr = new \App\Repositories\VideoRepository;
 	}
 
     /**
@@ -36,11 +36,14 @@ class videoStatusRepoTest extends TestCase
         $localVideo->name = '123 Testing 321';
         $localVideo->publish_date = '2015-12-18 20:00:00';
 
+				$localVideo->image = new \stdClass();
+				$localVideo->image->thumb_url = "http://thumburl.co.uk";
+
         $localDetails = 123456;
 
         $this->vsr->addVideoToDatabase($localVideo, $localDetails);
         $this->assertTrue($this->vsr->CheckIfVideoIsInDatabase($localVideo->name));
-        // $deletedRow = App\VideoStatus::where('gb_Id', $localVideo->id)->delete();
+        // $deletedRow = App\Video::where('gb_Id', $localVideo->id)->delete();
     }
 
     /**
@@ -48,7 +51,7 @@ class videoStatusRepoTest extends TestCase
     * @return void
     */
     public function test_checkVideoDoesExist_Success()
-    {   
+    {
         $this->assertTrue($this->vsr->CheckIfVideoIsInDatabase('123 Testing 321'));
     }
 
@@ -58,10 +61,10 @@ class videoStatusRepoTest extends TestCase
     */
     public function test_updateVideoToDownloadedStatus_Success()
     {
-        $video = App\VideoStatus::where('gb_Id', 12345)->first();
+        $video = App\Video::where('gb_Id', 12345)->first();
         $this->vsr->updateVideoToDownloadedStatus($video->id, "DOWNLOADED");
 
-        $video = App\VideoStatus::where('gb_Id', 12345)->first();
+        $video = App\Video::where('gb_Id', 12345)->first();
         $this->assertEquals($video->status, "DOWNLOADED");
     }
 
@@ -72,7 +75,7 @@ class videoStatusRepoTest extends TestCase
     */
     public function test_deleteVideoFromDatabase_Success()
     {
-        $video = App\VideoStatus::where('gb_Id', 12345)->first();
+        $video = App\Video::where('gb_Id', 12345)->first();
         $videoName = $this->vsr->deleteVideoFromDatabase($video->id);
         $this->assertEquals($videoName,"123 Testing 321");
     }
@@ -82,7 +85,7 @@ class videoStatusRepoTest extends TestCase
     * @return void
     */
     public function test_checkVideoDoesExist_Fail()
-    {   
+    {
         $this->assertFalse($this->vsr->CheckIfVideoIsInDatabase('123 Testing 321'));
     }
 

@@ -8,12 +8,12 @@ use Illuminate\Http\Response;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\VideoStatus;
+use App\Video;
 use Log;
 
-use App\Repositories\VideoStatusRepo;
+use App\Repositories\VideoRepository;
 use App\Jobs\DownloadVideoJob;
-use App\Services\videoStorage;
+use App\Services\VideoStorage;
 
 use Carbon\Carbon;
 
@@ -24,13 +24,13 @@ class VideoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(videoStorage $vs)
+    public function index(VideoStorage $vs)
     {
         $currentDate = Carbon::now();
 
         $dirSize = $vs->videoStorageSize("gb_videos");
 
-        $videos = VideoStatus::whereDate("published_date", ">", $currentDate->subDays(config('gb.index_show_days_video')))->orWhere("status", "=", "DOWNLOADED")->orderBy('published_date','desc')
+        $videos = Video::whereDate("published_date", ">", $currentDate->subDays(config('gb.index_show_days_video')))->orWhere("status", "=", "DOWNLOADED")->orderBy('published_date','desc')
                 ->paginate();
         return view('main',['videos' => $videos,  'dirSize' => $dirSize]);
     }
@@ -51,11 +51,11 @@ class VideoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, VideoStatusRepo $vsr)
+    public function store(Request $request, VideoRepository $vsr)
     {
         $videoID = $request->get('id');
 
-        $video = VideoStatus::findOrFail($videoID);
+        $video = Video::findOrFail($videoID);
         Log::Info(__METHOD__." I've been asked to download the following $video->name manually, adding to queue");
         $this->dispatch(new DownloadVideoJob($video));
 
@@ -73,7 +73,7 @@ class VideoController extends Controller
      */
     public function show($id)
     {
-        $video = VideoStatus::findOrFail($id);
+        $video = Video::findOrFail($id);
         return response()->download(storage_path("app/gb_videos/$video->file_name"));
     }
 
@@ -106,9 +106,9 @@ class VideoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(VideoStatusRepo $vsr, videoStorage $vs, $id)
+    public function destroy(VideoRepository $vsr, VideoStorage $vs, $id)
     {
-        $video = VideoStatus::findOrFail($id);
+        $video = Video::findOrFail($id);
         $videoName = $vsr->deleteVideoFromDatabase($video->id);
 
         if ($vs->checkForVideo("gb_videos", $video->file_name)) {

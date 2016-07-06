@@ -14,10 +14,10 @@ class CreateVideoDetailsTable extends Migration
     {
         Schema::create('video_details', function (Blueprint $table) {
             $table->increments('id');
+            $table->bigInteger('video_id');
             $table->string('local_path')->nullable();
             $table->string('image_path')->nullable();
             $table->bigInteger('file_size')->nullable();
-            $table->bigInteger('video_status_id');
             $table->timestamp('created_at')->index();
             $table->timestamp('updated_at');
         });
