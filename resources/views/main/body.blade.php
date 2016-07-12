@@ -1,3 +1,19 @@
+<div class="col-md-8 col-md-offset-2">
+	<div class="row text-center">
+		<h3>Video's Downloaded Size:</h3>
+	</div>
+	<div class="row">
+		<div class="progress">
+			<div class="progress-bar progress-bar-success" aria-valuenow="{{ $dirSize }}" aria-valuemax="21474836480" style="width: {{ ($dirSize / 1024 / 1024)/20000 * 100 }}%;">
+				{{ human_filesize($dirSize) }}
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<br>
+<br>
+<br>
 <body>
 	<div class="container">
 		<hr>

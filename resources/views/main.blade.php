@@ -1,4 +1,4 @@
 <html>
 @include('parts.head')
-@include('parts.body')
+@include('main.body')
 </html>

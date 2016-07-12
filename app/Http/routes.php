@@ -13,14 +13,15 @@
 
 
 Route::get('/', function() {
-	return redirect ('/Videos');
+	return redirect ('/videos');
 });
 
 
-Route::resource('/Videos','VideoController');
+Route::resource('/videos','VideoController');
 
 Route::get('NewVideos', 'ServiceCaller@newVideos');
-Route::get('ScheduleVideos', 'ServiceCaller@scheduleVideos');
+
+// Route::get('ScheduleVideos', 'ServiceCaller@scheduleVideos');
 
 Route::get('/TestVideo', function() {
 
@@ -56,5 +57,5 @@ Route::get('Error', function() {
 */
 
 Route::group(['middleware' => ['web']], function () {
-    //
+    Route::resource('/rules','RuleController');
 });
