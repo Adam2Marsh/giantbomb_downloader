@@ -37,29 +37,7 @@ class RuleController extends Controller
       $rules->fill($request->all());
       $rules->save();
 
-      return redirect('rules');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+      return redirect('rules')->with('success', 'Rule Added Successully');
     }
 
     /**
@@ -71,7 +49,13 @@ class RuleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Log::info(__METHOD__." Updating Rule $id to Enabled Status of " . $request->enabled);
+
+        $rule = Rule::findOrFail($id);
+        $rule->fill($request->all());
+        $rule->save();
+
+        return response()->json(['status' => $rule->enabled]);
     }
 
     /**
@@ -83,7 +67,11 @@ class RuleController extends Controller
     public function destroy($id)
     {
         Log::info(__METHOD__ . "Deleting a rule");
+
         $rule = Rule::findOrFail($id);
+
         $rule->delete();
+
+        return redirect('rules')->with('success', 'Rule Deleted Successully');
     }
 }

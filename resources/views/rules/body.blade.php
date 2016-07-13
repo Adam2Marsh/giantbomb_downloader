@@ -1,6 +1,7 @@
 <div class="col-md-2">
 </div>
 <div class="col-md-8">
+  @include('parts.success')
   <div class="panel panel-default">
     <div class="panel-heading">Creatre new Rules Here</div>
     <div class="panel-body">
@@ -44,13 +45,28 @@
           <tr>
             <th class="text-center">Rule</th>
             <th class="text-center">Enabled</th>
+            <th class="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
           @foreach ($rules as $rule)
           <tr>
             <td class="text-center"> {{ $rule->regex }} </td>
-            <td class="text-center"> {{ $rule->enabled }} </td>
+              <td class="text-center">
+                @if ($rule->enabled == 1)
+                  <input type="checkbox" class="form-control"
+                    name="{{ $rule->id }}" value="1" onclick="ajaxForm(this.name, this)" checked>
+                @else
+                  <input type="checkbox" class="form-control"
+                    name="{{ $rule->id }}" value="1" onclick="ajaxForm(this.name, this)">
+                @endif
+            </td>
+            <td class="text-center">
+              {{ Form::open(['route' => ['rules.destroy', $rule->id],
+                'method' => 'delete']) }}
+              <button type="submit" class="btn btn-danger">Delete</button>
+              {{ Form::close() }}
+            </td>
           </tr>
           @endforeach
         </tbody>
@@ -60,3 +76,37 @@
 </div>
 <div class="col-md-2">
 </div>
+
+
+<script type="text/javascript">
+
+
+  function ajaxForm(id, checkbox)
+  {
+
+    $.ajax({
+        type: 'POST',
+        url: 'rules/' + id,
+        data: {'_method':'PUT', '_token':'{{ csrf_token() }}', 'enabled':"'" +
+          checkbox.checked + "'"},
+        beforeSend: function() {
+          // alert('Before Send');
+        },
+        success: function(data) {
+          // alert(JSON.stringify(data));
+          $('#success').append(
+            '<div class="alert alert-success alert-dismissible" role="alert">' +
+            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+            '<span aria-hidden="true">&times;</span>' +
+            '</button>' +
+            'Update Rule' +
+            '</div>'
+          );
+        },
+        error: function(data) {
+          // alert('Error');
+        }
+      });
+  }
+
+</script>

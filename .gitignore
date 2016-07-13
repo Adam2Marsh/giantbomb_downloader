@@ -5,3 +5,6 @@ Homestead.json
 .env
 .vagrant
 worker.log
+bower_components
+public
+resources/assets

@@ -1,0 +1,24 @@
+{
+  "name": "giantbomb_downloader",
+  "description": "Download GiantBomb Videos",
+  "main": "",
+  "authors": [
+    "Adam Marsh <adam.marsh@rocketmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "jquery": "^2.2.3",
+    "jquery-ui": "^1.11.4",
+    "font-awesome": "^4.6.3"
+  }
+}
