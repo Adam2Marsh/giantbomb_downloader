@@ -64,7 +64,7 @@
             <td class="text-center">
               {{ Form::open(['route' => ['rules.destroy', $rule->id],
                 'method' => 'delete']) }}
-              <button type="submit" class="btn btn-danger">Delete</button>
+              <button name="{{ $rule->id }}DELETE" type="submit" class="btn btn-danger">Delete</button>
               {{ Form::close() }}
             </td>
           </tr>
