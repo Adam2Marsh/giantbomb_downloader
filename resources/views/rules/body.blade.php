@@ -55,10 +55,10 @@
               <td class="text-center">
                 @if ($rule->enabled == 1)
                   <input type="checkbox" class="form-control"
-                    name="{{ $rule->id }}" value="1" onclick="ajaxForm(this.name, this)" checked>
+                    name="{{ $rule->id }}" value=1 onclick="ajaxForm(this.name, this)" checked>
                 @else
                   <input type="checkbox" class="form-control"
-                    name="{{ $rule->id }}" value="1" onclick="ajaxForm(this.name, this)">
+                    name="{{ $rule->id }}" value=1 onclick="ajaxForm(this.name, this)">
                 @endif
             </td>
             <td class="text-center">
@@ -84,13 +84,26 @@
   function ajaxForm(id, checkbox)
   {
 
+    var checkboxValue = 0;
+
+    if (checkbox.checked) {
+      checkboxValue = 1;
+    }
+
     $.ajax({
         type: 'POST',
         url: 'rules/' + id,
         data: {'_method':'PUT', '_token':'{{ csrf_token() }}', 'enabled':"'" +
-          checkbox.checked + "'"},
+          checkboxValue + "'"},
         beforeSend: function() {
-          // alert('Before Send');
+          $('#success').append(
+            '<div class="alert alert-warning alert-dismissible" role="alert">' +
+            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+            '<span aria-hidden="true">&times;</span>' +
+            '</button>' +
+            'Updating Rule' +
+            '</div>'
+          );
         },
         success: function(data) {
           // alert(JSON.stringify(data));
@@ -99,7 +112,7 @@
             '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
             '<span aria-hidden="true">&times;</span>' +
             '</button>' +
-            'Update Rule' +
+            'Rule Updated' +
             '</div>'
           );
         },

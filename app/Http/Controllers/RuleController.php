@@ -51,9 +51,11 @@ class RuleController extends Controller
     {
         Log::info(__METHOD__." Updating Rule $id to Enabled Status of " . $request->enabled);
 
-        $rule = Rule::findOrFail($id);
-        $rule->fill($request->all());
+        $rule = Rule::find($id);
+        $rule->enabled = $request->enabled;
         $rule->save();
+
+        var_dump($rule);
 
         return response()->json(['status' => $rule->enabled]);
     }
