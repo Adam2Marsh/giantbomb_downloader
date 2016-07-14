@@ -43,9 +43,9 @@ class RuleController extends Controller
         return redirect('rules')->with('success', 'Rule Added Successully');
 
       } catch (\Exception $e) {
-        Log::error(__METHOD__ . " Something went wrong!");
-        Log::error(__METHOD__ . $e->getMessage());
-        return redirect('rules')->with('errors', 'Rule Already Exists');
+          Log::error(__METHOD__ . " Something went wrong!");
+          Log::error(__METHOD__ . $e->getMessage());
+          return redirect('rules')->with('errors', 'Rule Already Exists');
       }
     }
 
