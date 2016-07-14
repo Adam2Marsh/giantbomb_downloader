@@ -2,6 +2,7 @@
 </div>
 <div class="col-md-8">
   @include('parts.success')
+  @include('parts.errors')
   <div class="panel panel-default">
     <div class="panel-heading">Creatre new Rules Here</div>
     <div class="panel-body">

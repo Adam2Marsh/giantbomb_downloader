@@ -32,12 +32,21 @@ class RuleController extends Controller
     public function store(Request $request)
     {
       Log::info(__METHOD__ . " Creating a new rule");
-      // dd($request->all());
-      $rules = new Rule();
-      $rules->fill($request->all());
-      $rules->save();
 
-      return redirect('rules')->with('success', 'Rule Added Successully');
+      try {
+        $rules = new Rule();
+
+        $rules->fill($request->all());
+
+        $rules->save();
+
+        return redirect('rules')->with('success', 'Rule Added Successully');
+
+      } catch (\Exception $e) {
+        Log::error(__METHOD__ . " Something went wrong!");
+        Log::error(__METHOD__ . $e->getMessage());
+        return redirect('rules')->with('errors', 'Rule Already Exists');
+      }
     }
 
     /**

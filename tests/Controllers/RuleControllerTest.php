@@ -24,7 +24,7 @@ class RuleControllerTest extends TestCase
      *
      * @return void
      */
-    public function testAddNewRule()
+    public function testDuplicateRuleError()
     {
       $this->visit('/rules')
            ->type('Just a Test','regex')
@@ -32,6 +32,21 @@ class RuleControllerTest extends TestCase
            ->press('Save')
            ->seePageIs('/rules')
            ->see('Rule Added Successully');
+    }
+
+    /**
+     * Create new Rule
+     *
+     * @return void
+     */
+    public function testAddNewRule()
+    {
+      $this->visit('/rules')
+           ->type('Just a Test','regex')
+           ->check('enabled')
+           ->press('Save')
+           ->seePageIs('/rules')
+           ->see('Rule Already Exists');
     }
 
     /**
