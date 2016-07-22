@@ -64,7 +64,7 @@ class RuleController extends Controller
         $rule->enabled = $request->enabled;
         $rule->save();
 
-        var_dump($rule);
+        // var_dump($rule);
 
         return response()->json(['status' => $rule->enabled]);
     }

@@ -61,7 +61,7 @@ class VideoController extends Controller
 
         $videoName = $vsr->updateVideoToDownloadedStatus($videoID, "DOWNLOADING");
 
-        return redirect('/Videos')
+        return redirect('/videos')
             ->withSuccess("$video->name added to queue");
     }
 
@@ -115,7 +115,7 @@ class VideoController extends Controller
             $vs->deleteVideo("gb_videos", $video->file_name);
         }
 
-        return redirect('/Videos')
+        return redirect('/videos')
             ->withSuccess("The  '$videoName' tag has been deleted.");
     }
 }

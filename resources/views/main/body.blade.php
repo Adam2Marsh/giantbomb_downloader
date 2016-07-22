@@ -50,19 +50,19 @@
 							<td style="vertical-align: middle;">{{ $video->published_date->format('d/m/Y') }}</td>
 							<td style="vertical-align: middle;">
 								@if ($video->status == 'NEW')
-								{{ Form::open(['route' => 'Videos.store', 'method' => 'post']) }}
+								{{ Form::open(['route' => 'videos.store', 'method' => 'post']) }}
 								{{ Form::hidden('id',$video->id) }}
 								<button type="submit" class="btn btn-success">Download</button>
 								{{ Form::close() }}
 								@endif
 
 								@if ($video->status == 'DOWNLOADED')
-								{{ Form::open(['route' => ['Videos.destroy', $video->id], 'method' => 'get']) }}
+								{{ Form::open(['route' => ['videos.destroy', $video->id], 'method' => 'get']) }}
 								<button type="submit" class="btn btn-success">View</button>
 								{{ Form::close() }}
 								@endif
 
-								{{ Form::open(['route' => ['Videos.destroy', $video->id], 'method' => 'delete']) }}
+								{{ Form::open(['route' => ['videos.destroy', $video->id], 'method' => 'delete']) }}
 								<button type="submit" class="btn btn-danger">Delete</button>
 								{{ Form::close() }}
 							</td>

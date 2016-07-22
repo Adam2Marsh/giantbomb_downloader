@@ -4,15 +4,22 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use Log;
+use App\Repositories\RulesRepository;
+use App\Jobs\DownloadVideoJob;
+use App\Video;
+
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class DownloadVideoInformation
 {
 
+    use DispatchesJobs;
 
     public function updateVideosInDatabase($url, $query, $api_key)
     {
         $response = "";
         $vsr =  new \App\Repositories\VideoRepository;
+        $ruleRepo = new RulesRepository();
 
         $requestURL = "$url".str_replace("KEY_HERE", $api_key, $query);
         $jsonResponse = $this->getJSON($requestURL);
@@ -31,7 +38,13 @@ class DownloadVideoInformation
                 echo $video->name." doesn't exists in database, adding";
                 $response = $video->name." doesn't exists in database, adding";
                 $details = "";
-                $vsr->addVideoToDatabase($video, $this->getVideoFileSize($video->hd_url));
+                $savedVideo = $vsr->addVideoToDatabase($video, $this->getVideoFileSize($video->hd_url));
+
+                Log::info(__METHOD__." Checking if $video->name matches any rules");
+                if($ruleRepo->VideoMatchRules($video->name))  {
+                  Log::info(__METHOD__." $video->name matches a rule, downloading");
+                  $this->dispatch(new DownloadVideoJob($savedVideo));
+                }
             }
             echo "<br>";
         }

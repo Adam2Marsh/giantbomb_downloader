@@ -38,6 +38,8 @@ class VideoRepository
         $newVideoDownloadStatus->videoDetail()->save($newVideoDetails);
 
         Log::info(__METHOD__." Video ".$video->name." inserted into database");
+
+        return $newVideoDownloadStatus;
     }
 
     /**

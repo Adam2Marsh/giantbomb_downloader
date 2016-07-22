@@ -8,7 +8,7 @@
   "results": [
     {
       "deck": "You guys asked for it! More wrestling related content!",
-      "hd_url": "http://v.giantbomb.com/2016/07/01/mc_demoderby_psu_31_06292016_4000.mp4",
+      "hd_url": "http://localhost/TestVideo",
       "id": 11408,
       "name": "Demo Derby: PlayStation Underground: Volume 3 Issue 1",
       "publish_date": "2016-07-04 18:00:00",

@@ -37,7 +37,7 @@ class VideoRepositoryTest extends TestCase
         $localVideo->publish_date = '2015-12-18 20:00:00';
 
 				$localVideo->image = new \stdClass();
-				$localVideo->image->thumb_url = "http://thumburl.co.uk";
+				$localVideo->image->small_url = "http://thumburl.co.uk";
 
         $localDetails = 123456;
 
