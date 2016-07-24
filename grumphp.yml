@@ -5,3 +5,4 @@ parameters:
       phpcs:
         standard: PSR2
         ignore_patterns: [./tests/*, ./resources/*, ./database/*, ./bootstrap/*]
+      phpunit:
