@@ -21,10 +21,10 @@
           <div class="col-sm-10">
             @if (old('enabled'))
               <input type="checkbox" class="form-control" name="enabled"
-                placeholder="Rule Enabled" value="1" checked>
+                placeholder="Rule Enabled" value=1 checked>
             @else
               <input type="checkbox" class="form-control" name="enabled"
-                placeholder="Rule Enabled" value="1">
+                placeholder="Rule Enabled" value=1>
             @endif
           </div>
         </div>
@@ -94,8 +94,8 @@
     $.ajax({
         type: 'POST',
         url: 'rules/' + id,
-        data: {'_method':'PUT', '_token':'{{ csrf_token() }}', 'enabled':"'" +
-          checkboxValue + "'"},
+        data: {'_method':'PUT', '_token':'{{ csrf_token() }}', 'enabled':
+          checkboxValue },
         beforeSend: function() {
           $('#success').append(
             '<div class="alert alert-warning alert-dismissible" role="alert">' +
