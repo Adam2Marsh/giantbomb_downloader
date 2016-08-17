@@ -30,19 +30,10 @@ class VideoController extends Controller
 
         $dirSize = $vs->videoStorageSize("gb_videos");
 
-        $videos = Video::whereDate("published_date", ">", $currentDate->subDays(config('gb.index_show_days_video')))->orWhere("status", "=", "DOWNLOADED")->orderBy('published_date','desc')
+        $videos = Video::whereDate("published_date", ">", $currentDate->subDays(config('gb.index_show_days_video')))
+                ->orWhere("status", "=", "DOWNLOADED")->orderBy('published_date', 'desc')
                 ->paginate();
-        return view('main',['videos' => $videos,  'dirSize' => $dirSize]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('main', ['videos' => $videos,  'dirSize' => $dirSize]);
     }
 
     /**
@@ -51,7 +42,7 @@ class VideoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, VideoRepository $vsr)
+    public function saveVideo(Request $request, VideoRepository $vsr)
     {
         $videoID = $request->get('id');
 
@@ -59,7 +50,7 @@ class VideoController extends Controller
         Log::Info(__METHOD__." I've been asked to download the following $video->name manually, adding to queue");
         $this->dispatch(new DownloadVideoJob($video));
 
-        $videoName = $vsr->updateVideoToDownloadedStatus($videoID, "DOWNLOADING");
+        $videoName = $vsr->updateVideoToDownloadedStatus($videoID, "SAVING");
 
         return redirect('/videos')
             ->withSuccess("$video->name added to queue");
@@ -71,33 +62,10 @@ class VideoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function download($id)
     {
         $video = Video::findOrFail($id);
         return response()->download(storage_path("app/gb_videos/$video->file_name"));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**
@@ -106,16 +74,16 @@ class VideoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(VideoRepository $vsr, VideoStorage $vs, $id)
+    public function watched(VideoRepository $vsr, VideoStorage $vs, $id)
     {
         $video = Video::findOrFail($id);
-        $videoName = $vsr->deleteVideoFromDatabase($video->id);
+        $videoName = $vsr->updateVideoToDownloadedStatus($video->id, 'WATCHED');
 
         if ($vs->checkForVideo("gb_videos", $video->file_name)) {
             $vs->deleteVideo("gb_videos", $video->file_name);
         }
 
         return redirect('/videos')
-            ->withSuccess("The  '$videoName' tag has been deleted.");
+            ->withSuccess("The  '$videoName' tag has been updated to watched.");
     }
 }

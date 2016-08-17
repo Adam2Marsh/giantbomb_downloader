@@ -16,7 +16,7 @@ class RuleControllerTest extends TestCase
     public function testGuiMainPage()
     {
       $this->visit('/rules')
-           ->see('Creatre new Rules Here');
+           ->see('Create new Rules Here');
     }
 
     /**

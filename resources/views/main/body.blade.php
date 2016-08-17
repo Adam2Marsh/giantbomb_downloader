@@ -49,22 +49,22 @@
 							<td style="vertical-align: middle;">{{ $video->status }}</td>
 							<td style="vertical-align: middle;">{{ $video->published_date->format('d/m/Y') }}</td>
 							<td style="vertical-align: middle;">
-								@if ($video->status == 'NEW')
-								{{ Form::open(['route' => 'videos.store', 'method' => 'post']) }}
+								@if ($video->status == 'NEW' || $video->status == 'WATCHED')
+								{{ Form::open(['action' => 'VideoController@saveVideo', 'method' => 'post']) }}
 								{{ Form::hidden('id',$video->id) }}
+								<button type="submit" class="btn btn-info">Save</button>
+								{{ Form::close() }}
+								@endif
+
+								@if ($video->status == 'SAVED')
+								{{ Form::open(['action' => ['VideoController@download', $video->id], 'method' => 'get']) }}
 								<button type="submit" class="btn btn-success">Download</button>
 								{{ Form::close() }}
-								@endif
 
-								@if ($video->status == 'DOWNLOADED')
-								{{ Form::open(['route' => ['videos.destroy', $video->id], 'method' => 'get']) }}
-								<button type="submit" class="btn btn-success">View</button>
+								{{ Form::open(['action' => ['VideoController@watched', $video->id], 'method' => 'delete']) }}
+								<button type="submit" class="btn btn-danger">Watched</button>
 								{{ Form::close() }}
 								@endif
-
-								{{ Form::open(['route' => ['videos.destroy', $video->id], 'method' => 'delete']) }}
-								<button type="submit" class="btn btn-danger">Delete</button>
-								{{ Form::close() }}
 							</td>
 						</tr>
 						@endforeach

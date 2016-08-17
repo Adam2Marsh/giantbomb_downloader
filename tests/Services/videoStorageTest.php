@@ -54,7 +54,7 @@ class VideoStorageTest extends TestCase
      */
     public function test_videoStorageSize_Success()
     {
-        $this->assertEquals(1636779, $this->dv->videoStorageSize("test"));
+        $this->assertEquals(1630631, $this->dv->videoStorageSize("test"));
     }
 
      /**

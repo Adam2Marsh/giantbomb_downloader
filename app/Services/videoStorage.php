@@ -10,45 +10,44 @@ use App\Repositories\VideoRepository;
 class VideoStorage
 {
 
-	protected $vsr;
+    protected $vsr;
 
-	public function __construct()
-	{
-		$this->vsr = new \App\Repositories\VideoRepository;
-	}
+    public function __construct()
+    {
+        $this->vsr = new \App\Repositories\VideoRepository;
+    }
 
     /**
     * Download Video from URL and Update DB
     *
-    * @param VideoObject Video
+    * @param  VideoObject Video
     * @return null
     */
-	public function saveVideo($video)
-	{
-		Log::info(__METHOD__." Downloading Video $video->name");
-		$this->downloadVideofromURL($video->url, "gb_videos", $video->file_name);
+    public function saveVideo($video)
+    {
+        Log::info(__METHOD__." Downloading Video $video->name");
+        $this->downloadVideofromURL($video->url, "gb_videos", $video->file_name);
 
-		if ($this->checkForVideo("gb_videos", $video->file_name)) {
-			Log::info(__METHOD__." Video downloaded and stored gb_videos/$video->name");
-            $this->vsr->updateVideoToDownloadedStatus($video->id, "DOWNLOADED");
+        if ($this->checkForVideo("gb_videos", $video->file_name)) {
+            Log::info(__METHOD__." Video downloaded and stored gb_videos/$video->name");
+            $this->vsr->updateVideoToDownloadedStatus($video->id, "SAVED");
             return;
-		}
+        }
 
-		Log::info(__METHOD__." Video failed download");
-	}
+        Log::info(__METHOD__." Video failed download");
+    }
 
     /**
     * Download Video from URL
     *
     * @return bool
     */
-	public function downloadVideofromURL($url, $directory, $file_name)
-	{
-        // Log::info(__METHOD__." I've been asked to download a video from $url"."?api_key=".config('gb.api_key')." and save in $directory");
-        ini_set("user_agent","Adam2Marsh Laravel Video Downloader PI");
-		Log::info(__METHOD__." I've been asked to download a video from $url and sav«e in $directory");
-		Storage::put("$directory/$file_name", fopen($url."?api_key=".config('gb.api_key'),"r"));
-	}
+    public function downloadVideofromURL($url, $directory, $file_name)
+    {
+        ini_set("user_agent", "Adam2Marsh Laravel Video Downloader PI");
+        Log::info(__METHOD__." I've been asked to download a video from $url and save in $directory");
+        Storage::put("$directory/$file_name", fopen($url."?api_key=".config('gb.api_key'), "r"));
+    }
 
 
     /**
@@ -59,14 +58,14 @@ class VideoStorage
     */
     public function checkForVideo($directory, $file_name)
     {
-    	Log::info(__METHOD__." Checking if video called $file_name has been downloaded");
-    	if(Storage::has("$directory/$file_name")) {
-    		Log::info(__METHOD__." Video has been downloaded, returning true");
-    		return true;
-    	}
+        Log::info(__METHOD__." Checking if video called $file_name has been downloaded");
+        if (Storage::has("$directory/$file_name")) {
+            Log::info(__METHOD__." Video has been downloaded, returning true");
+            return true;
+        }
 
-    	Log::info(__METHOD__." Video hasn't been downloaded, returning fasle");
-    	return false;
+        Log::info(__METHOD__." Video hasn't been downloaded, returning fasle");
+        return false;
     }
 
     /**
@@ -77,9 +76,9 @@ class VideoStorage
     */
     public function deleteVideo($directory, $file_name)
     {
-    	Log::info(__METHOD__." Been asked to delete $directory/$file_name from storage");
-    	Storage::delete("$directory/$file_name");
-    	Log::info(__METHOD__." $directory/$file_name deleted from storage");
+        Log::info(__METHOD__." Been asked to delete $directory/$file_name from storage");
+        Storage::delete("$directory/$file_name");
+        Log::info(__METHOD__." $directory/$file_name deleted from storage");
     }
 
     /**
@@ -103,5 +102,4 @@ class VideoStorage
 
         return $directorySize;
     }
-
 }
