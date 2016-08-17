@@ -6,7 +6,7 @@
       @include('parts.success')
       @include('parts.errors')
       <div class="panel panel-default">
-        <div class="panel-heading">Creatre new Rules Here</div>
+        <div class="panel-heading">Create new Rules Here</div>
         <div class="panel-body">
 
           <form class="form-horizontal" method="POST" name="addRegex" action="/rules">
