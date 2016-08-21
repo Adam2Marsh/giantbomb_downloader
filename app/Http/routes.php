@@ -12,20 +12,17 @@
 */
 
 
-Route::get('/', function() {
-	return redirect ('/videos');
+Route::get('/', function () {
+    return redirect('/videos');
 });
-
-
-Route::resource('/videos','VideoController');
 
 Route::get('NewVideos', 'ServiceCaller@newVideos');
 
 // Route::get('ScheduleVideos', 'ServiceCaller@scheduleVideos');
 
-Route::get('/TestVideo', function() {
+Route::get('/TestVideo', function () {
 
-	if (!File::exists("Frontend_Vid_YouTube.mov")) {
+    if (!File::exists("Frontend_Vid_YouTube.mov")) {
         return Response::make("File does not exist.", 404);
     }
 
@@ -37,12 +34,12 @@ Route::get('/TestVideo', function() {
     return Response::download("Frontend_Vid_YouTube.mov");
 });
 
-Route::get('/Test_Json', function() {
+Route::get('/Test_Json', function () {
     return view('test.test');
 });
 
-Route::get('Error', function() {
-    abort (404);
+Route::get('Error', function () {
+    abort(404);
 });
 
 /*
@@ -57,5 +54,9 @@ Route::get('Error', function() {
 */
 
 Route::group(['middleware' => ['web']], function () {
-    Route::resource('/rules','RuleController');
+    Route::resource('/rules', 'RuleController');
+    Route::get('/videos', 'VideoController@index');
+    Route::post('/videos', 'VideoController@saveVideo');
+    Route::get('/videos/{id}', 'VideoController@download');
+    Route::delete('/videos/{id}', 'VideoController@watched');
 });

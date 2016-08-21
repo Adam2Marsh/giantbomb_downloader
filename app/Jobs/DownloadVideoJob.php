@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\Video;
-use App\Services\videoStorage;
+use App\Services\VideoStorage;
 
 class DownloadVideoJob extends Job implements ShouldQueue
 {
@@ -31,7 +31,7 @@ class DownloadVideoJob extends Job implements ShouldQueue
      *
      * @return void
      */
-    public function handle(videoStorage $vs)
+    public function handle(VideoStorage $vs)
     {
         $vs->saveVideo($this->video);
     }
