@@ -8,3 +8,4 @@ worker.log
 bower_components
 public
 resources/assets
+composer.phar
