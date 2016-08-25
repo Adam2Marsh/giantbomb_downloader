@@ -7,7 +7,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class VideoStorageTest extends TestCase
 {
 
-
 	protected $dv;
 
 	public function setup()
@@ -18,8 +17,6 @@ class VideoStorageTest extends TestCase
 
     /**
      * Test downloading a video
-     *
-     * @return void
      */
     public function test_DownloadVideoFromURL()
     {
@@ -29,8 +26,6 @@ class VideoStorageTest extends TestCase
 
      /**
      * Check for downloaded video
-     *
-     * @return void
      */
     public function test_checkForVideo_Success()
     {

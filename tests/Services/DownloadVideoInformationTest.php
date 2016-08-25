@@ -4,6 +4,8 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+use App\Rule;
+
 class DownloadVideoInformationTest extends TestCase
 {
 
@@ -12,7 +14,7 @@ class DownloadVideoInformationTest extends TestCase
 	public function setup()
 	{
 		$this->dvi = new \App\Services\DownloadVideoInformation;
-    parent::setUp();
+        parent::setUp();
 	}
 
     /**
@@ -40,6 +42,21 @@ class DownloadVideoInformationTest extends TestCase
         $deletedRow = App\Video::where('gb_Id', '11408')->delete();
         $response = $this->dvi->updateVideosInDatabase('http://127.0.0.1/Test_Json','','');
         $this->assertRegexp('/doesn\'t exists/i',strval($response));
+    }
+
+    public function test_updateVideosInDatabase_RuleTriggersDownload()
+    {
+        $rule = new Rule();
+        $rule->regex = "Demo Derby";
+        $rule->enabled = 1;
+        $rule->save();
+
+        $response = $this->dvi->updateVideosInDatabase('http://127.0.0.1/Test_Json','','');
+
+        $this->expectsJobs(App\Jobs\DownloadVideoJob::class);
+
+        App\Video::where('gb_Id', '11408')->delete();
+        $rule->delete();
     }
 
     public function test_updateVideosInDatabase_VideoAlreadyExists()
