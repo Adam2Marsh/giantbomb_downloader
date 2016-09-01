@@ -18,7 +18,7 @@ class CreateVideosTable extends Migration
             $table->string('file_name');
             $table->string('gb_Id')->index();
             $table->string('url');
-            $table->timestamp('published_date');
+            $table->dateTime('published_date');
             $table->timestamp('created_at')->index();
             $table->string('status');
             $table->timestamp('updated_at');
