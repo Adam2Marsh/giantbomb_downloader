@@ -4,12 +4,34 @@
 	</div>
 	<div class="row">
 		<div class="progress">
-			<div class="progress-bar progress-bar-success" aria-valuenow="{{ $dirSize }}" aria-valuemax="21474836480" style="width: {{ ($dirSize / 1024 / 1024)/20000 * 100 }}%;">
-				{{ human_filesize($dirSize) }}
+			<div id="storageSize" class="progress-bar progress-bar-success progress-bar-striped active"
+                 aria-valuenow="{{ $rawSize }}" aria-valuemax="21474836480"
+                 style="width: {{ $dirPercentage }};">
+				{{ $humanSize }}
 			</div>
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+
+    if (!!window.EventSource) {
+        var source = new EventSource('http://giantbomb-downloader/stream');
+    } else {
+
+    }
+
+    source.addEventListener('message',
+            function (e) {
+                var response = JSON.parse(e.data);
+                console.log(response.rawSize);
+                console.log(response.humanSize);
+                console.log(response.percentage);
+                $('#storageSize').css('width', response.percentage).attr('aria-valuenow', response.rawSize).html(response.humanSize);
+            }, false);
+
+</script>
+
 <br>
 <br>
 <br>

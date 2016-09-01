@@ -44,6 +44,7 @@ class VideoStorage
     */
     public function downloadVideofromURL($url, $directory, $file_name)
     {
+        ini_set('max_execution_time', 300);
         ini_set("user_agent", "Adam2Marsh Laravel Video Downloader PI");
         Log::info(__METHOD__." I've been asked to download a video from $url and save in $directory");
         Storage::put("$directory/$file_name", fopen($url."?api_key=".config('gb.api_key'), "r"));
@@ -86,7 +87,29 @@ class VideoStorage
     *
     * @param string directory
     */
-    public function videoStorageSize($directory)
+    public function videoStorageHumanSize($directory)
+    {
+        Log::info(__METHOD__." Been asked to size $directory from storage");
+
+        $directorySize = 0;
+
+        foreach (Storage::allFiles("$directory") as $file) {
+            $file_size = Storage::size($file);
+            $file_size = $file_size >= 0 ? $file_size : 4*1024*1024*1024 + $file_size;
+            // var_dump($file);
+            // var_dump($file_size);
+            $directorySize += $file_size;
+        }
+
+        return $this->humanFilesize($directorySize);
+    }
+
+    /**
+    * Return Video Storage Directory Size
+    *
+    * @param string directory
+    */
+    public function videoStorageRawSize($directory)
     {
         Log::info(__METHOD__." Been asked to size $directory from storage");
 
@@ -101,5 +124,38 @@ class VideoStorage
         }
 
         return $directorySize;
+    }
+
+    /**
+    * Return Video Storage Directory Size
+    *
+    * @param string directory
+    */
+    public function videoStorageSizeAsPercentage($directory)
+    {
+        Log::info(__METHOD__." Been asked to size $directory from storage as percentage");
+
+        $directorySize = 0;
+
+        foreach (Storage::allFiles("$directory") as $file) {
+            $file_size = Storage::size($file);
+            $file_size = $file_size >= 0 ? $file_size : 4*1024*1024*1024 + $file_size;
+            // var_dump($file);
+            // var_dump($file_size);
+            $directorySize += $file_size;
+        }
+
+        return ($directorySize / 1024 / 1024) / config('gb.storage_limit') * 100 . "%";
+    }
+
+    /**
+    *       Return sizes readable by humans
+    */
+    private function humanFilesize($bytes, $decimals = 2)
+    {
+            $size = ['B', 'kB', 'MB', 'GB', 'TB', 'PB'];
+            $factor = floor((strlen($bytes) - 1) / 3);
+
+            return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$size[$factor];
     }
 }

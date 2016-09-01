@@ -26,12 +26,21 @@ Route::get('/TestVideo', function () {
         return Response::make("File does not exist.", 404);
     }
 
+    return Response::download("Frontend_Vid_YouTube.mov");
+});
+
+Route::get('/LargeVideo', function () {
+
+    if (!File::exists("Unprofessional_Fridays_08-26-2016.mp4")) {
+        return Response::make("File does not exist.", 404);
+    }
+
     // $fileContents = File::get("Frontend_Vid_YouTube.mov");
     // $response = Response::make($fileContents, 200);
     // $response->header('Content-Type', "video/mp4");
     // return $response;
 
-    return Response::download("Frontend_Vid_YouTube.mov");
+    return Response::download("Unprofessional_Fridays_08-26-2016.mp4");
 });
 
 Route::get('/Test_Json', function () {
@@ -55,8 +64,12 @@ Route::get('Error', function () {
 
 Route::group(['middleware' => ['web']], function () {
     Route::resource('/rules', 'RuleController');
+
     Route::get('/videos', 'VideoController@index');
     Route::post('/videos', 'VideoController@saveVideo');
     Route::get('/videos/{id}', 'VideoController@download');
     Route::delete('/videos/{id}', 'VideoController@watched');
+
+    Route::get('/stream', 'HttpEventStreamController@returnStorageSize');
+    Route::get('/streamTest', 'HttpEventStreamController@returnTestStreamPage');
 });

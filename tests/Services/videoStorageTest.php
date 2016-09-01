@@ -43,14 +43,34 @@ class VideoStorageTest extends TestCase
     }
 
      /**
-     * Delete video downloaded for testing
+     * Check Directory Size is human readable
      *
      * @return void
      */
-    public function test_videoStorageSize_Success()
+    public function test_videoStorageHumanSize_Success()
     {
-        $this->assertEquals(1630631, $this->dv->videoStorageSize("test"));
+        $this->assertEquals("1.56MB", $this->dv->videoStorageHumanSize("test"));
     }
+
+    /**
+    * Check Directory Size is a raw number
+    *
+    * @return void
+    */
+   public function test_videoStorageRawSize_Success()
+   {
+       $this->assertEquals("1630631", $this->dv->videoStorageRawSize("test"));
+   }
+
+    /**
+    * Check Directory Size is a percentage
+    *
+    * @return void
+    */
+   public function test_videoStoragePercentage_Success()
+   {
+       $this->assertEquals("0.0077754545211792%", $this->dv->videoStorageSizeAsPercentage("test"));
+   }
 
      /**
      * Delete video downloaded for testing

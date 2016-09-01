@@ -8,7 +8,7 @@
   "results": [
     {
       "deck": "You guys asked for it! More wrestling related content!",
-      "hd_url": "http://localhost/TestVideo",
+      "hd_url": "http://localhost/LargeVideo",
       "id": 11408,
       "name": "Demo Derby: PlayStation Underground: Volume 3 Issue 1",
       "publish_date": "2016-08-16 18:00:00",
