@@ -44,8 +44,6 @@ class VideoStorage
     */
     public function downloadVideofromURL($url, $directory, $file_name)
     {
-        ini_set('max_execution_time', 300);
-        ini_set("user_agent", "Adam2Marsh Laravel Video Downloader PI");
         Log::info(__METHOD__." I've been asked to download a video from $url and save in $directory");
         Storage::put("$directory/$file_name", fopen($url."?api_key=".config('gb.api_key'), "r"));
     }

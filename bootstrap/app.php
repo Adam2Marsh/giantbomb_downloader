@@ -2,6 +2,19 @@
 
 /*
 |--------------------------------------------------------------------------
+| Set Custom Php Configs
+|--------------------------------------------------------------------------
+|
+| Setting some custom php.ini configs which are requried for the app to work.
+| This includes setting User Agent and a high time_limit for scripts to run
+| for a while like the download as videos are large....
+|
+*/
+set_time_limit(900);
+ini_set("user_agent", "Adam2Marsh Laravel Video Downloader PI");
+
+/*
+|--------------------------------------------------------------------------
 | Create The Application
 |--------------------------------------------------------------------------
 |
@@ -44,11 +57,11 @@ $app->singleton(
 /**
 * Configure Monolog
 */
-$app->configureMonologUsing(function(Monolog\Logger $monolog) {
-	$filename = storage_path('logs/laravel-'.php_sapi_name().'.log');
-	$handler = new Monolog\Handler\RotatingFileHandler($filename);
-	$monolog->pushHandler($handler);
-});
+// $app->configureMonologUsing(function(Monolog\Logger $monolog) {
+// 	$filename = storage_path('logs/laravel-'.php_sapi_name().'.log');
+// 	$handler = new Monolog\Handler\RotatingFileHandler($filename);
+// 	$monolog->pushHandler($handler);
+// });
 
 /*
 |--------------------------------------------------------------------------
