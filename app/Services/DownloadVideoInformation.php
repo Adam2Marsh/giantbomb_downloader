@@ -43,6 +43,9 @@ class DownloadVideoInformation
                 Log::info(__METHOD__." Checking if $video->name matches any rules");
                 if($ruleRepo->VideoMatchRules($video->name))  {
                   Log::info(__METHOD__." $video->name matches a rule, downloading");
+
+                  $vsr->updateVideoToDownloadedStatus($savedVideo->id, "SAVING");
+
                   $this->dispatch(new DownloadVideoJob($savedVideo));
                 }
             }
