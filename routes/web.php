@@ -72,4 +72,5 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::get('/stream', 'HttpEventStreamController@returnStorageSize');
     Route::get('/streamTest', 'HttpEventStreamController@returnTestStreamPage');
+    Route::get('/stream/{id}/video', 'HttpEventStreamController@returnVideoDownloadPercentage');
 });

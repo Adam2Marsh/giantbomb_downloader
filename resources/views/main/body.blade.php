@@ -24,9 +24,6 @@
     source.addEventListener('message',
             function (e) {
                 var response = JSON.parse(e.data);
-                console.log(response.rawSize);
-                console.log(response.humanSize);
-                console.log(response.percentage);
                 $('#storageSize').css('width', response.percentage).attr('aria-valuenow', response.rawSize).html(response.humanSize);
             }, false);
 
@@ -52,10 +49,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="table-responsive">
+			<div class="table-responsive video-list">
 				<table class="table table-hover text-center">
 					<thead>
 						<tr>
+                            <th class="text-center">ID</th>
 							<th class="text-center">Video Image</th>
 							<th class="text-center">Video Name</th>
 							<th class="text-center">Video Status</th>
@@ -66,6 +64,7 @@
 					<tbody>
 						@foreach ($videos as $video)
 						<tr>
+                            <td style="vertical-align: middle;">{{ $video->id }}</td>
 							<td><img class="img-thumbnail" src="{{ $video->videoDetail->image_path }}"></td>
 							<td style="vertical-align: middle;"><a href="{{ $video->url }}"> {{ $video->name }} </a> </td>
 							<td style="vertical-align: middle;">{{ $video->status }}</td>
@@ -97,3 +96,41 @@
 		<hr>
 	</div>
 </body>
+
+<script type="text/javascript">
+
+    var table = $('table tbody')
+
+    table.find('tr').each( function (i , row) {
+        var $tds = $(this).find('td'),
+            id = $tds.eq(0).text()
+            status = $tds.eq(3).text();
+
+        if(status == 'SAVING') {
+            // alert('Row' + (i + 1)
+            //     + ':\nId:' + id
+            //     + '\nStatus:' + status);
+
+                if (!!window.EventSource) {
+                    var video = new EventSource('http://giantbomb-downloader/stream/' + id + '/video');
+                } else {
+
+                }
+
+                video.addEventListener('message',
+                        function (e) {
+                            var response = JSON.parse(e.data);
+                            // $('#storageSize').css('width', response.percentage).attr('aria-valuenow', response.rawSize).html(response.humanSize);
+                            console.log(response.percentage);
+                        }, false);
+        }
+    });
+
+
+    // import Echo from "laravel-echo"
+    //
+    // window.Echo = new Echo({
+    //     broadcaster: 'pusher',
+    //     key: 'your-pusher-key'
+    // });
+</script>

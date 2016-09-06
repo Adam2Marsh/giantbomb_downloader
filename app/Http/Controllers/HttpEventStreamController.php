@@ -38,4 +38,24 @@ class HttpEventStreamController extends Controller
 
         return $response;
     }
+
+    public function returnVideoDownloadPercentage($id)
+    {
+        $videoResponse = new StreamedResponse();
+        $videoResponse->headers->set('Content-Type', 'text/event-stream');
+        $videoResponse->headers->set('Cach-Control', 'no-cache');
+
+        $videoResponse->setCallback(
+            function () {
+                // $videoStorage = new VideoStorage();
+                echo "data: {";
+                echo '"percentage":"' . 100 . '"';
+                echo "}\n\n";
+                ob_flush();
+                flush();
+            }
+        );
+
+        return $videoResponse;
+    }
 }
