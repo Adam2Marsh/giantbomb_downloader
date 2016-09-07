@@ -15,6 +15,33 @@
 
 <script type="text/javascript">
 
+    // var table = $('table tbody')
+    //
+    // table.find('tr').each( function (i , row) {
+    //     var $tds = $(this).find('td'),
+    //         id = $tds.eq(0).text()
+    //         status = $tds.eq(3).text();
+    //
+    //     if(status == 'SAVING') {
+    //         // alert('Row' + (i + 1)
+    //         //     + ':\nId:' + id
+    //         //     + '\nStatus:' + status);
+    //
+    //             if (!!window.EventSource) {
+    //                 var video = new EventSource('http://giantbomb-downloader/stream/' + id + '/video');
+    //             } else {
+    //
+    //             }
+    //
+    //             video.addEventListener('message',
+    //                     function (e) {
+    //                         var response = JSON.parse(e.data);
+    //                         // $('#storageSize').css('width', response.percentage).attr('aria-valuenow', response.rawSize).html(response.humanSize);
+    //                         console.log(response.percentage);
+    //                     }, false);
+    //     }
+    // });
+
     if (!!window.EventSource) {
         var source = new EventSource('http://giantbomb-downloader/stream');
     } else {
@@ -24,6 +51,7 @@
     source.addEventListener('message',
             function (e) {
                 var response = JSON.parse(e.data);
+                console.log(response);
                 $('#storageSize').css('width', response.percentage).attr('aria-valuenow', response.rawSize).html(response.humanSize);
             }, false);
 
@@ -96,41 +124,3 @@
 		<hr>
 	</div>
 </body>
-
-<script type="text/javascript">
-
-    var table = $('table tbody')
-
-    table.find('tr').each( function (i , row) {
-        var $tds = $(this).find('td'),
-            id = $tds.eq(0).text()
-            status = $tds.eq(3).text();
-
-        if(status == 'SAVING') {
-            // alert('Row' + (i + 1)
-            //     + ':\nId:' + id
-            //     + '\nStatus:' + status);
-
-                if (!!window.EventSource) {
-                    var video = new EventSource('http://giantbomb-downloader/stream/' + id + '/video');
-                } else {
-
-                }
-
-                video.addEventListener('message',
-                        function (e) {
-                            var response = JSON.parse(e.data);
-                            // $('#storageSize').css('width', response.percentage).attr('aria-valuenow', response.rawSize).html(response.humanSize);
-                            console.log(response.percentage);
-                        }, false);
-        }
-    });
-
-
-    // import Echo from "laravel-echo"
-    //
-    // window.Echo = new Echo({
-    //     broadcaster: 'pusher',
-    //     key: 'your-pusher-key'
-    // });
-</script>

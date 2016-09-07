@@ -146,6 +146,11 @@ class VideoStorage
         return ($directorySize / 1024 / 1024) / config('gb.storage_limit') * 100 . "%";
     }
 
+    public function getDownloadPercentageForVideo($videoPath, $videoTotalSize)
+    {
+        return (Storage::size($videoPath) / $videoTotalSize) * 100 . "%";
+    }
+
     /**
     *       Return sizes readable by humans
     */

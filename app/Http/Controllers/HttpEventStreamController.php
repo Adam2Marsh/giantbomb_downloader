@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use App\Http\Requests;
 
 use App\Services\VideoStorage;
+use App\Repositories\VideoRepository;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class HttpEventStreamController extends Controller
@@ -29,33 +30,21 @@ class HttpEventStreamController extends Controller
                 echo "data: {";
                 echo '"rawSize":"' . $videoStorage->videoStorageRawSize("gb_videos") . '",';
                 echo '"humanSize":"' . $videoStorage->videoStorageHumanSize("gb_videos") . '",';
-                echo '"percentage":"' . $videoStorage->videoStorageSizeAsPercentage("gb_videos") . '"';
-                echo "}\n\n";
+                echo '"percentage":"' . $videoStorage->videoStorageSizeAsPercentage("gb_videos") . '",';
+                echo '"downloading": [';
+
+                $videoRepo = new VideoRepository();
+
+                foreach($video in $videoRepo->returnVideosDownloading()){
+                    echo '"' . $video->id . '":"' . $videoStorage->
+                }
+
+                echo "]}\n\n";
                 ob_flush();
                 flush();
             }
         );
 
         return $response;
-    }
-
-    public function returnVideoDownloadPercentage($id)
-    {
-        $videoResponse = new StreamedResponse();
-        $videoResponse->headers->set('Content-Type', 'text/event-stream');
-        $videoResponse->headers->set('Cach-Control', 'no-cache');
-
-        $videoResponse->setCallback(
-            function () {
-                // $videoStorage = new VideoStorage();
-                echo "data: {";
-                echo '"percentage":"' . 100 . '"';
-                echo "}\n\n";
-                ob_flush();
-                flush();
-            }
-        );
-
-        return $videoResponse;
     }
 }
