@@ -148,7 +148,14 @@ class VideoStorage
 
     public function getDownloadPercentageForVideo($videoPath, $videoTotalSize)
     {
-        return (Storage::size($videoPath) / $videoTotalSize) * 100 . "%";
+
+        if(Storage::exists($videoPath)) {
+            $videoSize = Storage::size($videoPath);
+        } else {
+            $videoSize = 0;
+        }
+
+        return round(($videoSize / $videoTotalSize) * 100) . "%";
     }
 
     /**

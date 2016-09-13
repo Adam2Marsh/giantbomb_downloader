@@ -34,9 +34,18 @@ class HttpEventStreamController extends Controller
                 echo '"downloading": [';
 
                 $videoRepo = new VideoRepository();
+                $videosDownloadling = $videoRepo->returnVideosDownloading();
+                for ($i=0; $i < count($videosDownloadling); $i++) {
+                    echo '{"id":"' . $videosDownloadling[$i]->id .  '",';
+                    echo '"percentage":"' .
+                        $videoStorage->getDownloadPercentageForVideo(
+                            $videosDownloadling[$i]->videoDetail->local_path,
+                            $videosDownloadling[$i]->videoDetail->file_size)
+                        . '"}';
 
-                foreach($video in $videoRepo->returnVideosDownloading()){
-                    echo '"' . $video->id . '":"' . $videoStorage->
+                    if($i < count($videosDownloadling)-1) {
+                        echo ",";
+                    }
                 }
 
                 echo "]}\n\n";
