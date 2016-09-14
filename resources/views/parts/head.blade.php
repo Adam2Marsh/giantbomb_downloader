@@ -6,6 +6,7 @@
 
 	<!-- Using the Gulp Copy of files -->
 	<script type="text/javascript" src="js/all.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/all.css"/>
 
 	<br>

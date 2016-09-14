@@ -7,6 +7,8 @@ use Log;
 use Storage;
 use App\Repositories\VideoRepository;
 
+use App\Events\VideoDownloadedEvent;
+
 class VideoStorage
 {
 
@@ -31,6 +33,7 @@ class VideoStorage
         if ($this->checkForVideo("gb_videos", $video->file_name)) {
             Log::info(__METHOD__." Video downloaded and stored gb_videos/$video->name");
             $this->vsr->updateVideoToDownloadedStatus($video->id, "SAVED");
+            event(new VideoDownloadedEvent());
             return;
         }
 

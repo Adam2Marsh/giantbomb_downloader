@@ -1,4 +1,6 @@
-var elixir = require('laravel-elixir');
+const elixir = require('laravel-elixir');
+
+require('laravel-elixir-vue');
 
 /*
  |--------------------------------------------------------------------------
@@ -41,5 +43,6 @@ elixir(function(mix) {
         'jquery.js',
         'bootstrap.js',
         'jquery-ui.js'
-    ]);
+    ])
+    .webpack('app.js');
 });

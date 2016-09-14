@@ -15,33 +15,6 @@
 
 <script type="text/javascript">
 
-    // var table = $('table tbody')
-    //
-    // table.find('tr').each( function (i , row) {
-    //     var $tds = $(this).find('td'),
-    //         id = $tds.eq(0).text()
-    //         status = $tds.eq(3).text();
-    //
-    //     if(status == 'SAVING') {
-    //         // alert('Row' + (i + 1)
-    //         //     + ':\nId:' + id
-    //         //     + '\nStatus:' + status);
-    //
-    //             if (!!window.EventSource) {
-    //                 var video = new EventSource('http://giantbomb-downloader/stream/' + id + '/video');
-    //             } else {
-    //
-    //             }
-    //
-    //             video.addEventListener('message',
-    //                     function (e) {
-    //                         var response = JSON.parse(e.data);
-    //                         // $('#storageSize').css('width', response.percentage).attr('aria-valuenow', response.rawSize).html(response.humanSize);
-    //                         console.log(response.percentage);
-    //                     }, false);
-    //     }
-    // });
-
     if (!!window.EventSource) {
         var source = new EventSource('http://giantbomb-downloader/stream');
     } else {
@@ -50,15 +23,15 @@
 
     source.addEventListener('message',
             function (e) {
-                console.log(e.data);
+                // console.log(e.data);
                 var response = JSON.parse(e.data);
-                console.log(response);
+                // console.log(response);
                 $('#storageSize').css('width', response.percentage).attr('aria-valuenow', response.rawSize).html(response.humanSize);
 
                 for(var i = 0; i < response.downloading.length; i++) {
                     var video = response.downloading[i];
-                    console.log(video.id);
-                    console.log(video.percentage);
+                    // console.log(video.id);
+                    // console.log(video.percentage);
 
                     $("#" + video.id).html("SAVING " + video.percentage);
                 }
@@ -131,3 +104,10 @@
 		<hr>
 	</div>
 </body>
+
+<!-- <script type="text/javascript">
+    Echo.channel('VideoDownloaded')
+    .listen('VideoDownloadedEvent', (e) => {
+        console.log('Video Finished Downloading, Screen Needs Refreshing');
+    });
+</script> -->
