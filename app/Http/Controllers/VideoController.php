@@ -14,6 +14,7 @@ use Log;
 use App\Repositories\VideoRepository;
 use App\Jobs\DownloadVideoJob;
 use App\Services\VideoStorage;
+use App\Services\VideoSizing;
 
 use Carbon\Carbon;
 
@@ -32,10 +33,13 @@ class VideoController extends Controller
                 ->orWhere("status", "=", "DOWNLOADED")->orderBy('published_date', 'desc')
                 ->paginate();
 
+        $videoSizing = new VideoSizing();
+        $videoSizing->getDirectorySize("gb_videos");
+
         return view('main', ['videos' => $videos,
-                            'humanSize' => $vs->videoStorageHumanSize("gb_videos"),
-                            'dirPercentage' => $vs->videoStorageSizeAsPercentage("gb_videos"),
-                            'rawSize' => $vs->videoStorageRawSize("gb_videos")]);
+                            'humanSize' => $videoSizing->returnAsHuman(),
+                            'dirPercentage' => $videoSizing->returnAsPercentage(config('gb.storage_limit')),
+                            'rawSize' => $videoSizing->returnAsBytes()]);
     }
 
     /**
