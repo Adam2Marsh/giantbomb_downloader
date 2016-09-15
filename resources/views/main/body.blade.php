@@ -105,9 +105,10 @@
 	</div>
 </body>
 
-<!-- <script type="text/javascript">
+<script type="text/javascript">
     Echo.channel('VideoDownloaded')
     .listen('VideoDownloadedEvent', (e) => {
-        console.log('Video Finished Downloading, Screen Needs Refreshing');
+        console.log('Video Finished Downloading, Refreshing Screen');
+        location.reload();
     });
-</script> -->
+</script>
