@@ -23,11 +23,18 @@
 
     source.addEventListener('message',
             function (e) {
+                // console.log(e.data);
                 var response = JSON.parse(e.data);
-                console.log(response.rawSize);
-                console.log(response.humanSize);
-                console.log(response.percentage);
+                // console.log(response);
                 $('#storageSize').css('width', response.percentage).attr('aria-valuenow', response.rawSize).html(response.humanSize);
+
+                for(var i = 0; i < response.downloading.length; i++) {
+                    var video = response.downloading[i];
+                    // console.log(video.id);
+                    // console.log(video.percentage);
+
+                    $("#" + video.id).html("SAVING " + video.percentage);
+                }
             }, false);
 
 </script>
@@ -52,7 +59,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="table-responsive">
+			<div class="table-responsive video-list">
 				<table class="table table-hover text-center">
 					<thead>
 						<tr>
@@ -68,7 +75,7 @@
 						<tr>
 							<td><img class="img-thumbnail" src="{{ $video->videoDetail->image_path }}"></td>
 							<td style="vertical-align: middle;"><a href="{{ $video->url }}"> {{ $video->name }} </a> </td>
-							<td style="vertical-align: middle;">{{ $video->status }}</td>
+							<td id="{{ $video->id }}" style="vertical-align: middle;">{{ $video->status }}</td>
 							<td style="vertical-align: middle;">{{ $video->published_date->format('d/m/Y') }}</td>
 							<td style="vertical-align: middle;">
 								@if ($video->status == 'NEW' || $video->status == 'WATCHED')
@@ -97,3 +104,11 @@
 		<hr>
 	</div>
 </body>
+
+<script type="text/javascript">
+    Echo.channel('VideoDownloaded')
+    .listen('VideoDownloadedEvent', (e) => {
+        console.log('Video Finished Downloading, Refreshing Screen');
+        location.reload();
+    });
+</script>

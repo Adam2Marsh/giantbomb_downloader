@@ -1,10 +1,38 @@
 {
   "private": true,
-  "devDependencies": {
-    "gulp": "^3.8.8"
+  "scripts": {
+    "prod": "gulp --production",
+    "dev": "gulp watch"
   },
   "dependencies": {
-    "laravel-elixir": "^4.0.0",
-    "bootstrap-sass": "^3.0.0"
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "bootstrap-sass": "^3.3.7",
+    "buble": "^0.13.2",
+    "duplexify": "^3.4.5",
+    "fill-range": "^2.2.3",
+    "for-in": "^0.1.5",
+    "fork-stream": "0.0.4",
+    "glob-parent": "^3.0.0",
+    "global-prefix": "^0.1.4",
+    "gulp": "^3.9.1",
+    "is-windows": "^0.2.0",
+    "jquery": "^3.1.0",
+    "laravel-echo": "^1.0.1",
+    "laravel-echo-server": "^1.0.11",
+    "laravel-elixir": "^6.0.0-9",
+    "laravel-elixir-vue": "^0.1.4",
+    "laravel-elixir-webpack-official": "^1.0.2",
+    "lodash": "^4.14.0",
+    "lodash.template": "^4.4.0",
+    "merge-stream": "^1.0.0",
+    "node-notifier": "^4.6.1",
+    "node.extend": "^1.1.6",
+    "os-homedir": "^1.0.1",
+    "pusher-js": "^3.2.1",
+    "through2": "^2.0.1",
+    "vue": "^1.0.26",
+    "vue-resource": "^0.9.3",
+    "webpack": "^1.13.2"
   }
 }

@@ -14,6 +14,7 @@ use Log;
 use App\Repositories\VideoRepository;
 use App\Jobs\DownloadVideoJob;
 use App\Services\VideoStorage;
+use App\Services\VideoSizing;
 
 use Carbon\Carbon;
 
@@ -31,10 +32,14 @@ class VideoController extends Controller
         $videos = Video::whereDate("published_date", ">", $currentDate->subDays(config('gb.index_show_days_video')))
                 ->orWhere("status", "=", "DOWNLOADED")->orderBy('published_date', 'desc')
                 ->paginate();
+
+        $videoSizing = new VideoSizing();
+        $videoSizing->getDirectorySize("gb_videos");
+
         return view('main', ['videos' => $videos,
-                            'humanSize' => $vs->videoStorageHumanSize("gb_videos"),
-                            'dirPercentage' => $vs->videoStorageSizeAsPercentage("gb_videos"),
-                            'rawSize' => $vs->videoStorageRawSize("gb_videos")]);
+                            'humanSize' => $videoSizing->returnAsHuman(),
+                            'dirPercentage' => $videoSizing->returnAsPercentage(config('gb.storage_limit')),
+                            'rawSize' => $videoSizing->returnAsBytes()]);
     }
 
     /**
@@ -49,9 +54,10 @@ class VideoController extends Controller
 
         $video = Video::findOrFail($videoID);
         Log::Info(__METHOD__." I've been asked to download the following $video->name manually, adding to queue");
-        $this->dispatch(new DownloadVideoJob($video));
 
         $videoName = $vsr->updateVideoToDownloadedStatus($videoID, "SAVING");
+
+        $this->dispatch(new DownloadVideoJob($video));
 
         return redirect('/videos')
             ->withSuccess("$video->name added to queue");

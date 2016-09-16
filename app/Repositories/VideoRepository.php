@@ -110,4 +110,14 @@ class VideoRepository
         return str_replace(array_keys($removeChars), array_values($removeChars), $string);
     }
 
+
+    /**
+    * Return the size of any videos downloading
+    * @return string
+    */
+    public function returnVideosDownloading()
+    {
+        return Video::where('status', '=', 'SAVING')->get();
+    }
+
 }

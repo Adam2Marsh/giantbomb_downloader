@@ -10,6 +10,7 @@
         <div class="panel-body">
 
           <form class="form-horizontal" method="POST" name="addRegex" action="/rules">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="form-group">
               <label class="col-sm-2 control-label">Video Name</label>
               <div class="col-sm-10">
