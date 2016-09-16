@@ -16,7 +16,7 @@
 <script type="text/javascript">
 
     if (!!window.EventSource) {
-        var source = new EventSource('http://giantbomb-downloader/stream');
+        var source = new EventSource('/stream');
     } else {
 
     }

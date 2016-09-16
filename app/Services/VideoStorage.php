@@ -87,7 +87,7 @@ class VideoStorage
     */
     public function videoStorageHumanSize($directory)
     {
-        Log::info(__METHOD__." Been asked to size $directory from storage");
+#        Log::info(__METHOD__." Been asked to size $directory from storage");
 
         $directorySize = 0;
 
@@ -109,7 +109,7 @@ class VideoStorage
     */
     public function videoStorageRawSize($directory)
     {
-        Log::info(__METHOD__." Been asked to size $directory from storage");
+#        Log::info(__METHOD__." Been asked to size $directory from storage");
 
         $directorySize = 0;
 
@@ -131,7 +131,7 @@ class VideoStorage
     */
     public function videoStorageSizeAsPercentage($directory)
     {
-        Log::info(__METHOD__." Been asked to size $directory from storage as percentage");
+#        Log::info(__METHOD__." Been asked to size $directory from storage as percentage");
 
         $directorySize = 0;
 
