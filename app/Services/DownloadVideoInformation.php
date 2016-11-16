@@ -27,8 +27,7 @@ class DownloadVideoInformation
 
         foreach ($videoResultsArray as $video)
         {
-            if($vsr->checkIfVideoIsInDatabase($video->name))
-            {
+            if($vsr->checkIfVideoIsInDatabase($video->name)) {
                 Log::info(__METHOD__." ".$video->name." already exists in database, not adding");
                 echo $video->name." already exists in database, not adding";
                 $response = $video->name." already exists in database, not adding";
@@ -38,15 +37,15 @@ class DownloadVideoInformation
                 echo $video->name." doesn't exists in database, adding";
                 $response = $video->name." doesn't exists in database, adding";
                 $details = "";
-                $savedVideo = $vsr->addVideoToDatabase($video, $this->getVideoFileSize($video->hd_url));
+                $savedVideo = $vsr->addVideoToDatabase($video, $this->getVideoFileSize($video->hd_url)."?api_key=$api_key");
 
                 Log::info(__METHOD__." Checking if $video->name matches any rules");
-                if($ruleRepo->VideoMatchRules($video->name))  {
-                  Log::info(__METHOD__." $video->name matches a rule, downloading");
+                if($ruleRepo->VideoMatchRules($video->name)) {
+                    Log::info(__METHOD__." $video->name matches a rule, downloading");
 
-                  $vsr->updateVideoToDownloadedStatus($savedVideo->id, "SAVING");
+                    $vsr->updateVideoToDownloadedStatus($savedVideo->id, "SAVING");
 
-                  $this->dispatch(new DownloadVideoJob($savedVideo));
+                    $this->dispatch(new DownloadVideoJob($savedVideo));
                 }
             }
             echo "<br>";
@@ -55,7 +54,8 @@ class DownloadVideoInformation
         // echo "<pre>".print_r($VideoResultsArray,true)."</pre>";
     }
 
-    function getJSON($JSONUrl){
+    function getJSON($JSONUrl)
+    {
 
         Log::info(__METHOD__." Performing GET using Guzzle to ".$JSONUrl);
 
@@ -71,8 +71,9 @@ class DownloadVideoInformation
         }
     }
 
-    function checkHTTPCallSucessful($HttpStatusCode){
-        if($HttpStatusCode != 200){
+    function checkHTTPCallSucessful($HttpStatusCode)
+    {
+        if($HttpStatusCode != 200) {
             return false;
         }
         return true;
