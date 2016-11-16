@@ -37,7 +37,7 @@ class DownloadVideoInformation
                 echo $video->name." doesn't exists in database, adding";
                 $response = $video->name." doesn't exists in database, adding";
                 $details = "";
-                $savedVideo = $vsr->addVideoToDatabase($video, $this->getVideoFileSize($video->hd_url)."?api_key=$api_key");
+                $savedVideo = $vsr->addVideoToDatabase($video, $this->getVideoFileSize($video->hd_url."?api_key=$api_key"));
 
                 Log::info(__METHOD__." Checking if $video->name matches any rules");
                 if($ruleRepo->VideoMatchRules($video->name)) {

@@ -117,7 +117,7 @@ class VideoRepository
     */
     public function returnVideosDownloading()
     {
-        return Video::where('status', '=', 'SAVING')->get();
+        return Video::where('status', '=', 'DOWNLOADING')->get();
     }
 
 }

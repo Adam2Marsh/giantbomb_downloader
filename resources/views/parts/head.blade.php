@@ -4,7 +4,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
-    <script src="//giantbomb-downloader:3001/socket.io/socket.io.js"></script>
+    <script src="//gb.pi:3001/socket.io/socket.io.js"></script>
     <!-- <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script> -->
 
 	<!-- Using the Gulp Copy of files -->
