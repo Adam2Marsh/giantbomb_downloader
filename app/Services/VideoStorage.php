@@ -28,11 +28,12 @@ class VideoStorage
     public function saveVideo($video)
     {
         Log::info(__METHOD__." Downloading Video $video->name");
+        $this->vsr->updateVideoToDownloadedStatus($video->id, "DOWNLOADING");
         $this->downloadVideofromURL($video->url, "gb_videos", $video->file_name);
 
         if ($this->checkForVideo("gb_videos", $video->file_name)) {
             Log::info(__METHOD__." Video downloaded and stored gb_videos/$video->name");
-            $this->vsr->updateVideoToDownloadedStatus($video->id, "SAVED");
+            $this->vsr->updateVideoToDownloadedStatus($video->id, "DOWNLOADED");
             event(new VideoDownloadedEvent());
             return;
         }

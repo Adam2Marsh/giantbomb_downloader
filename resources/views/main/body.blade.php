@@ -85,7 +85,7 @@
 								{{ Form::close() }}
 								@endif
 
-								@if ($video->status == 'SAVED')
+								@if ($video->status == 'DOWNLOADED')
 								{{ Form::open(['action' => ['VideoController@download', $video->id], 'method' => 'get']) }}
 								<button type="submit" class="btn btn-success">Download</button>
 								{{ Form::close() }}

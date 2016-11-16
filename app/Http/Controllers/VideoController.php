@@ -55,7 +55,7 @@ class VideoController extends Controller
         $video = Video::findOrFail($videoID);
         Log::Info(__METHOD__." I've been asked to download the following $video->name manually, adding to queue");
 
-        $videoName = $vsr->updateVideoToDownloadedStatus($videoID, "SAVING");
+        $videoName = $vsr->updateVideoToDownloadedStatus($videoID, "QUEUED");
 
         $this->dispatch(new DownloadVideoJob($video));
 
