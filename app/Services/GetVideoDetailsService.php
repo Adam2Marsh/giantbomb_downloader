@@ -11,11 +11,14 @@ use Illuminate\Http\File;
 class GetVideoDetailsService
 {
 
-    public function downloadVideoThumbnail($url)
+    public function downloadVideoThumbnail($url, $name)
     {
         Log::info(__METHOD__." Fetching Thumbnail at $url");
 
-        return Storage::putFile("public", new File ($url), $imageNam);
+        Storage::disk('public')
+            ->put($name . ".png", file_get_contents("http://static.giantbomb.com/uploads/scale_small/23/233047/2867124-ddpsu31.jpg"));
+
+        return public_path() . "/$name.png";
     }
 
 

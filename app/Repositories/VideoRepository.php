@@ -14,7 +14,7 @@ class VideoRepository
     *
     * @param VideoDetails Object
     */
-	public function addVideoToDatabase($video, $fileSize)
+	public function addVideoToDatabase($video, $fileSize, $thumbnail_path)
     {
         Log::info(__METHOD__." Adding Video ".$video->name." into database");
 
@@ -33,7 +33,7 @@ class VideoRepository
         $newVideoDetails = new VideoDetails([
                 'local_path' => "gb_videos/$videoFilename",
                 'file_size' => $fileSize,
-                'image_path' => $video->image->small_url,
+                'image_path' => $thumbnail_path,
                 ]);
         $newVideoDownloadStatus->videoDetail()->save($newVideoDetails);
 

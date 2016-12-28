@@ -17,9 +17,12 @@ class GetVideoDetailsServiceTest extends TestCase
 
     public function test_downloadVideoThumbnail()
     {
-        echo $this->getVideoDetails->downloadVideoThumbnail(
-            "//static.giantbomb.com/uploads/scale_small/23/233047/2867124-ddpsu31.jpg"
+        $path = $this->getVideoDetails->downloadVideoThumbnail(
+            "http://static.giantbomb.com/uploads/scale_small/23/233047/2867124-ddpsu31.jpg"
+            , "JustTesting"
         );
+
+        $this->assertEquals("/home/vagrant/giantbomb-downloader/public/JustTesting.png", $path);
     }
 
 }

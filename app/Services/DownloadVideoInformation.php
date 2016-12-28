@@ -7,6 +7,7 @@ use Log;
 use App\Repositories\RulesRepository;
 use App\Jobs\DownloadVideoJob;
 use App\Video;
+use App\Services\GetVideoDetailsService;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -20,6 +21,7 @@ class DownloadVideoInformation
         $response = "";
         $vsr =  new \App\Repositories\VideoRepository;
         $ruleRepo = new RulesRepository();
+        $getVideoDetails = new GetVideoDetailsService();
 
         $requestURL = "$url".str_replace("KEY_HERE", $api_key, $query);
         $jsonResponse = $this->getJSON($requestURL);
@@ -37,7 +39,17 @@ class DownloadVideoInformation
                 echo $video->name." doesn't exists in database, adding";
                 $response = $video->name." doesn't exists in database, adding";
                 $details = "";
-                $savedVideo = $vsr->addVideoToDatabase($video, $this->getVideoFileSize($video->hd_url."?api_key=$api_key"));
+
+                $thumbnail_path = $getVideoDetails->downloadVideoThumbnail(
+                    $video->image->small_url,
+                    $video->name
+                );
+
+                $savedVideo = $vsr->addVideoToDatabase(
+                    $video,
+                    $this->getVideoFileSize($video->hd_url."?api_key=$api_key"),
+                    $thumbnail_path
+                );
 
                 Log::info(__METHOD__." Checking if $video->name matches any rules");
                 if($ruleRepo->VideoMatchRules($video->name)) {
