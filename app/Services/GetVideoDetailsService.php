@@ -18,7 +18,8 @@ class GetVideoDetailsService
         Storage::disk('public')
             ->put($name . ".png", file_get_contents("http://static.giantbomb.com/uploads/scale_small/23/233047/2867124-ddpsu31.jpg"));
 
-        return public_path() . "/$name.png";
+        // return public_path() . "/$name.png";
+        return url("$name.png");
     }
 
 
