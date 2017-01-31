@@ -14,15 +14,15 @@ class VideoRepositoryTest extends TestCase
 		$this->vsr = new \App\Repositories\VideoRepository;
 	}
 
-    /**
-    * Test adding and checking for video is in database
-    * @return void
-    */
-    public function test_removeSpecialCharactersFromString_Success()
-    {
-        $newString = $this->vsr->removeSpecialCharactersFromString("Te/s t:");
-        $this->assertEquals("Te-s_t", $newString);
-    }
+    // /**
+    // * Test adding and checking for video is in database
+    // * @return void
+    // */
+    // public function test_removeSpecialCharactersFromString_Success()
+    // {
+    //     $newString = $this->vsr->removeSpecialCharactersFromString("Te/s t:");
+    //     $this->assertEquals("Te-s_t", $newString);
+    // }
 
     /**
     * Test adding and checking for video is in database
@@ -36,12 +36,12 @@ class VideoRepositoryTest extends TestCase
         $localVideo->name = '123 Testing 321';
         $localVideo->publish_date = '2015-12-18 20:00:00';
 
-				$localVideo->image = new \stdClass();
-				$localVideo->image->small_url = "http://thumburl.co.uk";
+		$localVideo->image = new \stdClass();
+		$localVideo->image->small_url = "http://thumburl.co.uk";
 
         $localDetails = 123456;
 
-        $this->vsr->addVideoToDatabase($localVideo, $localDetails);
+        $this->vsr->addVideoToDatabase($localVideo, $localDetails, "http://thumburl.co.uk");
         $this->assertTrue($this->vsr->CheckIfVideoIsInDatabase($localVideo->name));
         // $deletedRow = App\Video::where('gb_Id', $localVideo->id)->delete();
     }
