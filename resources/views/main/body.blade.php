@@ -73,7 +73,7 @@
 					<tbody>
 						@foreach ($videos as $video)
 						<tr>
-							<td><img class="img-thumbnail" src="video_thumbs/{{ $video->name }}.png"></td>
+							<td><img class="img-thumbnail" src="{{ $video->videoDetail->image_path }}"></td>
 							<td style="vertical-align: middle;"><a href="{{ $video->url }}"> {{ $video->name }} </a> </td>
 							<td id="{{ $video->id }}" style="vertical-align: middle;">{{ $video->status }}</td>
 							<td style="vertical-align: middle;">{{ $video->published_date->format('d/m/Y') }}</td>

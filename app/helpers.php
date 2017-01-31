@@ -10,3 +10,19 @@ function human_filesize($bytes, $decimals  = 2)
 
         return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$size[$factor];
 }
+
+/**
+* Remove Special Characters for filename
+* @return string
+*/
+function removeSpecialCharactersFromString($string)
+{
+    $removeChars = [
+        // " " => "_",
+        // "/" => "-",
+        ":" => "",
+        "!" => "",
+    ];
+
+    return str_replace(array_keys($removeChars), array_values($removeChars), $string);
+}

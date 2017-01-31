@@ -21,7 +21,7 @@ class VideoRepository
         $newVideoDownloadStatus = new Video;
         $newVideoDownloadStatus->name = $video->name;
 
-        $videoFilename = $this->removeSpecialCharactersFromString($video->name).".mp4";
+        $videoFilename = snake_case(removeSpecialCharactersFromString($video->name)).".mp4";
 
         $newVideoDownloadStatus->file_name = $videoFilename;
         $newVideoDownloadStatus->gb_Id = $video->id;
@@ -93,21 +93,6 @@ class VideoRepository
         $video->status = $status;
         $video->save();
         Log::info(__METHOD__." video->name updated to $status status");
-    }
-
-    /**
-    * Remove Special Characters for filename
-    * @return string
-    */
-    public function removeSpecialCharactersFromString($string)
-    {
-        $removeChars = [
-            " " => "_",
-            "/" => "-",
-            ":" => "",
-        ];
-
-        return str_replace(array_keys($removeChars), array_values($removeChars), $string);
     }
 
 

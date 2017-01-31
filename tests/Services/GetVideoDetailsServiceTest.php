@@ -19,12 +19,10 @@ class GetVideoDetailsServiceTest extends TestCase
     {
         $path = $this->getVideoDetails->downloadVideoThumbnail(
             "http://static.giantbomb.com/uploads/scale_small/23/233047/2867124-ddpsu31.jpg"
-            , "JustTesting"
+            , "Just Testing SomethingWith Spaces"
         );
 
-        echo $path;
-
-        // $this->assertEquals("/home/vagrant/giantbomb-downloader/public/JustTesting.png", $path);
+        $this->assertEquals("http://localhost/video_thumbnails/just_testing_something_with_spaces.png", $path);
     }
 
 }
