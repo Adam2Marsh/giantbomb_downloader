@@ -17,7 +17,7 @@ class NoConfigsFound
     public function handle($request, Closure $next)
     {
         if(Config::where('name', 'API_KEY')->first() == null) {
-            return redirect('NewUser');
+            return redirect('FirstTime');
         }
     }
 }

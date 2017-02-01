@@ -64,7 +64,9 @@ Route::get('Error', function () {
 
 Route::group(['middleware' => ['web']], function ()
 {
-    Route::get('/NewUser', 'NewUserController@index');
+    Route::get('/FirstTime', 'NewUserController@index');
+    Route::post('/FirstTime', 'NewUserController@validateApiKey');
+    Route::post('/FirstTime', 'NewUserController@addApiKey');
 });
 
 Route::group(['middleware' => ['web', 'premium']], function () {
