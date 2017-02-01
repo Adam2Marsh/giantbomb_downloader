@@ -62,7 +62,12 @@ Route::get('Error', function () {
 |
 */
 
-Route::group(['middleware' => ['web']], function () {
+Route::group(['middleware' => ['web']], function ()
+{
+    Route::get('/NewUser', 'NewUserController@index');
+});
+
+Route::group(['middleware' => ['web', 'premium']], function () {
     Route::resource('/rules', 'RuleController');
 
     Route::get('/videos', 'VideoController@index');
