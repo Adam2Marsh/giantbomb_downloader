@@ -9,7 +9,7 @@
     <p>I developed this tool to download my favourite Giantbomb videos ready for my morning commute, while my power hungry PC and I sleep.</p>
     <p>To use this tool you need to be a premium user, follow the instructions below and let us get you set up.</p>
     <div class="alert alert-info" role="alert">
-        <h3>Setup:</h3>
+        <h3>Follow these 3 quick steps</h3>
         <ol>
             <li>Get your Link code from <a href="http://www.giantbomb.com/boxee/" target="_blank">http://www.giantbomb.com/boxee/</a></li>
             <li>Enter it below</li>
@@ -18,13 +18,13 @@
     </div>
     <form class="form-inline ajaxForm" method="POST" name="addAPIKey" action="/FirstTime">
       <input type="hidden" name="_token" value="{{ csrf_token() }}">
-      <div class="form-group has-success has-feedback">
+      <div class="form-group" id="responseStatus">
           <input type="text" class="form-control" name="linkCode"
             placeholder="Giantbomb Link Code" value="{{ old('linkCode') }}" required>
-            <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+            <span id="linkSuccess" class="glyphicon glyphicon-ok form-control-feedback hidden" aria-hidden="true"></span>
+            <span id="linkError" class="glyphicon glyphicon-remove form-control-feedback hidden" aria-hidden="true"></span>
       </div>
           <button type="submit" class="btn btn-default">Check</button>
-      </div>
   </form>
 
   <div class="col-sm-offset-2 col-sm-8">
@@ -33,8 +33,6 @@
           <p>Giantbomb relay on <strong>Premium Subscribers and Ads</strong> hosted on <a href="www.giantbomb.com">Giantbomb.com</a> to fuel their buisness. This tool talks directly with Giantbomb Api where ads don't exist, and if your a free member that means they wouldn't profit from you. So if you want to use this why don't you think about becoming a Premium member and help the Giantbomb team do great great things!</p>
     </div>
   </div>
-</div>
-
 </div>
 
 </div>
@@ -49,7 +47,10 @@ $(document).ready(function() {
 
         var form = $(this);
         var curSubmit = $(form.closest('form').get(0).elements).filter(':submit');
-        var formText = $(form.closest('form').get(0).elements).filter(':form-group');
+        var formText = $(form.closest('form').get(0).elements).filter('.form-control');
+        var formGroup = $('#responseStatus');
+        var successIcon = $('#linkSuccess');
+        var errorIcon = $('#linkError');
 
         $.ajax({
             url:form.attr('action'),
@@ -59,16 +60,19 @@ $(document).ready(function() {
             beforeSend:function() {
                 curSubmit.prop('disabled', true);
                 formText.prop('readonly', true);
+                successIcon.addClass("hidden");
+                errorIcon.addClass("hidden");
+                formGroup.removeClass("has-error has-feedback");
             },
             success: function(data, textStatus, xhr) {
-                console.log(data);
-                curSubmit.prop('disabled', false);
+                reload();
             },
             error: function (xhr, textStatus, errorThrown) {
                 console.log(xhr);
                 curSubmit.prop('disabled', false);
                 formText.prop('readonly', false);
-                // formText.addClass("has-error has-feedback");
+                formGroup.addClass("has-error has-feedback");
+                errorIcon.removeClass("hidden");
             }
         });
     });

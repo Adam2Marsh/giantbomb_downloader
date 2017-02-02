@@ -24,7 +24,7 @@ class NewUserController extends Controller
         GiantBombApiService $giantBombApiService,
         ConfigRepository $configRepository)
     {
-        // $apiKey = $giantBombApiService->getApiKey($request->linkCode);
+        $apiKey = $giantBombApiService->getApiKey($request->linkCode);
 
         if(!isset($apiKey->api_key)) {
             return response()->json([
