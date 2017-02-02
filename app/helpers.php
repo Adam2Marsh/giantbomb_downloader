@@ -35,7 +35,7 @@ function getJSON($JSONUrl)
     $client = new \GuzzleHttp\Client();
     $res = $client->request('GET', $JSONUrl);
 
-    if($this->CheckHTTPCallSucessful($res->getStatusCode())) {
+    if(CheckHTTPCallSucessful($res->getStatusCode())) {
         Log::info(__METHOD__." Guzzle Get Request responded with: ".$res->getBody());
         return json_decode($res->getBody());
     }

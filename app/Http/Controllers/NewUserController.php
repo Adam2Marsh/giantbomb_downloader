@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
+use App\Services\GiantBombApiService;
+use App\Repositories\ConfigRepository;
 
 class NewUserController extends Controller
 {
@@ -18,16 +19,30 @@ class NewUserController extends Controller
         return view('first-time');
     }
 
-    public function validateApiKey(Request $request)
+    public function getApiKeyAndSave(
+        Request $request,
+        GiantBombApiService $giantBombApiService,
+        ConfigRepository $configRepository)
     {
-        dd($request->apiKey);
-         return getJSON("https://www.giantbomb.com/api/validate?link_code=KEY_HERE".str_replace("KEY_HERE", $request->apiKey));
+        // $apiKey = $giantBombApiService->getApiKey($request->linkCode);
 
-        // $requestURL = "https://www.giantbomb.com/api/video/2300-8685/?api_key=KEY_HERE&field_list=hd_url".str_replace("KEY_HERE", $request->apiKey, $query);
+        if(!isset($apiKey->api_key)) {
+            return response()->json([
+                "message" => "Link Code Not Valid"
+            ], 500);
+        }
+
+        if($giantBombApiService->checkApiKeyIsPremium($apiKey->api_key)) {
+            $configRepository->UpdateConfig("API_KEY", $apiKey->api_key);
+            return response()->json([
+                "message" => "Api Key Retrieved and Premium"
+            ], 200);
+        }
+
+        return response()->json([
+            "message" => "User not Premium Member"
+        ], 500);
+
     }
 
-    public function addApiKey(Request $request)
-    {
-
-    }
 }
