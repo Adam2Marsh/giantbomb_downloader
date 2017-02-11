@@ -1,1 +1,0 @@
-{"virtualbox":{"/home/vagrant/giantbomb-downloader":{"type":null,"mount_options":[],"guestpath":"/home/vagrant/giantbomb-downloader","hostpath":"/Users/Adam2Marsh/giantbomb_downloader","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/Users/Adam2Marsh/giantbomb_downloader","disabled":false,"__vagrantfile":true}}}
