@@ -65,7 +65,7 @@ $(document).ready(function() {
                 formGroup.removeClass("has-error has-feedback");
             },
             success: function(data, textStatus, xhr) {
-                reload();
+                location.reload(true);
             },
             error: function (xhr, textStatus, errorThrown) {
                 console.log(xhr);
