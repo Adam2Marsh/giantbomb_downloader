@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Services\GiantBombApiService;
 use App\Repositories\ConfigRepository;
+use App\Config;
 
 class NewUserController extends Controller
 {
@@ -16,7 +17,12 @@ class NewUserController extends Controller
      */
     public function index()
     {
+      if(Config::where('name', 'API_KEY')->first() == null) {
         return view('first-time');
+      }
+
+      return redirect('videos');
+
     }
 
     public function getApiKeyAndSave(
