@@ -22,7 +22,7 @@ class GetVideoDetailsService
         Storage::disk('video_thumbnails')
             ->put($thumbnail_name . ".png", file_get_contents("http://static.giantbomb.com/uploads/scale_small/23/233047/2867124-ddpsu31.jpg"));
 
-        return url("video_thumbnails/$thumbnail_name.png");
+        return "video_thumbnails/$thumbnail_name.png";
     }
 
 
