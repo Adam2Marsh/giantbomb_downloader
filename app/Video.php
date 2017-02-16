@@ -9,8 +9,6 @@ class Video extends Model
 {
     use Notifiable;
 
-    private $slack_webhook_url = "https://hooks.slack.com/services/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";
-
     protected $dates = [
     	'created_at',
     	'published_date',
@@ -32,8 +30,7 @@ class Video extends Model
      */
     public function routeNotificationForSlack()
     {
-        return $this->slack_webhook_url;
-        // return "https://hooks.slack.com/services/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";
+        return env('SLACK_WEBHOOK_URL', "");
     }
 
 }
