@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 use Log;
 use Storage;
 use App\Repositories\VideoRepository;
-
+use App\Notifications\VideoDownloadedNotification;
 use App\Events\VideoDownloadedEvent;
 
 class VideoStorage
@@ -35,6 +35,7 @@ class VideoStorage
             Log::info(__METHOD__." Video downloaded and stored gb_videos/$video->name");
             $this->vsr->updateVideoToDownloadedStatus($video->id, "DOWNLOADED");
             event(new VideoDownloadedEvent());
+            $video->notify(new VideoDownloadedNotification($video));
             return;
         }
 

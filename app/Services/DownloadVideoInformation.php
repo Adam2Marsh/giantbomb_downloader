@@ -55,7 +55,7 @@ class DownloadVideoInformation
                 if($ruleRepo->VideoMatchRules($video->name)) {
                     Log::info(__METHOD__." $video->name matches a rule, downloading");
 
-                    $vsr->updateVideoToDownloadedStatus($savedVideo->id, "SAVING");
+                    $vsr->updateVideoToDownloadedStatus($savedVideo->id, "QUEUED");
 
                     $this->dispatch(new DownloadVideoJob($savedVideo));
                 }

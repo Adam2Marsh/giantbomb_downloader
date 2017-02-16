@@ -5,9 +5,10 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 
-class NewVideoEvent extends Notification
+class VideoDownloadedNotification extends Notification
 {
     use Queueable;
 
@@ -43,7 +44,7 @@ class NewVideoEvent extends Notification
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
-                    ->content('New video ready to download: ' . $this->video->name);
+                    ->content($this->video->name . ' has been downloaded');
     }
 
     /**
