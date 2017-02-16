@@ -10,7 +10,7 @@
 | for a while like the download as videos are large....
 |
 */
-set_time_limit(900);
+set_time_limit(0);
 ini_set("user_agent", "Adam2Marsh Laravel Video Downloader PI");
 
 /*
