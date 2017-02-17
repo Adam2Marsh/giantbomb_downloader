@@ -20,7 +20,7 @@ class GetVideoDetailsService
         $thumbnail_name = snake_case($non_special_name);
 
         Storage::disk('video_thumbnails')
-            ->put($thumbnail_name . ".png", file_get_contents("http://static.giantbomb.com/uploads/scale_small/23/233047/2867124-ddpsu31.jpg"));
+            ->put($thumbnail_name . ".png", file_get_contents($url));
 
         return "video_thumbnails/$thumbnail_name.png";
     }
