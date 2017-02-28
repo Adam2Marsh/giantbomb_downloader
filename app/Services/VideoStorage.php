@@ -39,7 +39,9 @@ class VideoStorage
             return;
         }
 
-        Log::info(__METHOD__." Video failed download");
+        Log::error(__METHOD__." Video failed download");
+        throw new Exception("$video->name failed download", 1);
+
     }
 
     /**
@@ -50,7 +52,16 @@ class VideoStorage
     public function downloadVideofromURL($url, $directory, $file_name)
     {
         Log::info(__METHOD__." I've been asked to download a video from $url and save in $directory");
-        Storage::put("$directory/$file_name", fopen($url."?api_key=".config('gb.api_key'), "r"));
+
+        $downloadUrl = $url."?api_key=".config('gb.api_key');
+        $saveLocation = "$directory/$file_name";
+
+        if(config('gb.use_wget_to_download')) {
+            $saveLocation = storage_path() . "/app/" . $saveLocation;
+            $output = `wget -O {$saveLocation} {$downloadUrl}`;
+        } else {
+            Storage::put("$directory/$file_name", fopen($downloadUrl, "r"));
+        }
     }
 
 

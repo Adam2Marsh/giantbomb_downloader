@@ -8,4 +8,5 @@
           &field_list=id,name,hd_url,publish_date,deck,image',
         'index_show_days_video' => env('INDEX_SHOW_DAYS_VIDEO', 30),
         'storage_limit' => env('STORAGE_LIMIT', 20000000000),
+        'use_wget_to_download' => env('USE_WGET', false),
     ];
