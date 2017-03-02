@@ -28,7 +28,7 @@ class VideoSizingTest extends TestCase
      */
     public function test_GetVideoSizeAsBytes()
     {
-        $this->assertEquals(1630631, $this->videoSizing
+        $this->assertEquals("1630631", $this->videoSizing
                     ->getVideoSize("test/Frontend_Vid_YouTube.mov")
                     ->returnAsBytes());
     }
@@ -64,7 +64,7 @@ class VideoSizingTest extends TestCase
      */
     public function test_GetDirectorySizeAsBytes()
     {
-        $this->assertEquals(4891893, $this->videoSizing
+        $this->assertEquals("4891893", $this->videoSizing
                     ->getDirectorySize("test")
                     ->returnAsBytes());
     }
