@@ -14,7 +14,7 @@ class VideoSizing
 
     private $bytes;
 
-    private function __construct()
+    function __construct()
     {
         $this->bytes = BigInteger::of(0);
     }
