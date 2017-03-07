@@ -5,4 +5,10 @@
         <echo>Hello World - Welcome to Apache Ant!</echo>
     </target>
 
+
+    <target name="unit">
+        <exec executable="vendor/bin/phpunit" taskname="unit-tests">
+        </exec>
+    </target>
+
 </project>
