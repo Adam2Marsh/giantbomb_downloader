@@ -5,4 +5,18 @@
         <echo>Hello World - Welcome to Apache Ant!</echo>
     </target>
 
+    <target name="composer" description="Installing composer dependencies">
+        <exec executable="composer" failonerror="true">
+            <arg value="install" />
+            <arg value="--dev" />
+            <arg value="--prefer-dist" />
+            <arg value="--no-progress" />
+        </exec>
+    </target>
+
+    <target name="unit">
+        <exec executable="vendor/bin/phpunit" taskname="unit-tests">
+        </exec>
+    </target>
+
 </project>

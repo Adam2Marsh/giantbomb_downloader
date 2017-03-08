@@ -14,7 +14,11 @@ class VideoSizing
 
     private $bytes;
 
+<<<<<<< HEAD
     function __construct()
+=======
+    public function __construct()
+>>>>>>> jenkins
     {
         $this->bytes = BigInteger::of(0);
     }
