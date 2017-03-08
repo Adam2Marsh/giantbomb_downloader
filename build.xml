@@ -16,6 +16,8 @@
 
     <target name="unit">
         <exec executable="vendor/bin/phpunit" taskname="unit-tests">
+            <arg value="--log-junit" />
+            <arg path="build/results.xml" />
         </exec>
     </target>
 
