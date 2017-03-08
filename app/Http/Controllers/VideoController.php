@@ -86,7 +86,7 @@ class VideoController extends Controller
 
         return response()->stream(
             function() use ($stream) {
-                while(ob_end_flush());
+//                while(ob_end_flush());
                 fpassthru($stream);
             },
             200,
