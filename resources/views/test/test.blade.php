@@ -24,7 +24,7 @@
     },
       {
         "deck": "Just some testing here, needed a second video",
-        "hd_url": "http://localhost/TestVideo",
+        "hd_url": "http://localhost/LargeVideo",
         "id": 11409,
         "name": "Needed a second video",
         "publish_date": "2017-01-26 18:00:00",

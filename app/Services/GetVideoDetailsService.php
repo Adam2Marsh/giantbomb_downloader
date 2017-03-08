@@ -13,6 +13,8 @@ class GetVideoDetailsService
 
     public function downloadVideoThumbnail($url, $name)
     {
+
+        return "Testing";
         Log::info(__METHOD__." Fetching Thumbnail at $url for video $name");
 
         $non_special_name = removeSpecialCharactersFromString($name);
@@ -23,15 +25,6 @@ class GetVideoDetailsService
             ->put($thumbnail_name . ".png", file_get_contents($url));
 
         return "video_thumbnails/$thumbnail_name.png";
-    }
-
-
-    function checkHTTPCallSucessful($HttpStatusCode)
-    {
-        if($HttpStatusCode != 200) {
-            return false;
-        }
-        return true;
     }
 
 }

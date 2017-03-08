@@ -1,7 +1,6 @@
 <?php
 
     return [
-        'api_key' => env('GB_API_KEY', ''),
         'max_downloads_per_day' => 5,
         'Website_Address' => 'https://www.giantbomb.com/api/videos/',
         'Latest_Video_Query' => '?api_key=KEY_HERE&format=json&subscriber_only=true&limit=30

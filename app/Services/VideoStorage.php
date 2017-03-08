@@ -5,6 +5,7 @@ namespace App\Services;
 use GuzzleHttp\Client;
 use Log;
 use Storage;
+use App\Config;
 use App\Repositories\VideoRepository;
 use App\Notifications\VideoDownloadedNotification;
 use App\Events\VideoDownloadedEvent;
@@ -12,11 +13,11 @@ use App\Events\VideoDownloadedEvent;
 class VideoStorage
 {
 
-    protected $vsr;
+    protected $videoRepository;
 
     public function __construct()
     {
-        $this->vsr = new \App\Repositories\VideoRepository;
+        $this->videoRepository = new VideoRepository;
     }
 
     /**
@@ -28,12 +29,12 @@ class VideoStorage
     public function saveVideo($video)
     {
         Log::info(__METHOD__." Downloading Video $video->name");
-        $this->vsr->updateVideoToDownloadedStatus($video->id, "DOWNLOADING");
+        $this->videoRepository->updateVideoToDownloadedStatus($video->id, "DOWNLOADING");
         $this->downloadVideofromURL($video->url, "gb_videos", $video->file_name);
 
         if ($this->checkForVideo("gb_videos", $video->file_name)) {
             Log::info(__METHOD__." Video downloaded and stored gb_videos/$video->name");
-            $this->vsr->updateVideoToDownloadedStatus($video->id, "DOWNLOADED");
+            $this->videoRepository->updateVideoToDownloadedStatus($video->id, "DOWNLOADED");
             event(new VideoDownloadedEvent());
             $video->notify(new VideoDownloadedNotification($video));
             return;
@@ -53,7 +54,7 @@ class VideoStorage
     {
         Log::info(__METHOD__." I've been asked to download a video from $url and save in $directory");
 
-        $downloadUrl = $url."?api_key=".config('gb.api_key');
+        $downloadUrl = $url."?api_key=".Config::where('name', '=', 'API_KEY')->first()->value;
         $saveLocation = "$directory/$file_name";
 
         if(config('gb.use_wget_to_download')) {

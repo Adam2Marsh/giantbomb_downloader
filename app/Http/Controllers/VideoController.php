@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 
 use App\Video;
 use Log;
+use Storage;
 
 use App\Repositories\VideoRepository;
 use App\Jobs\DownloadVideoJob;
@@ -72,7 +73,28 @@ class VideoController extends Controller
     public function download($id)
     {
         $video = Video::findOrFail($id);
-        return response()->download(storage_path("app/gb_videos/$video->file_name"));
+//        return response()->download(storage_path("app/gb_videos/$video->file_name"));
+        $fs = Storage::getAdapter();
+
+        $file_path = $video->videoDetail->local_path;
+
+        $stream = $fs->readStream($file_path);
+
+        $stream = $stream["stream"];
+//        $contents = stream_get_contents($stream);
+//        $stream = Storage::get("gb_videos/$video->file_name");
+
+        return response()->stream(
+            function() use ($stream) {
+                while(ob_end_flush());
+                fpassthru($stream);
+            },
+            200,
+            [
+                'Content-Type' => "video/quicktime",
+                'Content-disposition' => 'attachment; filename="' . $video->file_name . '"',
+            ]
+        );
     }
 
     /**
