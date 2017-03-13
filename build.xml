@@ -1,21 +1,16 @@
 <?xml version="1.0"?>
 <project name="Hello World Project" default="info">
 
-    <target name="info">
-        <echo>Hello World - Welcome to Apache Ant!</echo>
-    </target>
-
     <target name="composer" description="Installing composer dependencies">
         <exec executable="composer" failonerror="true">
             <arg value="install" />
-            <arg value="--dev" />
-            <arg value="--prefer-dist" />
-            <arg value="--no-progress" />
         </exec>
     </target>
 
     <target name="unit">
         <exec executable="vendor/bin/phpunit" taskname="unit-tests">
+            <arg value="--log-junit" />
+            <arg path="build/results.xml" />
         </exec>
     </target>
 

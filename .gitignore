@@ -11,3 +11,4 @@ resources/assets
 composer.phar
 echo-server-worker.log
 .idea
+build
