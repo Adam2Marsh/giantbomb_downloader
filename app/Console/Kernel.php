@@ -6,6 +6,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 use Log;
+use Config;
 
 class Kernel extends ConsoleKernel
 {
@@ -32,8 +33,9 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(function () {
             $DVI = new \App\Services\DownloadVideoInformation;
+            $apiKey= Config::where('name', '=', 'API_KEY')->first()->value;
             Log::info(__METHOD__." Schedule has been called to retireve all new videos and add into database");
-            $DVI->UpdateVideosInDatabase(config('gb.Website_Address'), config('gb.Latest_Video_Query'), config('gb.api_key'));
+            $DVI->UpdateVideosInDatabase(config('gb.Website_Address'), config('gb.Latest_Video_Query'), $apiKey);
         })->hourly();
 
     }

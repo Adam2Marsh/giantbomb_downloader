@@ -14,7 +14,6 @@ class GetVideoDetailsService
     public function downloadVideoThumbnail($url, $name)
     {
 
-        return "Testing";
         Log::info(__METHOD__." Fetching Thumbnail at $url for video $name");
 
         $non_special_name = removeSpecialCharactersFromString($name);
