@@ -1,0 +1,37 @@
+---
+- hosts: giantbomb
+
+  tasks:
+
+  - name: Install Base Required Packages
+    apt:
+      name: "{{ item }}"
+      state: installed
+      update_cache: yes
+    become: yes
+    with_items:
+      - apt-transport-https
+      - lsb-release
+      - ca-certificates
+      - ant
+
+  - name: Install Laravel Required Packages
+    apt:
+      name: "{{ item }}"
+      state: installed
+      update_cache: yes
+    become: yes
+    with_items:
+      - php7.0
+      - php7.0-xml
+      - php7.0-mysql
+      - php7.0-mbstring
+      - php7.0-curl
+
+  - name: Install Composer
+    shell: curl -sS https://getcomposer.org/installer | php
+    become: yes
+
+  - name: Move into User Bin
+    shell: mv composer.phar /usr/bin/composer
+    become: yes

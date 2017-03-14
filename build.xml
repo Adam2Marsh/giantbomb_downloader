@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Hello World Project" default="info">
+<project name="giantbomb-downloader">
 
     <target name="composer" description="Installing composer dependencies">
         <exec executable="composer" failonerror="true">

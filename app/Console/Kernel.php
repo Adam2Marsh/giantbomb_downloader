@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Services\DownloadVideoInformation;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -32,10 +33,15 @@ class Kernel extends ConsoleKernel
 
 
         $schedule->call(function () {
-            $DVI = new \App\Services\DownloadVideoInformation;
+            $dvi = new DownloadVideoInformation;
+
+            Log::info(__METHOD__." Schedule has been called to retrieve all new videos and insert into database");
+
+            $url=env('TEST_JSON_URL',config('gb.Website_Address'));
+            $query=env('LATEST_VIDEO_QUERY',config('gb.Latest_Video_Query'));
             $apiKey= Config::where('name', '=', 'API_KEY')->first()->value;
-            Log::info(__METHOD__." Schedule has been called to retireve all new videos and add into database");
-            $DVI->UpdateVideosInDatabase(config('gb.Website_Address'), config('gb.Latest_Video_Query'), $apiKey);
+
+            $dvi->UpdateVideosInDatabase($url,$query,$apiKey);
         })->hourly();
 
     }
