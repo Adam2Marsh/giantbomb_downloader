@@ -15,6 +15,11 @@
       - ca-certificates
       - ant
 
+  - name: Add Repo for PHP7.1
+    apt_repository:
+      repo: ppa:ondrej/php
+      state: present
+
   - name: Install Laravel Required Packages
     apt:
       name: "{{ item }}"
@@ -22,11 +27,11 @@
       update_cache: yes
     become: yes
     with_items:
-      - php7.0
-      - php7.0-xml
-      - php7.0-mysql
-      - php7.0-mbstring
-      - php7.0-curl
+      - php7.1
+      - php7.1-xml
+      - php7.1-mysql
+      - php7.1-mbstring
+      - php7.1-curl
 
   - name: Install Composer
     shell: curl -sS https://getcomposer.org/installer | php

@@ -18,10 +18,10 @@ function human_filesize($bytes, $decimals  = 2)
 function removeSpecialCharactersFromString($string)
 {
     $removeChars = [
-        " " => "_",
-        "/" => "-",
+        "/" => "",
         ":" => "",
         "!" => "",
+        "&" => "",
     ];
 
     return str_replace(array_keys($removeChars), array_values($removeChars), $string);

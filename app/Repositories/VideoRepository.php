@@ -22,11 +22,11 @@ class VideoRepository
         $newVideoDownloadStatus = new Video;
         $newVideoDownloadStatus->name = $video->name;
 
-        $videoFilename = snake_case(removeSpecialCharactersFromString($video->name)).".mp4";
+        $videoFilename = $this->covertTitleToFileName($video->name);
 
         $newVideoDownloadStatus->file_name = $videoFilename;
         $newVideoDownloadStatus->gb_Id = $video->id;
-        $newVideoDownloadStatus->url = $video->hd_url;
+        $newVideoDownloadStatus->url = $this->findHighestQualityVideo($video);
         $newVideoDownloadStatus->published_date = $video->publish_date;
         $newVideoDownloadStatus->status = 'NEW';
         $newVideoDownloadStatus->save();
@@ -106,6 +106,36 @@ class VideoRepository
     public function returnVideosDownloading()
     {
         return Video::where('status', '=', 'DOWNLOADING')->get();
+    }
+
+    /**
+     * Get the highest quality video in this order hd, high and then low
+     * @param $video
+     * @return string
+     */
+    public function findHighestQualityVideo($video)
+    {
+        if($video->hd_url != null) {
+            return $video->hd_url;
+        }
+
+        if($video->high_url != null) {
+            return $video->high_url;
+        }
+
+        if($video->low_url != null) {
+            return $video->low_url;
+        }
+    }
+
+    /**
+     * Will Convert Video Title to a correct filename
+     * @param $videoTitle
+     * @return string
+     */
+    public function covertTitleToFileName($videoTitle)
+    {
+        return snake_case(removeSpecialCharactersFromString($videoTitle)).".mp4";
     }
 
 }
