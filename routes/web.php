@@ -70,6 +70,7 @@ Route::group(['middleware' => ['web']], function ()
 
 Route::group(['middleware' => ['web', 'premium']], function () {
     Route::resource('/rules', 'RuleController');
+    Route::resource('/configs', 'ConfigController');
 
     Route::get('/videos', 'VideoController@index');
     Route::post('/videos', 'VideoController@saveVideo');
