@@ -54,14 +54,11 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
-/**
-* Configure Monolog
-*/
-$app->configureMonologUsing(function(Monolog\Logger $monolog) {
-	$filename = storage_path('logs/laravel-'.php_sapi_name().'.log');
-	$handler = new Monolog\Handler\RotatingFileHandler($filename);
-	$monolog->pushHandler($handler);
-});
+$app->singleton(
+    Illuminate\Foundation\Bootstrap\ConfigureLogging::class,
+    Bootstrap\ConfigureLogging::class
+);
+
 
 /*
 |--------------------------------------------------------------------------
