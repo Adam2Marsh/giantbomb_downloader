@@ -14,11 +14,14 @@
       - lsb-release
       - ca-certificates
       - ant
+      - unzip
+      - zip
 
   - name: Add Repo for PHP7.1
     apt_repository:
       repo: ppa:ondrej/php
       state: present
+    become: yes
 
   - name: Install Laravel Required Packages
     apt:

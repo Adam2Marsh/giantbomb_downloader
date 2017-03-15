@@ -7,7 +7,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 use Log;
-use Config;
+use App\Config;
 
 class Kernel extends ConsoleKernel
 {
