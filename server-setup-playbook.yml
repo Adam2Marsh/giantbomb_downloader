@@ -16,6 +16,7 @@
       - ant
       - unzip
       - zip
+      - mysql
 
   - name: Add Repo for PHP7.1
     apt_repository:
@@ -42,4 +43,18 @@
 
   - name: Move into User Bin
     shell: mv composer.phar /usr/bin/composer
+    become: yes
+
+  - name: Create giantbomb db
+    mysql_db:
+      state: present
+      name: giantbomb
+    become: yes
+
+  -name: Create default db user
+    mysql_user:
+      name: gb
+      password: testing
+      priv: '*.*:ALL'
+      state: present
     become: yes
