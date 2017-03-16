@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ConfigUpdateRequest;
 use Illuminate\Http\Request;
 use App\Config;
 
@@ -36,7 +37,7 @@ class ConfigController extends Controller
      */
     public function store(Request $request)
     {
-        //
+//        dd($request->all());
     }
 
     /**
@@ -68,9 +69,13 @@ class ConfigController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ConfigUpdateRequest $request, $id)
     {
-        //
+//        dd($request->all());
+        $config = Config::findOrFail($id);
+        $config->value = $request->{$config->name};
+        $config->save();
+        return redirect('configs')->with('success', 'Config Updated Successfully');
     }
 
     /**

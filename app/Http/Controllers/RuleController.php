@@ -40,7 +40,7 @@ class RuleController extends Controller
 
             $rules->save();
 
-            return redirect('rules')->with('success', 'Rule Added Successully');
+            return redirect('rules')->with('success', 'Rule Added Successfully');
         } catch (\Exception $e) {
             Log::error(__METHOD__ . " Something went wrong!");
             Log::error(__METHOD__ . $e->getMessage());
@@ -83,6 +83,6 @@ class RuleController extends Controller
 
         $rule->delete();
 
-        return redirect('rules')->with('success', 'Rule Deleted Successully');
+        return redirect('rules')->with('success', 'Rule Deleted Successfully');
     }
 }
