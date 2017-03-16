@@ -51,7 +51,7 @@
       name: giantbomb
     become: yes
 
-  -name: Create default db user
+  - name: Create default db user
     mysql_user:
       name: gb
       password: testing
