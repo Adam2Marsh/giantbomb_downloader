@@ -31,7 +31,7 @@ class RuleControllerTest extends TestCase
            ->check('enabled')
            ->press('Save')
            ->seePageIs('/rules')
-           ->see('Rule Added Successully');
+           ->see('Rule Added Successfully');
     }
 
     /**
@@ -77,6 +77,6 @@ class RuleControllerTest extends TestCase
       $this->visit('/rules')
            ->press($rule->id . "DELETE")
            ->seePageIs('/rules')
-           ->see('Rule Deleted Successully');
+           ->see('Rule Deleted Successfully');
     }
 }
