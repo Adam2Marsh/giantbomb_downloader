@@ -58,7 +58,7 @@ return [
             'host'      => env('DB_HOST', 'localhost'),
             'database'  => env('DB_DATABASE', 'giantbomb'),
             'username'  => env('DB_USERNAME', 'gb'),
-            'password'  => env('DB_PASSWORD', 'TESTING'),
+            'password'  => env('DB_PASSWORD', 'testing'),
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',

@@ -16,7 +16,8 @@
       - ant
       - unzip
       - zip
-      - mysql
+      - mysql-server
+      - python-mysqldb
 
   - name: Add Repo for PHP7.1
     apt_repository:
