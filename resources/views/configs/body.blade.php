@@ -24,8 +24,8 @@
                 <p>I can notify you via Slack when a new video is ready to download and when I've downloaded a video, for this to work you need to give me a Slack Web Hook URL.</p>
                     {{ Form::open(['action' => ['ConfigController@update', $config->id],
                         'method' => 'PUT']) }}
-                        {{ Form::label('slack_hook_text', 'Enter Slack Hook Url') }}
-                        {{ Form::text('SLACK_HOOK_URL', $config->value) }}
+                        {{ Form::label('slack_hook_text', 'Enter Slack Hook Url - ') }}
+                        {{ Form::text('SLACK_HOOK_URL', $config->value, ['style' => 'width:380px']) }}
                         {{ Form::submit('Save') }}
                     {{ Form::close() }}
                 </div>
@@ -33,3 +33,10 @@
         @endif
     @endforeach
 </div>
+
+
+<script>
+
+
+
+</script>
