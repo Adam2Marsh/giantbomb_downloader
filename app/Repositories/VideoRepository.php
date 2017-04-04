@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Video;
 use App\VideoDetails;
 use Log;
-use App\Notifications\NewVideoNotification;
 
 class VideoRepository
 {
@@ -39,8 +38,6 @@ class VideoRepository
         $newVideoDownloadStatus->videoDetail()->save($newVideoDetails);
 
         Log::info(__METHOD__." Video ".$video->name." inserted into database");
-
-        $newVideoDownloadStatus->notify(new NewVideoNotification($newVideoDownloadStatus));
 
         return $newVideoDownloadStatus;
     }

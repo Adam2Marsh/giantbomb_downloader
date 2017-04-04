@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
+use App\Config;
+
 class Video extends Model
 {
     use Notifiable;
@@ -30,7 +32,7 @@ class Video extends Model
      */
     public function routeNotificationForSlack()
     {
-        return env('SLACK_WEBHOOK_URL', "");
+        return Config::where('name', 'SLACK_HOOK_URL')->first();
     }
 
 }

@@ -11,7 +11,7 @@
       "hd_url": "http://localhost/LargeVideo",
       "id": 11408,
       "name": "Demo Derby: PlayStation Underground: Volume 3 Issue 1",
-      "publish_date": "2017-01-25 18:00:00",
+      "publish_date": "2017-03-25 18:00:00",
       "image": {
         "icon_url": "http://static.giantbomb.com/uploads/square_avatar/23/233047/2867124-ddpsu31.jpg",
         "medium_url": "http://static.giantbomb.com/uploads/scale_medium/23/233047/2867124-ddpsu31.jpg",
@@ -27,7 +27,7 @@
         "hd_url": "http://localhost/LargeVideo",
         "id": 11409,
         "name": "Needed a second video",
-        "publish_date": "2017-01-26 18:00:00",
+        "publish_date": "2017-03-26 18:00:00",
         "image": {
           "icon_url": "http://static.giantbomb.com/uploads/square_avatar/23/233047/2867124-ddpsu31.jpg",
           "medium_url": "http://static.giantbomb.com/uploads/scale_medium/23/233047/2867124-ddpsu31.jpg",

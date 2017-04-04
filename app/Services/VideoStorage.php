@@ -7,8 +7,6 @@ use Log;
 use Storage;
 use App\Config;
 use App\Repositories\VideoRepository;
-use App\Notifications\VideoDownloadedNotification;
-use App\Events\VideoDownloadedEvent;
 
 class VideoStorage
 {
@@ -35,8 +33,6 @@ class VideoStorage
         if ($this->checkForVideo("gb_videos", $video->file_name)) {
             Log::info(__METHOD__." Video downloaded and stored gb_videos/$video->name");
             $this->videoRepository->updateVideoToDownloadedStatus($video->id, "DOWNLOADED");
-            event(new VideoDownloadedEvent());
-            $video->notify(new VideoDownloadedNotification($video));
             return;
         }
 
