@@ -11,7 +11,7 @@ use App\Notifications\VideoDownloadingNotification;
 use App\Notifications\VideoQueuedNotification;
 
 //Browser Refresh via Redis and WebSocket
-use App\Events\VideoDownloadedEvent;
+use App\Events\BrowserForceRefreshEvent;
 
 class VideoObserver
 {
@@ -24,7 +24,7 @@ class VideoObserver
      */
     public function created(Video $video)
     {
-        event(new VideoDownloadedEvent());
+        event(new BrowserForceRefreshEvent());
         $video->notify(new NewVideoNotification($video));
     }
 
@@ -46,8 +46,10 @@ class VideoObserver
                 break;
             case "DOWNLOADED":
                 $video->notify(new VideoDownloadedNotification($video));
+                event(new BrowserForceRefreshEvent());
                 break;
         }
+
     }
 
 }

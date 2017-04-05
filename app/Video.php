@@ -32,7 +32,7 @@ class Video extends Model
      */
     public function routeNotificationForSlack()
     {
-        return Config::where('name', 'SLACK_HOOK_URL')->first();
+        return Config::where('name', 'SLACK_HOOK_URL')->first()->value;
     }
 
 }
