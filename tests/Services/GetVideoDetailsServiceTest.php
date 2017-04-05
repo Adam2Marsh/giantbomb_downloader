@@ -22,7 +22,7 @@ class GetVideoDetailsServiceTest extends TestCase
             , "Just Testing SomethingWith Spaces"
         );
 
-        $this->assertEquals("http://localhost/video_thumbnails/just_testing_something_with_spaces.png", $path);
+        $this->assertEquals("video_thumbnails/just_testing_something_with_spaces.png", $path);
     }
 
 }

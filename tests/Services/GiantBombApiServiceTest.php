@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\GiantBombApiService;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -11,7 +12,7 @@ class GiantBombApiServiceTest extends TestCase
 
     public function setup()
     {
-        $this->giantBombApiService = new \App\Services\GiantBombApiService();
+        $this->giantBombApiService = new GiantBombApiService();
         parent::setUp();
     }
 
@@ -21,11 +22,9 @@ class GiantBombApiServiceTest extends TestCase
         $this->assertEquals($apiKey->api_key, config('gb.api_key'));
     }
 
-    public function test_checkApiKeyIsPremium()
-    {
-        echo $this->giantBombApiService->checkApiKeyIsPremium(config('gb.api_key'));
-
-        // $this->assertEquals($apiKey->api_key, "71db34446b406a050e61a23b28fdcdfbb22917f1");
-    }
+//    public function test_checkApiKeyIsPremium()
+//    {
+//        echo $this->giantBombApiService->checkApiKeyIsPremium(config('gb.api_key'));
+//    }
 
 }
