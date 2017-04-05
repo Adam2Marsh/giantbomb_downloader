@@ -1,5 +1,6 @@
 <?php
 
+use App\Repositories\ConfigRepository;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -8,6 +9,19 @@ use App\Rule;
 
 class RuleControllerTest extends TestCase
 {
+
+//    use DatabaseMigrations;
+
+    /**
+     * For tests to run we need API Key present so Middleware so kick it out
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $configRepo = new ConfigRepository();
+        $configRepo->UpdateConfig("API_KEY", "TEST");
+    }
+
     /**
      * Check main Rules GUI
      *
@@ -24,7 +38,7 @@ class RuleControllerTest extends TestCase
      *
      * @return void
      */
-    public function testDuplicateRuleError()
+    public function testAddNewRule()
     {
       $this->visit('/rules')
            ->type('Just a Test','regex')
@@ -39,14 +53,14 @@ class RuleControllerTest extends TestCase
      *
      * @return void
      */
-    public function testAddNewRule()
+    public function testDuplicateRuleError()
     {
       $this->visit('/rules')
            ->type('Just a Test','regex')
            ->check('enabled')
            ->press('Save')
            ->seePageIs('/rules')
-           ->see('Rule Already Exists');
+           ->see('Your rule\'s name must be unqiue, duplicate found');
     }
 
     /**

@@ -1,11 +1,26 @@
 <?php
 
+use App\Repositories\ConfigRepository;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+use App\Config;
+
 class ConfigControllerTest extends TestCase
 {
+    use DatabaseMigrations;
+
+    /**
+     * For tests to run we need API Key present so Middleware so kick it out
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $configRepo = new ConfigRepository();
+        $configRepo->UpdateConfig("API_KEY", "TEST");
+    }
+
     /**
      * Check main Rules GUI
      *

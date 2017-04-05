@@ -19,6 +19,11 @@
             <arg value="artisan" />
             <arg value="migrate" />
         </exec>
+
+        <exec executable="php" taskname="database-seed">
+            <arg value="artisan" />
+            <arg value="db:seed" />
+        </exec>
     </target>
 
     <target name="key">
