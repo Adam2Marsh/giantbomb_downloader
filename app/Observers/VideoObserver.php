@@ -2,13 +2,13 @@
 
 namespace App\Observer;
 
-
 use App\Video;
-use App\Config;
 
 //Slack Notifications
 use App\Notifications\NewVideoNotification;
 use App\Notifications\VideoDownloadedNotification;
+use App\Notifications\VideoDownloadingNotification;
+use App\Notifications\VideoQueuedNotification;
 
 //Browser Refresh via Redis and WebSocket
 use App\Events\VideoDownloadedEvent;
@@ -39,13 +39,11 @@ class VideoObserver
     {
         switch ($video->status) {
             case "QUEUED":
-//                $video->notify(ne)
+                $video->notify(new VideoQueuedNotification($video));
                 break;
-
             case "DOWNLOADING":
-
+                $video->notify(new VideoDownloadingNotification($video));
                 break;
-
             case "DOWNLOADED":
                 $video->notify(new VideoDownloadedNotification($video));
                 break;
