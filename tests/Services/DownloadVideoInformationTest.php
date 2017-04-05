@@ -9,6 +9,8 @@ use App\Rule;
 
 class DownloadVideoInformationTest extends TestCase
 {
+    use DatabaseTransactions;
+
 	protected $downloadVideoInformation;
 
 	public function setup()
@@ -20,33 +22,29 @@ class DownloadVideoInformationTest extends TestCase
     //Intergration Tests.......................
     public function test_updateVideosInDatabase_AddVideo()
     {
-        $deletedRow = App\Video::where('gb_Id', '11408')->delete();
-        $response = $this->downloadVideoInformation->updateVideosInDatabase('http://127.0.0.1/Test_Json','','');
+        $response = $this->downloadVideoInformation->updateVideosInDatabase(env('TEST_JSON_URL'),'','');
         $this->assertRegexp('/doesn\'t exists/i',strval($response));
     }
 
     public function test_updateVideosInDatabase_RuleTriggersDownload()
     {
+        $this->expectsJobs(App\Jobs\DownloadVideoJob::class);
+
         $rule = new Rule();
-        $rule->regex = "Demo Derby";
+        $rule->regex = "Snake Pass";
         $rule->enabled = 1;
         $rule->save();
 
-        $response = $this->downloadVideoInformation->updateVideosInDatabase('http://127.0.0.1/Test_Json','','');
+        $response = $this->downloadVideoInformation->updateVideosInDatabase(env('TEST_JSON_URL'),'','');
 
-        $this->expectsJobs(App\Jobs\DownloadVideoJob::class);
-
-        App\Video::where('gb_Id', '11408')->delete();
         $rule->delete();
     }
 
     public function test_updateVideosInDatabase_VideoAlreadyExists()
     {
-        $deletedRow = App\Video::where('gb_Id', '11408')->delete();
-        $addResponse = $this->downloadVideoInformation->updateVideosInDatabase('http://127.0.0.1/Test_Json','','');
-        $dupResponse = $this->downloadVideoInformation->updateVideosInDatabase('http://127.0.0.1/Test_Json','','');
+        $addResponse = $this->downloadVideoInformation->updateVideosInDatabase(env('TEST_JSON_URL'),'','');
+        $dupResponse = $this->downloadVideoInformation->updateVideosInDatabase(env('TEST_JSON_URL'),'','');
         $this->assertRegexp('/already exists/i',strval($dupResponse));
-        $deletedRow = App\Video::where('gb_Id', '11409')->delete();
     }
 
     public function test_getVideoFileSize()
