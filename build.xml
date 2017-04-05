@@ -17,7 +17,7 @@
     <target name="database">
         <exec executable="php" taskname="database-setup">
             <arg value="artisan" />
-            <arg value="migrate" />
+            <arg value="migrate:refresh" />
         </exec>
 
         <exec executable="php" taskname="database-seed">

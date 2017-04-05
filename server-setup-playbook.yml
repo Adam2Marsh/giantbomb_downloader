@@ -18,6 +18,7 @@
       - zip
       - mysql-server
       - python-mysqldb
+      - redis-server
 
   - name: Add Repo for PHP7.1
     apt_repository:
