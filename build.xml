@@ -14,4 +14,18 @@
         </exec>
     </target>
 
+    <target name="database">
+        <exec executable="php" taskname="database-setup">
+            <arg value="artisan" />
+            <arg value="migrate" />
+        </exec>
+    </target>
+
+    <target name="key">
+        <exec executable="php" taskname="key-setup">
+            <arg value="artisan" />
+            <arg value="key:generate" />
+        </exec>
+    </target>
+
 </project>
