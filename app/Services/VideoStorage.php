@@ -28,6 +28,10 @@ class VideoStorage
     {
         Log::info(__METHOD__." Downloading Video $video->name");
         $this->videoRepository->updateVideoToDownloadedStatus($video->id, "DOWNLOADING");
+
+        Log::info(__METHOD__." Will create download directory if it doesn't exists");
+        Storage::makeDirectory("gb_videos");
+
         $this->downloadVideofromURL($video->url, "gb_videos", $video->file_name);
 
         if ($this->checkForVideo("gb_videos", $video->file_name)) {
@@ -92,4 +96,5 @@ class VideoStorage
         Storage::delete("$directory/$file_name");
         Log::info(__METHOD__." $directory/$file_name deleted from storage");
     }
+
 }
