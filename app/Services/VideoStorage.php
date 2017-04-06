@@ -29,9 +29,6 @@ class VideoStorage
         Log::info(__METHOD__." Downloading Video $video->name");
         $this->videoRepository->updateVideoToDownloadedStatus($video->id, "DOWNLOADING");
 
-        Log::info(__METHOD__." Will create download directory if it doesn't exists");
-        Storage::makeDirectory("gb_videos");
-
         $this->downloadVideofromURL($video->url, "gb_videos", $video->file_name);
 
         if ($this->checkForVideo("gb_videos", $video->file_name)) {
@@ -53,6 +50,9 @@ class VideoStorage
     public function downloadVideofromURL($url, $directory, $file_name)
     {
         Log::info(__METHOD__." I've been asked to download a video from $url and save in $directory");
+
+        Log::info(__METHOD__." Will create download directory if it doesn't exists");
+        Storage::makeDirectory($directory);
 
         $downloadUrl = $url."?api_key=".Config::where('name', '=', 'API_KEY')->first()->value;
         $saveLocation = "$directory/$file_name";
