@@ -20,7 +20,7 @@ class HelpersTest extends TestCase
     public function test_getJSON_Success()
     {
         $responseJSON = getJSON(env('TEST_JSON_URL',config('gb.Website_Address')));
-        $this->assertEquals($responseJSON->results[0]->id,11408);
+        $this->assertEquals($responseJSON->results[0]->id,11956);
     }
 
     /**

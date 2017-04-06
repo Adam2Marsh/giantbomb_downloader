@@ -8,6 +8,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class VideoRepositoryTest extends TestCase
 {
 
+    use DatabaseMigrations;
+
 	protected $videoRepository;
 
 	public function setup()

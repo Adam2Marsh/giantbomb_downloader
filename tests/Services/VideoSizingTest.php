@@ -5,6 +5,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 use App\Services\VideoSizing;
+use App\Services\VideoStorage;
 
 class VideoSizingTest extends TestCase
 {
@@ -12,6 +13,7 @@ class VideoSizingTest extends TestCase
     //Sets up the variable we'll use to store the class
     private $videoSizing;
 
+    private $videoStorage;
 
     //Here we will call the class ready for the test
     function setUp() {
@@ -19,6 +21,12 @@ class VideoSizingTest extends TestCase
         parent::setUp();
 
         $this->videoSizing = new VideoSizing();
+        $this->videoStorage = new VideoStorage();
+
+        $this->videoStorage->downloadVideofromURL(
+            "https://giantbomb-pdl.akamaized.net/video/ft_nonsubs_060311_3500.mp4"
+            ,"gb_videos"
+            ,"video_size_test.mp4");
     }
 
     /**

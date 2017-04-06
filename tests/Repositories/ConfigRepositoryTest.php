@@ -8,6 +8,7 @@ use App\Config;
 
 class ConfigRepositoryTest extends TestCase
 {
+    use DatabaseMigrations;
 
     protected $configsRepository;
 
