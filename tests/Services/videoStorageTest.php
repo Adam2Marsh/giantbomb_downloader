@@ -22,7 +22,7 @@ class VideoStorageTest extends TestCase
     public function test_DownloadVideoFromURL()
     {
         $testVid = "https://giantbomb-pdl.akamaized.net/video/ft_nonsubs_060311_3500.mp4";
-        $this->videoStorage->downloadVideofromURL($testVid, "test", "TestVideo.mp4");
+        $this->videoStorage->downloadVideofromURL($testVid, "gb_videos", "TestVideo.mp4");
     }
 
      /**
@@ -30,7 +30,7 @@ class VideoStorageTest extends TestCase
      */
     public function test_checkForVideo_Success()
     {
-        $this->assertTrue($this->videoStorage->checkForVideo("test","TestVideo.mp4"));
+        $this->assertTrue($this->videoStorage->checkForVideo("gb_videos","TestVideo.mp4"));
     }
 
      /**
@@ -40,7 +40,7 @@ class VideoStorageTest extends TestCase
      */
     public function test_checkForVideo_Failure()
     {
-		$this->assertFalse($this->videoStorage->checkForVideo("test","WontBeFound.mp4"));
+		$this->assertFalse($this->videoStorage->checkForVideo("gb_videos","WontBeFound.mp4"));
     }
     
      /**
@@ -50,8 +50,8 @@ class VideoStorageTest extends TestCase
      */
     public function test_deleteVideo_Success()
     {
-    	$this->videoStorage->deleteVideo("test","TestVideo.mp4");
-		$this->assertFalse($this->videoStorage->checkForVideo("test","TestVideo.mp4"));
+    	$this->videoStorage->deleteVideo("gb_videos","TestVideo.mp4");
+		$this->assertFalse($this->videoStorage->checkForVideo("gb_videos","TestVideo.mp4"));
     }
 
 }
