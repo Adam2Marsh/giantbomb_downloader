@@ -7,6 +7,8 @@ GIT_PROJECT_URL=https://github.com/Adam2Marsh/giantbomb_downloader.git
 INSTALLER_DEPS=(git whiptail sudo wget apt-transport-https lsb-release ca-certificates)
 GB_DOWNLOADER_DEPS=(php7.1 php7.1-mysql php7.1-odbc php7.1-mbstring php7.1-mcrypt php7.1-xml php7.1-cli php7.1-dev apache2 mysql-server redis-server supervisor)
 
+DATABASE_PASSWORD=`date +%s | sha256sum | base64 | head -c 32`
+
 # Find the rows and columns will default to 80x24 is it can not be detected
 screen_size=$(stty size 2>/dev/null || echo 24 80)
 rows=$(echo "${screen_size}" | awk '{print $1}')
@@ -76,34 +78,40 @@ GrabGiantbombDownloaderFromGit() {
 
 ConfigureApache() {
 
-    cp /var/www/html/giantbomb_downloader/automated_install/giantbomb_downloader.conf /etc/apache2/sites-available/giantbomb_downloader.conf
-    a2ensite giantbomb_downloader.conf
+    sudo service apache2 stop
+    sudo cp /var/www/html/giantbomb_downloader/automated_install/configs/apache2/giantbomb_downloader.conf /etc/apache2/sites-available/giantbomb_downloader.conf
+    sudo a2ensite giantbomb_downloader.conf
+    sudo service apache2 start
 }
 
 ConfigureMysqlDatabase() {
 
-    DATABASE_PASSWORD=`date +%s | sha256sum | base64 | head -c 32`
-    
-    mysql -ve "CREATE USER 'gb'@'localhost' IDENTIFIED BY '$DATABASE_PASSWORD'"
+    mysql -ve "CREATE USER 'gb'@'localhost' IDENTIFIED BY '${DATABASE_PASSWORD}'"
     mysql -ve "CREATE DATABASE IF NOT EXISTS gb"
     mysql -ve "GRANT ALL ON gb.* TO 'gb'@'localhost'"
     mysql -ve "FLUSH PRIVILEGES"
 }
 
-#ConfigureSupervisor() {
-#
-#
-#}
-#
-#StartServices() {
-#
-#
-#}
+ConfigureSupervisor() {
+
+    sudo supervisorctl stop all
+    cp -R /var/www/html/giantbomb_downloader/automated_install/configs/supervisor/* /etc/supervisor/conf.d/
+    sudo supervisorctl reread
+    sudo supervisorctl start all
+}
+
+ComposerInstall() {
+
+    /var/www/html/giantbomb_downloader/composer.phar install
+}
+
 
 SudoCheck
 PackageManagerCheck
-InstallPackagesRequiredForInstallScript
+#InstallPackagesRequiredForInstallScript
 WelcomeDialogs
-InstallPackagesRequiredForGiantbombDownloader
+#InstallPackagesRequiredForGiantbombDownloader
 GrabGiantbombDownloaderFromGit
 ConfigureMysqlDatabase
+ConfigureSupervisor
+ComposerInstall

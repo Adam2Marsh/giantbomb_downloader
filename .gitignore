@@ -8,7 +8,6 @@ worker.log
 bower_components
 public
 resources/assets
-composer.phar
 echo-server-worker.log
 .idea
 build
