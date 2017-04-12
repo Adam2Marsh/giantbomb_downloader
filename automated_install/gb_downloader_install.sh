@@ -73,7 +73,16 @@ InstallPackagesRequiredForGiantbombDownloader() {
 GrabGiantbombDownloaderFromGit() {
 
     cd /var/www/html
-    git clone ${GIT_PROJECT_URL}
+
+    echo "-*- Checking if you already have the project cloned"
+    if [ -d "giantbomb_downloader" ]; then
+        echo "-*- You do! Just pulling latest version"
+        cd giantbomb_downloader
+        git pull
+    else
+        echo "-*- You don't! Cloning Repo"
+        git clone ${GIT_PROJECT_URL}
+    fi
 }
 
 ConfigureApache() {
