@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<project name="giantbomb-downloader">
+
+    <target name="composer" description="Installing composer dependencies">
+        <exec executable="composer" failonerror="true">
+            <arg value="install" />
+        </exec>
+    </target>
+
+    <target name="unit">
+        <exec executable="vendor/bin/phpunit" taskname="unit-tests">
+            <arg value="--log-junit" />
+            <arg path="build/results.xml" />
+        </exec>
+    </target>
+
+    <target name="database">
+        <exec executable="php" taskname="database-setup">
+            <arg value="artisan" />
+            <arg value="migrate:refresh" />
+        </exec>
+
+        <exec executable="php" taskname="database-seed">
+            <arg value="artisan" />
+            <arg value="db:seed" />
+        </exec>
+    </target>
+
+    <target name="key">
+        <exec executable="php" taskname="key-setup">
+            <arg value="artisan" />
+            <arg value="key:generate" />
+        </exec>
+    </target>
+
+</project>

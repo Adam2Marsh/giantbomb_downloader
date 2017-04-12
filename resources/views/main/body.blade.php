@@ -65,6 +65,7 @@
 						<tr>
 							<th class="text-center">Video Image</th>
 							<th class="text-center">Video Name</th>
+							<th class="text-center">Video Size</th>
 							<th class="text-center">Video Status</th>
 							<th class="text-center">Video Date</th>
 							<th class="text-center">Actions</th>
@@ -75,6 +76,7 @@
 						<tr>
 							<td><img class="img-thumbnail" src="{{ $video->videoDetail->image_path }}"></td>
 							<td style="vertical-align: middle;"><a href="{{ $video->url }}"> {{ $video->name }} </a> </td>
+							<td style="vertical-align: middle;">{{ human_filesize($video->videoDetail->file_size) }}</td>
 							<td id="{{ $video->id }}" style="vertical-align: middle;">{{ $video->status }}</td>
 							<td style="vertical-align: middle;">{{ $video->published_date->format('d/m/Y') }}</td>
 							<td style="vertical-align: middle;">

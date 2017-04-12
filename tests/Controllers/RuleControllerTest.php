@@ -1,5 +1,6 @@
 <?php
 
+use App\Repositories\ConfigRepository;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -8,6 +9,19 @@ use App\Rule;
 
 class RuleControllerTest extends TestCase
 {
+
+//    use DatabaseMigrations;
+
+    /**
+     * For tests to run we need API Key present so Middleware so kick it out
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $configRepo = new ConfigRepository();
+        $configRepo->UpdateConfig("API_KEY", "TEST");
+    }
+
     /**
      * Check main Rules GUI
      *
@@ -24,21 +38,6 @@ class RuleControllerTest extends TestCase
      *
      * @return void
      */
-    public function testDuplicateRuleError()
-    {
-      $this->visit('/rules')
-           ->type('Just a Test','regex')
-           ->check('enabled')
-           ->press('Save')
-           ->seePageIs('/rules')
-           ->see('Rule Added Successully');
-    }
-
-    /**
-     * Create new Rule
-     *
-     * @return void
-     */
     public function testAddNewRule()
     {
       $this->visit('/rules')
@@ -46,7 +45,22 @@ class RuleControllerTest extends TestCase
            ->check('enabled')
            ->press('Save')
            ->seePageIs('/rules')
-           ->see('Rule Already Exists');
+           ->see('Rule Added Successfully');
+    }
+
+    /**
+     * Create new Rule
+     *
+     * @return void
+     */
+    public function testDuplicateRuleError()
+    {
+      $this->visit('/rules')
+           ->type('Just a Test','regex')
+           ->check('enabled')
+           ->press('Save')
+           ->seePageIs('/rules')
+           ->see('Your rule\'s name must be unqiue, duplicate found');
     }
 
     /**
@@ -77,6 +91,6 @@ class RuleControllerTest extends TestCase
       $this->visit('/rules')
            ->press($rule->id . "DELETE")
            ->seePageIs('/rules')
-           ->see('Rule Deleted Successully');
+           ->see('Rule Deleted Successfully');
     }
 }

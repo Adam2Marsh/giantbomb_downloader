@@ -47,7 +47,13 @@ return [
             'driver' => 'local',
             'root'   => storage_path('app'),
         ],
-        
+
+        'video_thumbnails' => [
+            'driver' => 'local',
+            'root' => storage_path('app/video_thumbnails'),
+            'visibility' => 'public',
+        ],
+
         'ftp' => [
             'driver'   => 'ftp',
             'host'     => 'ftp.example.com',

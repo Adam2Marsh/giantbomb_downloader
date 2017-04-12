@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddNewRuleRequest;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -26,26 +27,20 @@ class RuleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param AddNewRuleRequest|Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AddNewRuleRequest $request)
     {
         Log::info(__METHOD__ . " Creating a new rule");
 
-        try {
-            $rules = new Rule();
+        $rules = new Rule();
 
-            $rules->fill($request->all());
+        $rules->fill($request->all());
 
-            $rules->save();
+        $rules->save();
 
-            return redirect('rules')->with('success', 'Rule Added Successully');
-        } catch (\Exception $e) {
-            Log::error(__METHOD__ . " Something went wrong!");
-            Log::error(__METHOD__ . $e->getMessage());
-            return redirect('rules')->with('errors', 'Rule Already Exists');
-        }
+        return redirect('rules')->with('success', 'Rule Added Successfully');
     }
 
     /**
@@ -83,6 +78,6 @@ class RuleController extends Controller
 
         $rule->delete();
 
-        return redirect('rules')->with('success', 'Rule Deleted Successully');
+        return redirect('rules')->with('success', 'Rule Deleted Successfully');
     }
 }

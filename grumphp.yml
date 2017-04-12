@@ -4,4 +4,4 @@ parameters:
     tasks:
       phpcs:
         standard: PSR2
-        ignore_patterns: [./tests/*, ./resources/*, ./database/*, ./bootstrap/*]
+        ignore_patterns: [./tests/*, ./resources/*, ./database/*, ./bootstrap/*, ./vendor/*, .*.xml]

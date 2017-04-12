@@ -10,7 +10,7 @@
 | for a while like the download as videos are large....
 |
 */
-set_time_limit(900);
+set_time_limit(0);
 ini_set("user_agent", "Adam2Marsh Laravel Video Downloader PI");
 
 /*
@@ -54,14 +54,11 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
-/**
-* Configure Monolog
-*/
-$app->configureMonologUsing(function(Monolog\Logger $monolog) {
-	$filename = storage_path('logs/laravel-'.php_sapi_name().'.log');
-	$handler = new Monolog\Handler\RotatingFileHandler($filename);
-	$monolog->pushHandler($handler);
-});
+$app->singleton(
+    Illuminate\Foundation\Bootstrap\ConfigureLogging::class,
+    Bootstrap\ConfigureLogging::class
+);
+
 
 /*
 |--------------------------------------------------------------------------

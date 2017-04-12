@@ -5,18 +5,17 @@ namespace App\Services;
 use GuzzleHttp\Client;
 use Log;
 use Storage;
+use App\Config;
 use App\Repositories\VideoRepository;
-
-use App\Events\VideoDownloadedEvent;
 
 class VideoStorage
 {
 
-    protected $vsr;
+    protected $videoRepository;
 
     public function __construct()
     {
-        $this->vsr = new \App\Repositories\VideoRepository;
+        $this->videoRepository = new VideoRepository;
     }
 
     /**
@@ -28,17 +27,19 @@ class VideoStorage
     public function saveVideo($video)
     {
         Log::info(__METHOD__." Downloading Video $video->name");
-        $this->vsr->updateVideoToDownloadedStatus($video->id, "DOWNLOADING");
+        $this->videoRepository->updateVideoToDownloadedStatus($video->id, "DOWNLOADING");
+
         $this->downloadVideofromURL($video->url, "gb_videos", $video->file_name);
 
         if ($this->checkForVideo("gb_videos", $video->file_name)) {
             Log::info(__METHOD__." Video downloaded and stored gb_videos/$video->name");
-            $this->vsr->updateVideoToDownloadedStatus($video->id, "DOWNLOADED");
-            event(new VideoDownloadedEvent());
+            $this->videoRepository->updateVideoToDownloadedStatus($video->id, "DOWNLOADED");
             return;
         }
 
-        Log::info(__METHOD__." Video failed download");
+        Log::error(__METHOD__." Video failed download");
+        throw new Exception("$video->name failed download", 1);
+
     }
 
     /**
@@ -49,7 +50,19 @@ class VideoStorage
     public function downloadVideofromURL($url, $directory, $file_name)
     {
         Log::info(__METHOD__." I've been asked to download a video from $url and save in $directory");
-        Storage::put("$directory/$file_name", fopen($url."?api_key=".config('gb.api_key'), "r"));
+
+        Log::info(__METHOD__." Will create download directory if it doesn't exists");
+        Storage::makeDirectory($directory);
+
+        $downloadUrl = $url."?api_key=".Config::where('name', '=', 'API_KEY')->first()->value;
+        $saveLocation = "$directory/$file_name";
+
+        if(config('gb.use_wget_to_download')) {
+            $saveLocation = storage_path() . "/app/" . $saveLocation;
+            $output = `wget -O {$saveLocation} {$downloadUrl}`;
+        } else {
+            Storage::put("$directory/$file_name", fopen($downloadUrl, "r"));
+        }
     }
 
 
@@ -83,4 +96,5 @@ class VideoStorage
         Storage::delete("$directory/$file_name");
         Log::info(__METHOD__." $directory/$file_name deleted from storage");
     }
+
 }

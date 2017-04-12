@@ -11,6 +11,8 @@ use App\Rule;
 class RulesRepositoryTest extends TestCase
 {
 
+    use DatabaseMigrations;
+
     protected $rulesRepository;
 
   	public function setup()

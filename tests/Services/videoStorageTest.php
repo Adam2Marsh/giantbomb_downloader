@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\VideoStorage;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -7,11 +8,11 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class VideoStorageTest extends TestCase
 {
 
-	protected $dv;
+	protected $videoStorage;
 
 	public function setup()
 	{
-		$this->dv = new \App\Services\VideoStorage;
+		$this->videoStorage = new VideoStorage;
         parent::setUp();
 	}
 
@@ -20,8 +21,8 @@ class VideoStorageTest extends TestCase
      */
     public function test_DownloadVideoFromURL()
     {
-        $testVid = "http://homestead.app/TestVideo";
-        $this->dv->downloadVideofromURL($testVid, "test", "TestVideo.mp4");
+        $testVid = "https://giantbomb-pdl.akamaized.net/video/ft_nonsubs_060311_3500.mp4";
+        $this->videoStorage->downloadVideofromURL($testVid, "gb_videos", "TestVideo.mp4");
     }
 
      /**
@@ -29,7 +30,7 @@ class VideoStorageTest extends TestCase
      */
     public function test_checkForVideo_Success()
     {
-        $this->assertTrue($this->dv->checkForVideo("test","TestVideo.mp4"));
+        $this->assertTrue($this->videoStorage->checkForVideo("gb_videos","TestVideo.mp4"));
     }
 
      /**
@@ -39,7 +40,7 @@ class VideoStorageTest extends TestCase
      */
     public function test_checkForVideo_Failure()
     {
-		$this->assertFalse($this->dv->checkForVideo("test","WontBeFound.mp4"));
+		$this->assertFalse($this->videoStorage->checkForVideo("gb_videos","WontBeFound.mp4"));
     }
     
      /**
@@ -49,8 +50,8 @@ class VideoStorageTest extends TestCase
      */
     public function test_deleteVideo_Success()
     {
-    	$this->dv->deleteVideo("test","TestVideo.mp4");
-		$this->assertFalse($this->dv->checkForVideo("test","TestVideo.mp4"));
+    	$this->videoStorage->deleteVideo("gb_videos","TestVideo.mp4");
+		$this->assertFalse($this->videoStorage->checkForVideo("gb_videos","TestVideo.mp4"));
     }
 
 }

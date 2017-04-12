@@ -9,7 +9,7 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class VideoDownloadedEvent implements ShouldBroadcast
+class BrowserForceRefreshEvent implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;
 
