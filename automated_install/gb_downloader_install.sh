@@ -47,8 +47,8 @@ InstallPackagesRequiredForInstallScript() {
 
     sudo apt-get update
     sudo apt-get install -y ${INSTALLER_DEPS[@]}
-    sudo sh -c 'wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg'
-    sudo sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
+    sudo sh -c 'echo "deb http://repozytorium.mati75.eu/raspbian jessie-backports main contrib non-free" >> /etc/apt/sources.list'
+    sudo sh -c 'gpg --keyserver pgpkeys.mit.edu --recv-key CCD91D6111A06851; gpg --armor --export CCD91D6111A06851 | apt-key add -'
 }
 
 WelcomeDialogs() {
@@ -68,16 +68,16 @@ InstallPackagesRequiredForGiantbombDownloader() {
 
 GrabGiantbombDownloaderFromGit() {
 
-    cd /var/www
+    sudo cd /var/www
 
     echo "-*- Checking if you already have the project cloned"
     if [ -d "giantbomb_downloader" ]; then
         echo "-*- You do! Just pulling latest version"
-        cd giantbomb_downloader
-        git pull
+        sudo cd giantbomb_downloader
+        sudo git pull
     else
         echo "-*- You don't! Cloning Repo"
-        git clone ${GIT_PROJECT_URL}
+        sudo git clone ${GIT_PROJECT_URL}
     fi
 }
 

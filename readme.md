@@ -13,7 +13,7 @@ I built the tool using the [Laravel Framework](https://laravel.com/) and [Giantb
 
 ## How to Install?
 ``` shell
-curl -sSL https://raw.githubusercontent.com/Adam2Marsh/giantbomb_downloader/master/automated_install/gb_downloader_install.sh | sudo bash
+curl -sSL https://raw.githubusercontent.com/Adam2Marsh/giantbomb_downloader/master/automated_install/gb_downloader_install.sh | bash
 ```
 
 
