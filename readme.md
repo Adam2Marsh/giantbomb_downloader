@@ -11,11 +11,10 @@ I present Giantbomb Downloader:
 
 
 ## How does it work?
-TLDR: It's a PHP Site which uses the Giantbomb API to fetch latest videos.    
+TLDR: It's a PHP Site which uses the Giantbomb API to fetch latest videos. I've created an automated script which will install everything on a raspberry pi (it's how I use it and kinda designed it for).    
 
 
-I built the tool using the [Laravel Framework](https://laravel.com/) and [Giantbomb's API](https://www.giantbomb.com/api/)
-
+I built the tool using the [Laravel Framework](https://laravel.com/) and [Giantbomb's API](https://www.giantbomb.com/api/).
 
 
 ## Contributing
