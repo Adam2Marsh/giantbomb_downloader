@@ -68,12 +68,12 @@ InstallPackagesRequiredForGiantbombDownloader() {
 
 GrabGiantbombDownloaderFromGit() {
 
-    sudo cd /var/www
+    cd /var/www
 
     echo "-*- Checking if you already have the project cloned"
     if [ -d "giantbomb_downloader" ]; then
         echo "-*- You do! Just pulling latest version"
-        sudo cd giantbomb_downloader
+        cd giantbomb_downloader
         sudo git pull
     else
         echo "-*- You don't! Cloning Repo"
