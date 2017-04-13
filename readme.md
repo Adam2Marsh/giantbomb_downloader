@@ -5,6 +5,8 @@ If your reading this then our situations could be similar, you love GiantBomb an
 I present Giantbomb Downloader:
 ![Giantbomb Look](github_images/FrontPage.png)
 
+It's not perfect, and looks a little ugly currently but works. Thought I'd put out there first to see if anyone else might find useful. I've still got a few things on my trello board I'd like to add, and if alot of people find it useful maybe I'll spend some more time it.
+
 ## Features
 * Checks for New Giantbomb Videos every Hour
 * Download videos onto your Pi, ready to download from Pi saving you time
@@ -32,8 +34,8 @@ If your using the tool and think its missing a key feature then raise an issue w
 The Giantbomb Downloader is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
 
 ## Want to say thanks?
-I created this tool to allow me to download Giantbomb videos overnight without having to leave my PC on overnight ready for my commutes. I've had fun developing it while using it to learn the Laravel Framework. You can use for free and I expect nothing but if you want to say thanks you could:
- * Say thanks on Twitter [Adam2Marsh Twitter](https://twitter.com/Adam2Marsh)
+I've had fun developing it while at the same time learning the Laravel Framework in my spare time. You can use for free and I expect nothing but if you want to say thanks,
+ * Send me a tweet [@Adam2Marsh](https://twitter.com/Adam2Marsh)
  * Buy me a McDonalds Meal via a Paypal Donate [![](https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=RGEBE58NW4ZMA&lc=GB&item_name=Adam2Marsh&currency_code=GBP&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted)
  
  But remember I expect nothing **:)**
