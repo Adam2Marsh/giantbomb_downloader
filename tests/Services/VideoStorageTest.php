@@ -1,12 +1,16 @@
 <?php
 
-use App\Services\VideoStorage;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+use App\Services\VideoStorage;
+use App\Video;
+
 class VideoStorageTest extends TestCase
 {
+
+    use DatabaseTransactions;
 
 	protected $videoStorage;
 
@@ -23,6 +27,21 @@ class VideoStorageTest extends TestCase
     {
         $testVid = "https://giantbomb-pdl.akamaized.net/video/ft_nonsubs_060311_3500.mp4";
         $this->videoStorage->downloadVideofromURL($testVid, "gb_videos", "TestVideo.mp4");
+    }
+
+    /**
+     * Test downloading a video which doesn't exist, should fail
+     * @expectedException Exception
+     */
+    public function test_SaveVideo_Fail()
+    {
+        $newVideo = new Video;
+        $newVideo->name = "Fail Video as bad url";
+        $newVideo->file_name = "FailVideo.mp4";
+        $newVideo->url = "localhost/ft_060311_3500.mp4";
+        $newVideo->save();
+
+        $this->videoStorage->SaveVideo($newVideo);
     }
 
      /**
