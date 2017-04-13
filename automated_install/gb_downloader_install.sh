@@ -4,8 +4,8 @@
 tmpLog=/tmp/gbdownloader-install.log
 
 GIT_PROJECT_URL=https://github.com/Adam2Marsh/giantbomb_downloader.git
-INSTALLER_DEPS=(git whiptail sudo wget apt-transport-https lsb-release ca-certificates)
-GB_DOWNLOADER_DEPS=(php7.1 php7.1-mysql php7.1-odbc php7.1-mbstring php7.1-mcrypt php7.1-xml php7.1-cli php7.1-dev apache2 mysql-server redis-server supervisor)
+INSTALLER_DEPS=(git whiptail wget apt-transport-https lsb-release ca-certificates)
+GB_DOWNLOADER_DEPS=(libapache2-mod-php php7.1 php7.1-mysql php7.1-odbc php7.1-mbstring php7.1-mcrypt php7.1-xml php7.1-cli php7.1-dev apache2 mysql-server redis-server supervisor)
 
 DATABASE_PASSWORD=`date +%s | sha256sum | base64 | head -c 32`
 
@@ -29,11 +29,10 @@ SudoCheck() {
     if [[ $EUID -eq 0 ]];then
         echo "-*- You are root."
     else
-        echo "-*- sudo will be used for the install."
-        echo "-*- Please run script with Sudo as escalated privileges are required for installation"
+        echo "-*- will be used for the install."
+        echo "-*- Please run script with as escalated privileges are required for installation"
         exit 1
     fi
-
 }
 
 PackageManagerCheck() {
@@ -44,16 +43,14 @@ PackageManagerCheck() {
         echo "-*- This script will only install on a apt-get OS, sorry! Quiting"
         exit 1
     fi
-
 }
 
 InstallPackagesRequiredForInstallScript() {
 
-    sudo sh -c 'wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg'
-    sudo sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
     sudo apt-get update
     sudo apt-get install -y ${INSTALLER_DEPS[@]}
-
+    sudo sh -c 'wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg'
+    sudo sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
 }
 
 WelcomeDialogs() {
@@ -67,44 +64,68 @@ WelcomeDialogs() {
 
 InstallPackagesRequiredForGiantbombDownloader() {
 
+    sudo apt-get update
     sudo apt-get install -y ${GB_DOWNLOADER_DEPS[@]}
 }
 
 GrabGiantbombDownloaderFromGit() {
 
-    cd /var/www/html
-    git clone ${GIT_PROJECT_URL}
+    cd /var/www
+
+    echo "-*- Checking if you already have the project cloned"
+    if [ -d "giantbomb_downloader" ]; then
+        echo "-*- You do! Just pulling latest version"
+        cd giantbomb_downloader
+        git pull
+    else
+        echo "-*- You don't! Cloning Repo"
+        git clone ${GIT_PROJECT_URL}
+    fi
 }
 
 ConfigureApache() {
 
     sudo service apache2 stop
-    sudo cp /var/www/html/giantbomb_downloader/automated_install/configs/apache2/giantbomb_downloader.conf /etc/apache2/sites-available/giantbomb_downloader.conf
+    sudo cp /var/www/giantbomb_downloader/automated_install/configs/apache2/giantbomb_downloader.conf /etc/apache2/sites-available/giantbomb_downloader.conf
     sudo a2ensite giantbomb_downloader.conf
     sudo service apache2 start
+    sudo service apache2 reload
 }
 
 ConfigureMysqlDatabase() {
 
     mysql -ve "CREATE USER 'gb'@'localhost' IDENTIFIED BY '${DATABASE_PASSWORD}'"
-    mysql -ve "CREATE DATABASE IF NOT EXISTS gb"
-    mysql -ve "GRANT ALL ON gb.* TO 'gb'@'localhost'"
+    mysql -ve "CREATE DATABASE IF NOT EXISTS giantbomb"
+    mysql -ve "GRANT ALL ON giantbomb.* TO 'gb'@'localhost'"
     mysql -ve "FLUSH PRIVILEGES"
+}
+
+ComposerInstall() {
+
+    cd /var/www/giantbomb_downloader
+    /var/www/giantbomb_downloader/composer.phar install
+}
+
+CreateEnvFile() {
+
+    sudo echo "DB_PASSWORD=${DATABASE_PASSWORD}" >> "/var/www/giantbomb_downloader/.env"
+    sudo echo "APP_KEY=" >> "/var/www/giantbomb_downloader/.env"
 }
 
 ConfigureSupervisor() {
 
     sudo supervisorctl stop all
-    sudo cp -R /var/www/html/giantbomb_downloader/automated_install/configs/supervisor/* /etc/supervisor/conf.d/
+    sudo cp -R /var/www/giantbomb_downloader/automated_install/configs/supervisor/* /etc/supervisor/conf.d/
     sudo supervisorctl reread
     sudo supervisorctl start all
 }
 
-ComposerInstall() {
+SetupLaravelFramework() {
 
-    /var/www/html/giantbomb_downloader/composer.phar install
+    sudo chmod 777 -R /var/www/giantbomb_downloader/storage/
+    sudo php /var/www/giantbomb_downloader/artisan key:generate
+    sudo php /var/www/giantbomb_downloader/artisan migrate
 }
-
 
 SudoCheck
 PackageManagerCheck
@@ -113,5 +134,8 @@ WelcomeDialogs
 InstallPackagesRequiredForGiantbombDownloader
 GrabGiantbombDownloaderFromGit
 ConfigureMysqlDatabase
-ConfigureSupervisor
+ConfigureApache
 ComposerInstall
+CreateEnvFile
+SetupLaravelFramework
+ConfigureSupervisor
