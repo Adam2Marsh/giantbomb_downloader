@@ -44,14 +44,23 @@ class DownloadVideoInformation
                 $response = $video->name." doesn't exists in database, adding";
                 $details = "";
 
+                try {
+
                 $thumbnail_path = $getVideoDetails->downloadVideoThumbnail(
                     $video->image->small_url,
                     $video->name
                 );
 
+                    $video_file_size = $this->getVideoFileSize($video->hd_url."?api_key=$api_key");
+                }
+
+                catch  (\Exception $exception) {
+
+                }
+
                 $savedVideo = $videoRepository->addVideoToDatabase(
                     $video,
-                    $this->getVideoFileSize($video->hd_url."?api_key=$api_key"),
+                    $video_file_size,
                     $thumbnail_path
                 );
 

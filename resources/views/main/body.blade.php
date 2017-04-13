@@ -96,6 +96,12 @@
 								<button type="submit" class="btn btn-danger">Watched</button>
 								{{ Form::close() }}
 								@endif
+
+								@if ($video->status == 'FAILED')
+									{{ Form::open(['action' => ['VideoController@download', $video->id], 'method' => 'get']) }}
+									<button type="submit" class="btn btn-success">Retry Download</button>
+									{{ Form::close() }}
+								@endif
 							</td>
 						</tr>
 						@endforeach

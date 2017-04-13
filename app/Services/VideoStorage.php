@@ -38,7 +38,8 @@ class VideoStorage
         }
 
         Log::error(__METHOD__." Video failed download");
-        throw new Exception("$video->name failed download", 1);
+        $this->videoRepository->updateVideoToDownloadedStatus($video->id, "FAILED");
+        throw new \Exception("$video->name failed download", 1);
 
     }
 
@@ -59,7 +60,13 @@ class VideoStorage
 
         if(config('gb.use_wget_to_download')) {
             $saveLocation = storage_path() . "/app/" . $saveLocation;
-            $output = `wget -O {$saveLocation} {$downloadUrl}`;
+            exec("wget -O {$saveLocation} {$downloadUrl}", $output, $return);
+
+            if($return != 0) {
+                Log::error(__METHOD__." Video did not download successfully, output is " . $return);
+                $this->deleteVideo($directory, $file_name);
+            }
+
         } else {
             Storage::put("$directory/$file_name", fopen($downloadUrl, "r"));
         }

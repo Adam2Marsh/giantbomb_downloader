@@ -35,4 +35,5 @@ class DownloadVideoJob extends Job implements ShouldQueue
     {
         $vs->saveVideo($this->video);
     }
+
 }

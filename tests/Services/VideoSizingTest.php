@@ -23,10 +23,12 @@ class VideoSizingTest extends TestCase
         $this->videoSizing = new VideoSizing();
         $this->videoStorage = new VideoStorage();
 
-//        $this->videoStorage->downloadVideofromURL(
-//            "https://giantbomb-pdl.akamaized.net/video/ft_nonsubs_060311_3500.mp4"
-//            ,"gb_videos"
-//            ,"video_size_test.mp4");
+        if(!$this->videoStorage->checkForVideo("gb_videos", "video_size_test.mp4")) {
+            $this->videoStorage->downloadVideofromURL(
+                "https://giantbomb-pdl.akamaized.net/video/ft_nonsubs_060311_3500.mp4"
+                , "gb_videos"
+                , "video_size_test.mp4");
+        }
     }
 
     /**
@@ -36,7 +38,7 @@ class VideoSizingTest extends TestCase
      */
     public function test_GetVideoSizeAsBytes()
     {
-        $this->assertEquals("11334031", $this->videoSizing
+        $this->assertEquals("11209849", $this->videoSizing
                     ->getVideoSize("gb_videos/video_size_test.mp4")
                     ->returnAsBytes());
     }
@@ -48,7 +50,7 @@ class VideoSizingTest extends TestCase
      */
     public function test_GetVideoSizeAsHuman()
     {
-        $this->assertEquals("10.81MB", $this->videoSizing
+        $this->assertEquals("10.69MB", $this->videoSizing
                     ->getVideoSize("gb_videos/video_size_test.mp4")
                     ->returnAsHuman());
     }
@@ -60,7 +62,7 @@ class VideoSizingTest extends TestCase
      */
     public function test_GetVideoSizeAsPercentage()
     {
-        $this->assertEquals("629%", $this->videoSizing
+        $this->assertEquals("623%", $this->videoSizing
                     ->getVideoSize("gb_videos/video_size_test.mp4")
                     ->returnAsPercentage(1800631));
     }
@@ -72,7 +74,7 @@ class VideoSizingTest extends TestCase
      */
     public function test_GetDirectorySizeAsBytes()
     {
-        $this->assertEquals("11334031", $this->videoSizing
+        $this->assertEquals("11209849", $this->videoSizing
                     ->getDirectorySize("gb_videos")
                     ->returnAsBytes());
     }
@@ -96,7 +98,7 @@ class VideoSizingTest extends TestCase
      */
     public function test_GetDirectorySizeAsPercentage()
     {
-        $this->assertEquals("129%", $this->videoSizing
+        $this->assertEquals("127%", $this->videoSizing
                     ->getDirectorySize("gb_videos")
                     ->returnAsPercentage(8800631));
     }
