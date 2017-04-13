@@ -33,7 +33,7 @@ class VideoStorageTest extends TestCase
      * Test downloading a video which doesn't exist, should fail
      * @expectedException Exception
      */
-    public function test_SaveVideo_Fail()
+    public function test_saveVideo_Fail()
     {
         $newVideo = new Video;
         $newVideo->name = "Fail Video as bad url";
@@ -41,7 +41,7 @@ class VideoStorageTest extends TestCase
         $newVideo->url = "localhost/ft_060311_3500.mp4";
         $newVideo->save();
 
-        $this->videoStorage->SaveVideo($newVideo);
+        $this->videoStorage->saveVideo($newVideo);
     }
 
      /**
