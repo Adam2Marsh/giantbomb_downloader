@@ -49,8 +49,8 @@ PackageManagerCheck() {
 
 InstallPackagesRequiredForInstallScript() {
 
-    wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-    echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+    sudo sh -c 'wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg'
+    sudo sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
     sudo apt-get update
     sudo apt-get install -y ${INSTALLER_DEPS[@]}
 
@@ -95,7 +95,7 @@ ConfigureMysqlDatabase() {
 ConfigureSupervisor() {
 
     sudo supervisorctl stop all
-    cp -R /var/www/html/giantbomb_downloader/automated_install/configs/supervisor/* /etc/supervisor/conf.d/
+    sudo cp -R /var/www/html/giantbomb_downloader/automated_install/configs/supervisor/* /etc/supervisor/conf.d/
     sudo supervisorctl reread
     sudo supervisorctl start all
 }
@@ -108,9 +108,9 @@ ComposerInstall() {
 
 SudoCheck
 PackageManagerCheck
-#InstallPackagesRequiredForInstallScript
+InstallPackagesRequiredForInstallScript
 WelcomeDialogs
-#InstallPackagesRequiredForGiantbombDownloader
+InstallPackagesRequiredForGiantbombDownloader
 GrabGiantbombDownloaderFromGit
 ConfigureMysqlDatabase
 ConfigureSupervisor
