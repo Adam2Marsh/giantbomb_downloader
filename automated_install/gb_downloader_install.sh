@@ -29,9 +29,7 @@ SudoCheck() {
     if [[ $EUID -eq 0 ]];then
         echo "-*- You are root."
     else
-        echo "-*- will be used for the install."
-        echo "-*- Please run script with as escalated privileges are required for installation"
-        exit 1
+        echo "-*- Sudo will be used for the install."
     fi
 }
 
