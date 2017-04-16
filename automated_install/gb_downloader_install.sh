@@ -56,14 +56,14 @@ WelcomeDialogs() {
     whiptail --msgbox --title "Giantbomb Downloader Automated Installer" "\n\nThis tool will automatically install Giantbomb Downloader Tool" ${r} ${c}
 
     whiptail --msgbox --title "Giantbomb Downloader Automated Installer" "\n\nBefore we start going to check a few things I require for setup" ${r} ${c}
-
-    whiptail --msgbox --title "Giantbomb Downloader Automated Installer" "\n\nValidated OS and everything looks good, starting install" ${r} ${c}
 }
 
 InstallPackagesRequiredForGiantbombDownloader() {
 
+    export DEBIAN_FRONTEND=noninteractive  
+    
     sudo apt-get update
-    sudo apt-get install -y ${GB_DOWNLOADER_DEPS[@]}
+    sudo apt-get install -q -y ${GB_DOWNLOADER_DEPS[@]}
 }
 
 GrabGiantbombDownloaderFromGit() {
