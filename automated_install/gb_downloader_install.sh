@@ -21,6 +21,8 @@ c=$(( columns / 2 ))
 r=$(( r < 20 ? 20 : r ))
 c=$(( c < 70 ? 70 : c ))
 
+# Makes apt-get non-interactive
+sudo export DEBIAN_FRONTEND=noninteractive
 
 SudoCheck() {
 
@@ -59,8 +61,6 @@ WelcomeDialogs() {
 }
 
 InstallPackagesRequiredForGiantbombDownloader() {
-
-    export DEBIAN_FRONTEND=noninteractive  
     
     sudo apt-get update
     sudo apt-get install -q -y ${GB_DOWNLOADER_DEPS[@]}
@@ -125,6 +125,10 @@ SetupLaravelFramework() {
     sudo php /var/www/giantbomb_downloader/artisan migrate
 }
 
+SymlinkGiantbombDownloader() {
+    sudo ln -s /var/www/giantbomb_downloader/public /var/www/html/giantbomb_downloader
+}
+
 SudoCheck
 PackageManagerCheck
 InstallPackagesRequiredForInstallScript
@@ -137,3 +141,4 @@ ComposerInstall
 CreateEnvFile
 SetupLaravelFramework
 ConfigureSupervisor
+SymlinkGiantbombDownloader
