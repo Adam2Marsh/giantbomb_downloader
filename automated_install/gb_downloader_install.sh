@@ -22,7 +22,7 @@ r=$(( r < 20 ? 20 : r ))
 c=$(( c < 70 ? 70 : c ))
 
 # Makes apt-get non-interactive
-sudo export DEBIAN_FRONTEND=noninteractive
+export DEBIAN_FRONTEND=noninteractive
 
 SudoCheck() {
 
@@ -61,9 +61,9 @@ WelcomeDialogs() {
 }
 
 InstallPackagesRequiredForGiantbombDownloader() {
-    
+
     sudo apt-get update
-    sudo apt-get install -q -y ${GB_DOWNLOADER_DEPS[@]}
+    sudo -E apt-get -q -y install ${GB_DOWNLOADER_DEPS[@]}
 }
 
 GrabGiantbombDownloaderFromGit() {
