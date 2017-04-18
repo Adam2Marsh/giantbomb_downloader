@@ -5,9 +5,7 @@ tmpLog=/tmp/gbdownloader-install.log
 
 GIT_PROJECT_URL=https://github.com/Adam2Marsh/giantbomb_downloader.git
 INSTALLER_DEPS=(git whiptail wget apt-transport-https lsb-release ca-certificates)
-GB_DOWNLOADER_DEPS=(libapache2-mod-php php7.1 php7.1-mysql php7.1-odbc php7.1-mbstring php7.1-mcrypt php7.1-xml php7.1-cli php7.1-dev apache2 mysql-server redis-server supervisor)
-
-DATABASE_PASSWORD=`date +%s | sha256sum | base64 | head -c 32`
+GB_DOWNLOADER_DEPS=(libapache2-mod-php php7.1 php7.1-sqlite3 php7.1-odbc php7.1-mbstring php7.1-mcrypt php7.1-xml php7.1-cli php7.1-dev apache2 sqlite redis-server supervisor)
 
 # Find the rows and columns will default to 80x24 is it can not be detected
 screen_size=$(stty size 2>/dev/null || echo 24 80)
@@ -47,6 +45,7 @@ PackageManagerCheck() {
 
 InstallPackagesRequiredForInstallScript() {
 
+    echo "-*- Installing required packages for installer to run"
     sudo apt-get update
     sudo apt-get install -y ${INSTALLER_DEPS[@]}
     sudo sh -c 'echo "deb http://repozytorium.mati75.eu/raspbian jessie-backports main contrib non-free" >> /etc/apt/sources.list'
@@ -62,6 +61,7 @@ WelcomeDialogs() {
 
 InstallPackagesRequiredForGiantbombDownloader() {
 
+    echo "-*- Installing required packages for the tool to run"
     sudo apt-get update
     sudo -E apt-get -q -y install ${GB_DOWNLOADER_DEPS[@]}
 }
@@ -81,37 +81,29 @@ GrabGiantbombDownloaderFromGit() {
     fi
 }
 
-ConfigureApache() {
+ConfigureDb() {
 
-    sudo service apache2 stop
-    sudo cp /var/www/giantbomb_downloader/automated_install/configs/apache2/giantbomb_downloader.conf /etc/apache2/sites-available/giantbomb_downloader.conf
-    sudo a2ensite giantbomb_downloader.conf
-    sudo service apache2 start
-    sudo service apache2 reload
-}
-
-ConfigureMysqlDatabase() {
-
-    mysql -ve "CREATE USER 'gb'@'localhost' IDENTIFIED BY '${DATABASE_PASSWORD}'"
-    mysql -ve "CREATE DATABASE IF NOT EXISTS giantbomb"
-    mysql -ve "GRANT ALL ON giantbomb.* TO 'gb'@'localhost'"
-    mysql -ve "FLUSH PRIVILEGES"
+    echo "-*- Configuring DB"
+    sudo touch /var/www/giantbomb_downloader/database/database.sqlite
 }
 
 ComposerInstall() {
 
+    echo "-*- Running Composer to install site"
     cd /var/www/giantbomb_downloader
-    /var/www/giantbomb_downloader/composer.phar install
+    sudo /var/www/giantbomb_downloader/composer.phar install
 }
 
 CreateEnvFile() {
 
-    sudo echo "DB_PASSWORD=${DATABASE_PASSWORD}" >> "/var/www/giantbomb_downloader/.env"
-    sudo echo "APP_KEY=" >> "/var/www/giantbomb_downloader/.env"
+    echo "-*- Creating env file"
+    sudo sh -c 'echo "DB_CONNECTION=sqlite" >> /var/www/giantbomb_downloader/.env'
+    sudo sh -c 'echo "APP_KEY=" >> /var/www/giantbomb_downloader/.env'
 }
 
 ConfigureSupervisor() {
 
+    echo "-*- Configuring Supervisor"
     sudo supervisorctl stop all
     sudo cp -R /var/www/giantbomb_downloader/automated_install/configs/supervisor/* /etc/supervisor/conf.d/
     sudo supervisorctl reread
@@ -120,12 +112,14 @@ ConfigureSupervisor() {
 
 SetupLaravelFramework() {
 
+    echo "-*- Final Install Step for Laravel Framework"
     sudo chmod 777 -R /var/www/giantbomb_downloader/storage/
     sudo php /var/www/giantbomb_downloader/artisan key:generate
     sudo php /var/www/giantbomb_downloader/artisan migrate
 }
 
 SymlinkGiantbombDownloader() {
+    echo "-*- Create Symlink in apache web root so we can access"
     sudo ln -s /var/www/giantbomb_downloader/public /var/www/html/giantbomb_downloader
 }
 
@@ -135,8 +129,7 @@ InstallPackagesRequiredForInstallScript
 WelcomeDialogs
 InstallPackagesRequiredForGiantbombDownloader
 GrabGiantbombDownloaderFromGit
-ConfigureMysqlDatabase
-ConfigureApache
+ConfigureDb
 ComposerInstall
 CreateEnvFile
 SetupLaravelFramework
