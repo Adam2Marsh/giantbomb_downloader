@@ -145,8 +145,7 @@ ConfigureCron() {
 CreateCssAndJsFiles() {
 
     echo "-*- Configure Css and Js"
-    npm install -g bower
-    npm install --global gulp
+    sudo npm install -g bower gulp
     npm install
     bower install
     gulp --production
