@@ -12,7 +12,8 @@ class CreateBaseConfigs extends Seeder
     public function run()
     {
         DB::table('configs')->insert([
-            'name' => 'SLACK_HOOK_URL'
+            'name' => 'SLACK_HOOK_URL',
+            'value' => 'NOTSET'
         ]);
     }
 }
