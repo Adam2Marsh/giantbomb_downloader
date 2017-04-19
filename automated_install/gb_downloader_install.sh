@@ -68,7 +68,7 @@ InstallPackagesRequiredForGiantbombDownloader() {
 
 GrabGiantbombDownloaderFromGit() {
 
-    cd /var/www
+    cd /opt
 
     echo "-*- Checking if you already have the project cloned"
     if [ -d "giantbomb_downloader" ]; then
@@ -77,35 +77,35 @@ GrabGiantbombDownloaderFromGit() {
         sudo git pull
     else
         echo "-*- You don't! Cloning Repo"
-        sudo git clone ${GIT_PROJECT_URL}
+        git clone ${GIT_PROJECT_URL}
     fi
 }
 
 ConfigureDb() {
 
     echo "-*- Configuring DB"
-    sudo touch /var/www/giantbomb_downloader/database/database.sqlite
+    touch /opt/giantbomb_downloader/database/database.sqlite
 }
 
 ComposerInstall() {
 
     echo "-*- Running Composer to install site"
-    cd /var/www/giantbomb_downloader
-    sudo /var/www/giantbomb_downloader/composer.phar install
+    cd /opt/giantbomb_downloader
+    ./composer.phar install
 }
 
 CreateEnvFile() {
 
     echo "-*- Creating env file"
-    sudo sh -c 'echo "DB_CONNECTION=sqlite" >> /var/www/giantbomb_downloader/.env'
-    sudo sh -c 'echo "APP_KEY=" >> /var/www/giantbomb_downloader/.env'
+    echo "DB_CONNECTION=sqlite" >> "/opt/giantbomb_downloader/.env"
+    echo "APP_KEY=" >> "/opt/giantbomb_downloader/.env"
 }
 
 ConfigureSupervisor() {
 
     echo "-*- Configuring Supervisor"
     sudo supervisorctl stop all
-    sudo cp -R /var/www/giantbomb_downloader/automated_install/configs/supervisor/* /etc/supervisor/conf.d/
+    sudo cp -R /opt/giantbomb_downloader/automated_install/configs/supervisor/* /etc/supervisor/conf.d/
     sudo supervisorctl reread
     sudo supervisorctl start all
 }
@@ -113,15 +113,32 @@ ConfigureSupervisor() {
 SetupLaravelFramework() {
 
     echo "-*- Final Install Step for Laravel Framework"
-    sudo chmod 777 -R /var/www/giantbomb_downloader/storage/
-    sudo sh -c 'php /var/www/giantbomb_downloader/artisan key:generate'
-    sudo php /var/www/giantbomb_downloader/artisan migrate
+    chmod 777 -R /opt/giantbomb_downloader/storage/
+    php /opt/giantbomb_downloader/artisan key:generate
+    php /opt/giantbomb_downloader/artisan migrate
 }
 
 SymlinkGiantbombDownloader() {
+
     echo "-*- Create Symlink in apache web root so we can access"
-    sudo ln -s /var/www/giantbomb_downloader/public /var/www/html/giantbomb_downloader
+    sudo ln -s /opt/giantbomb_downloader/public /var/www/html/giantbomb_downloader
 }
+
+ConfigureApache() {
+
+    sudo a2dismod php7.0
+    sudo a2enmod php7.1
+    sudo a2enmod rewrite
+    sudo cp /opt/giantbomb_downloader/automated_install/configs/apache2/giantbomb_downloader.conf /etc/apache2/sites-available/giantbomb_downloader.conf
+
+    sudo service apache2 reload
+}
+
+ConfigureCron() {
+
+    sudo cp /opt/giantbomb_downloader/automated_install/configs/crontab/giantbomb_downloader /etc/cron.d/giantbomb_downloader
+}
+
 
 SudoCheck
 PackageManagerCheck
@@ -135,3 +152,5 @@ CreateEnvFile
 SetupLaravelFramework
 ConfigureSupervisor
 SymlinkGiantbombDownloader
+ConfigureApache
+ConfigureCron
