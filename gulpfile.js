@@ -43,6 +43,5 @@ elixir(function(mix) {
         'jquery.js',
         'bootstrap.js',
         'jquery-ui.js'
-    ])
-    .webpack('app.js');
+    ]);
 });

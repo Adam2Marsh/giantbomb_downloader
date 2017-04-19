@@ -48,8 +48,13 @@ InstallPackagesRequiredForInstallScript() {
     echo "-*- Installing required packages for installer to run"
     sudo apt-get update
     sudo apt-get install -y ${INSTALLER_DEPS[@]}
-    sudo sh -c 'echo "deb http://repozytorium.mati75.eu/raspbian jessie-backports main contrib non-free" >> /etc/apt/sources.list'
-    sudo sh -c 'gpg --keyserver pgpkeys.mit.edu --recv-key CCD91D6111A06851; gpg --armor --export CCD91D6111A06851 | apt-key add -'
+    if grep -q repozytorium  /etc/apt/sources.list
+    then
+        echo "-*- Don't need to add repo as already exists"
+    else
+        sudo sh -c 'echo "deb http://repozytorium.mati75.eu/raspbian jessie-backports main contrib non-free" >> /etc/apt/sources.list'
+        sudo sh -c 'gpg --keyserver pgpkeys.mit.edu --recv-key CCD91D6111A06851; gpg --armor --export CCD91D6111A06851 | apt-key add -'
+    fi
 }
 
 WelcomeDialogs() {
@@ -98,6 +103,7 @@ ComposerInstall() {
 CreateEnvFile() {
 
     echo "-*- Creating env file"
+    rm /opt/giantbomb_downloader/.env
     echo "DB_CONNECTION=sqlite" >> "/opt/giantbomb_downloader/.env"
     echo "APP_KEY=" >> "/opt/giantbomb_downloader/.env"
 }
@@ -122,6 +128,7 @@ SetupLaravelFramework() {
 SymlinkGiantbombDownloader() {
 
     echo "-*- Create Symlink in apache web root so we can access"
+    sudo rm /var/www/html/giantbomb_downloader
     sudo ln -s /opt/giantbomb_downloader/public /var/www/html/giantbomb_downloader
 }
 
@@ -132,7 +139,6 @@ ConfigureApache() {
     sudo a2enmod php7.1
     sudo a2enmod rewrite
     sudo cp /opt/giantbomb_downloader/automated_install/configs/apache2/giantbomb_downloader.conf /etc/apache2/sites-available/giantbomb_downloader.conf
-
     sudo service apache2 reload
 }
 
@@ -147,6 +153,7 @@ CreateCssAndJsFiles() {
     cd /opt/giantbomb_downloader
     echo "-*- Configure Css and Js"
     sudo npm install -g bower gulp
+    sudo npm install -g npm@latest
     npm install
     bower install
     gulp --production
