@@ -5,7 +5,7 @@ tmpLog=/tmp/gbdownloader-install.log
 
 GIT_PROJECT_URL=https://github.com/Adam2Marsh/giantbomb_downloader.git
 INSTALLER_DEPS=(git whiptail wget apt-transport-https lsb-release ca-certificates)
-GB_DOWNLOADER_DEPS=(libapache2-mod-php php7.1 php7.1-sqlite3 php7.1-odbc php7.1-mbstring php7.1-curl php7.1-mcrypt php7.1-xml php7.1-cli php7.1-dev apache2 sqlite redis-server supervisor)
+GB_DOWNLOADER_DEPS=(libapache2-mod-php php7.1 php7.1-sqlite3 php7.1-odbc php7.1-mbstring php7.1-curl php7.1-mcrypt php7.1-xml php7.1-cli php7.1-dev apache2 sqlite redis-server supervisor node)
 
 # Find the rows and columns will default to 80x24 is it can not be detected
 screen_size=$(stty size 2>/dev/null || echo 24 80)
@@ -127,6 +127,7 @@ SymlinkGiantbombDownloader() {
 
 ConfigureApache() {
 
+    echo "-*- Configure Apache"
     sudo a2dismod php7.0
     sudo a2enmod php7.1
     sudo a2enmod rewrite
@@ -137,10 +138,13 @@ ConfigureApache() {
 
 ConfigureCron() {
 
+    echo "-*- Configure Cron"
     sudo cp /opt/giantbomb_downloader/automated_install/configs/crontab/giantbomb_downloader /etc/cron.d/giantbomb_downloader
 }
 
 CreateCssAndJsFiles() {
+
+    echo "-*- Configure Css and Js"
     npm install -g bower
     npm install --global gulp
     npm install
