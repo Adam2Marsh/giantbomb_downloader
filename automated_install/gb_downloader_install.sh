@@ -68,6 +68,7 @@ InstallPackagesRequiredForGiantbombDownloader() {
 
 GrabGiantbombDownloaderFromGit() {
 
+    sudo chmod 777 /opt
     cd /opt
 
     echo "-*- Checking if you already have the project cloned"
