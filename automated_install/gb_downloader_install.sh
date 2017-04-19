@@ -5,7 +5,7 @@ tmpLog=/tmp/gbdownloader-install.log
 
 GIT_PROJECT_URL=https://github.com/Adam2Marsh/giantbomb_downloader.git
 INSTALLER_DEPS=(git whiptail wget apt-transport-https lsb-release ca-certificates)
-GB_DOWNLOADER_DEPS=(libapache2-mod-php php7.1 php7.1-sqlite3 php7.1-odbc php7.1-mbstring php7.1-curl php7.1-mcrypt php7.1-xml php7.1-cli php7.1-dev apache2 sqlite redis-server supervisor nodejs npm)
+GB_DOWNLOADER_DEPS=(libapache2-mod-php php7.1 php7.1-sqlite3 php7.1-odbc php7.1-mbstring php7.1-curl php7.1-mcrypt php7.1-xml php7.1-cli php7.1-dev apache2 sqlite redis-server supervisor nodejs npm nodejs-legacy)
 
 # Find the rows and columns will default to 80x24 is it can not be detected
 screen_size=$(stty size 2>/dev/null || echo 24 80)
@@ -144,6 +144,7 @@ ConfigureCron() {
 
 CreateCssAndJsFiles() {
 
+    cd /opt/giantbomb_downloader
     echo "-*- Configure Css and Js"
     sudo npm install -g bower gulp
     npm install
