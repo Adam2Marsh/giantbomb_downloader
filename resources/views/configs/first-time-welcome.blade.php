@@ -16,7 +16,7 @@
             <li>If the code is valid click the continue button</li>
         </ol>
     </div>
-    <form class="form-inline ajaxForm" method="POST" name="addAPIKey" action="{{ echo url("FirstTime") }}">
+    <form class="form-inline ajaxForm" method="POST" name="addAPIKey" action="{{ url("FirstTime") }}">
       <input type="hidden" name="_token" value="{{ csrf_token() }}">
       <div class="form-group" id="responseStatus">
           <input type="text" class="form-control" name="linkCode"

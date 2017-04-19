@@ -9,7 +9,7 @@
         <div class="panel-heading">Create new Rules Here</div>
         <div class="panel-body">
 
-          <form class="form-horizontal" method="POST" name="addRegex" action={{ echo url("rules") }}>
+          <form class="form-horizontal" method="POST" name="addRegex" action={{ url("rules") }}>
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="form-group">
               <label class="col-sm-2 control-label">Video Name</label>

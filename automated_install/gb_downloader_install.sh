@@ -116,7 +116,7 @@ SetupLaravelFramework() {
     echo "-*- Final Install Step for Laravel Framework"
     chmod 777 -R /opt/giantbomb_downloader/storage/
     php /opt/giantbomb_downloader/artisan key:generate
-    php /opt/giantbomb_downloader/artisan migrate
+    php /opt/giantbomb_downloader/artisan migrate --force
 }
 
 SymlinkGiantbombDownloader() {
