@@ -140,6 +140,13 @@ ConfigureCron() {
     sudo cp /opt/giantbomb_downloader/automated_install/configs/crontab/giantbomb_downloader /etc/cron.d/giantbomb_downloader
 }
 
+CreateCssAndJsFiles() {
+    npm install -g bower
+    npm install --global gulp
+    npm install
+    bower install
+    gulp --production
+}
 
 SudoCheck
 PackageManagerCheck
@@ -155,3 +162,4 @@ ConfigureSupervisor
 SymlinkGiantbombDownloader
 ConfigureApache
 ConfigureCron
+CreateCssAndJsFiles
