@@ -124,6 +124,7 @@ SymlinkGiantbombDownloader() {
 
     echo "-*- Create Symlink in public folder for thumbnails"
     mkdir -p /opt/giantbomb_downloader/storage/app/video_thumbnails
+    rm /opt/giantbomb_downloader/public/video_thumbnails
     ln -s /opt/giantbomb_downloader/storage/app/video_thumbnails /opt/giantbomb_downloader/public/video_thumbnails
 }
 
@@ -163,9 +164,9 @@ ConfigureSupervisor() {
 
     echo "-*- Configuring Supervisor"
     sudo supervisorctl stop all >> ${tmpLog}
-    sudo rm /etc/supervisor/conf.d/laravel*
-    sudo cp -R /opt/giantbomb_downloader/automated_install/configs/supervisor/* /etc/supervisor/conf.d/
+    sudo cp /opt/giantbomb_downloader/automated_install/configs/supervisor/laravel-worker.conf /etc/supervisor/conf.d/laravel-worker.conf
     sudo supervisorctl reread >> ${tmpLog}
+    sudo supervisorctl update >> ${tmpLog}
     sudo supervisorctl start all >> ${tmpLog}
 }
 
