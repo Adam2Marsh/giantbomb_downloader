@@ -60,7 +60,7 @@ class VideoStorage
 
         if(config('gb.use_wget_to_download')) {
             $saveLocation = storage_path() . "/app/" . $saveLocation;
-            exec("wget -O {$saveLocation} {$downloadUrl}", $output, $return);
+            exec("wget --user-agent=\"@Adam2Marsh Giantbomb Downloader\" -O {$saveLocation} {$downloadUrl}", $output, $return);
             exec("chmod 777 {$saveLocation}");
 
             if($return != 0) {
