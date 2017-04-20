@@ -16,7 +16,7 @@
 <script type="text/javascript">
 
     if (!!window.EventSource) {
-        var source = new EventSource('/stream');
+        var source = new EventSource('{{ url('stream') }}');
     } else {
 
     }

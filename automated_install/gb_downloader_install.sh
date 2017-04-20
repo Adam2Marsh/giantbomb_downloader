@@ -93,6 +93,7 @@ ConfigureDb() {
     touch /opt/giantbomb_downloader/database/database.sqlite
     chmod 777 /opt/giantbomb_downloader/database/database.sqlite
     chmod 777 /opt/giantbomb_downloader/database
+    php /opt/giantbomb_downloader/artisan migrate --force
 }
 
 ComposerInstall() {
@@ -113,9 +114,8 @@ CreateEnvFile() {
 SetupLaravelFramework() {
 
     echo "-*- Final Install Step for Laravel Framework"
-    chmod 777 -R /opt/giantbomb_downloader/storage/
-    php /opt/giantbomb_downloader/artisan key:generate 
-    php /opt/giantbomb_downloader/artisan migrate --force 
+    chmod 777 -R /opt/giantbomb_downloader/storage
+    php /opt/giantbomb_downloader/artisan key:generate
 }
 
 SymlinkGiantbombDownloader() {
