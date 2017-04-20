@@ -33,6 +33,20 @@ class ConfigControllerTest extends TestCase
     }
 
     /**
+     * Add Slack Url Successfully
+     *
+     * @return void
+     */
+    public function testAddSlackHookUrl()
+    {
+        $this->visit('/configs')
+            ->type('https://hooks.slack.com/services/T','value')
+            ->press('Save')
+            ->seePageIs('/configs')
+            ->see('Config Added Successfully');
+    }
+
+    /**
      * Update Slack Url Successfully
      *
      * @return void
@@ -60,5 +74,17 @@ class ConfigControllerTest extends TestCase
             ->see('Slack Hook url doesn\'t look right, please make sure you copied everything');
     }
 
+    /**
+     * Delete Api Key
+     *
+     * @return void
+     */
+    public function testDeleteApiKey()
+    {
+        $this->visit('/configs')
+            ->press('Delete')
+            ->seePageIs('/FirstTime')
+            ->see('Welcome to the Giantbomb Local Downloader');
+    }
 
 }

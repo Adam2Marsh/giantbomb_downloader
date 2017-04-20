@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ConfigUpdateRequest;
+use App\Http\Requests\CreateConfigRequest;
+use App\Repositories\ConfigRepository;
 use Illuminate\Http\Request;
 use App\Config;
 
@@ -15,18 +17,10 @@ class ConfigController extends Controller
      */
     public function index()
     {
-        $configs = Config::All();
-        return view('configs', ['configs' => $configs]);
-    }
+        $apiKey = Config::where('name', '=', 'API_KEY')->first();
+        $slackHookUrl = Config::where('name', '=', 'SLACK_HOOK_URL')->first();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('configs', ['apiKey' => $apiKey, 'slackHookUrl' => $slackHookUrl]);
     }
 
     /**
@@ -35,31 +29,10 @@ class ConfigController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateConfigRequest $request, ConfigRepository $configRepository)
     {
-//        dd($request->all());
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $configRepository->UpdateConfig($request->name, $request->value);
+        return redirect('configs')->with('success', 'Config Added Successfully');
     }
 
     /**
@@ -86,6 +59,7 @@ class ConfigController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Config::destroy($id);
+        return redirect('configs')->with('success', 'Config Deleted Successfully');
     }
 }
