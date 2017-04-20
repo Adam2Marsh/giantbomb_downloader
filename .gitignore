@@ -6,8 +6,8 @@ Homestead.json
 .vagrant
 worker.log
 bower_components
-public
 resources/assets
 echo-server-worker.log
 .idea
 build
+public/video_thumbnails

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Use this script to install Giantbomb Downloader onto a Debian OS
 
-tmpLog=/tmp/gbdownloader-install.log
+#tmpLog=/tmp/gbdownloader-install.log
 
 GIT_PROJECT_URL=https://github.com/Adam2Marsh/giantbomb_downloader.git
 INSTALLER_DEPS=(git whiptail wget apt-transport-https lsb-release ca-certificates)
@@ -46,14 +46,14 @@ PackageManagerCheck() {
 InstallPackagesRequiredForInstallScript() {
 
     echo "-*- Installing required packages for installer to run"
-    sudo apt-get update >> ${tmpLog}
-    sudo apt-get install -y ${INSTALLER_DEPS[@]} >> ${tmpLog}
+    sudo apt-get update 
+    sudo apt-get install -y ${INSTALLER_DEPS[@]} 
     if grep -q repozytorium  /etc/apt/sources.list
     then
         echo "-*- Don't need to add repo as already exists"
     else
-        sudo sh -c 'echo "deb http://repozytorium.mati75.eu/raspbian jessie-backports main contrib non-free" >> /etc/apt/sources.list' >> ${tmpLog}
-        sudo sh -c 'gpg --keyserver pgpkeys.mit.edu --recv-key CCD91D6111A06851; gpg --armor --export CCD91D6111A06851 | apt-key add -' >> ${tmpLog}
+        sudo sh -c 'echo "deb http://repozytorium.mati75.eu/raspbian jessie-backports main contrib non-free" >> /etc/apt/sources.list' 
+        sudo sh -c 'gpg --keyserver pgpkeys.mit.edu --recv-key CCD91D6111A06851; gpg --armor --export CCD91D6111A06851 | apt-key add -' 
     fi
 }
 
@@ -67,8 +67,8 @@ WelcomeDialogs() {
 InstallPackagesRequiredForGiantbombDownloader() {
 
     echo "-*- Installing required packages for the tool to run"
-    sudo apt-get update >> ${tmpLog}
-    sudo -E apt-get -q -y install ${GB_DOWNLOADER_DEPS[@]} >> ${tmpLog}
+    sudo apt-get update 
+    sudo -E apt-get -q -y install ${GB_DOWNLOADER_DEPS[@]} 
 }
 
 GrabGiantbombDownloaderFromGit() {
@@ -80,10 +80,10 @@ GrabGiantbombDownloaderFromGit() {
     if [ -d "giantbomb_downloader" ]; then
         echo "-*- You do! Just pulling latest version"
         cd giantbomb_downloader
-        git pull >> ${tmpLog}
+        git pull 
     else
         echo "-*- You don't! Cloning Repo"
-        git clone ${GIT_PROJECT_URL} >> ${tmpLog}
+        git clone ${GIT_PROJECT_URL} 
     fi
 }
 
@@ -97,7 +97,7 @@ ComposerInstall() {
 
     echo "-*- Running Composer to install site"
     cd /opt/giantbomb_downloader
-    ./composer.phar install >> ${tmpLog}
+    ./composer.phar install 
 }
 
 CreateEnvFile() {
@@ -112,8 +112,8 @@ SetupLaravelFramework() {
 
     echo "-*- Final Install Step for Laravel Framework"
     chmod 777 -R /opt/giantbomb_downloader/storage/
-    php /opt/giantbomb_downloader/artisan key:generate >> ${tmpLog}
-    php /opt/giantbomb_downloader/artisan migrate --force >> ${tmpLog}
+    php /opt/giantbomb_downloader/artisan key:generate 
+    php /opt/giantbomb_downloader/artisan migrate --force 
 }
 
 SymlinkGiantbombDownloader() {
@@ -131,11 +131,11 @@ SymlinkGiantbombDownloader() {
 ConfigureApache() {
 
     echo "-*- Configure Apache"
-    sudo a2dismod php7.0 >> ${tmpLog}
-    sudo a2enmod php7.1 >> ${tmpLog}
-    sudo a2enmod rewrite >> ${tmpLog}
+    sudo a2dismod php7.0 
+    sudo a2enmod php7.1 
+    sudo a2enmod rewrite 
     sudo cp /opt/giantbomb_downloader/automated_install/configs/apache2/giantbomb_downloader.conf /etc/apache2/sites-available/giantbomb_downloader.conf
-    sudo service apache2 reload >> ${tmpLog}
+    sudo service apache2 reload 
 }
 
 ConfigureCron() {
@@ -147,27 +147,14 @@ ConfigureCron() {
     sudo sed -i -e "s/USERGOESHERE/${USER}/g" /etc/cron.d/giantbomb_downloader
 }
 
-CreateCssAndJsFiles() {
-
-    cd /opt/giantbomb_downloader
-    echo "-*- Configure Css and Js"
-    sudo npm install -g bower gulp >> ${tmpLog}
-    sudo npm install -g npm@latest >> ${tmpLog}
-
-    echo "-*- This part will take a while.... around 10-15mins...."
-    npm install >> ${tmpLog}
-    bower install >> ${tmpLog}
-    gulp --production >> ${tmpLog}
-}
-
 ConfigureSupervisor() {
 
     echo "-*- Configuring Supervisor"
-    sudo supervisorctl stop all >> ${tmpLog}
+    sudo supervisorctl stop all 
     sudo cp /opt/giantbomb_downloader/automated_install/configs/supervisor/laravel-worker.conf /etc/supervisor/conf.d/laravel-worker.conf
-    sudo supervisorctl reread >> ${tmpLog}
-    sudo supervisorctl update >> ${tmpLog}
-    sudo supervisorctl start all >> ${tmpLog}
+    sudo supervisorctl reread 
+    sudo supervisorctl update 
+    sudo supervisorctl start all 
 }
 
 FinishDialog() {
@@ -188,6 +175,5 @@ SetupLaravelFramework
 SymlinkGiantbombDownloader
 ConfigureApache
 ConfigureCron
-CreateCssAndJsFiles
 ConfigureSupervisor
 FinishDialog
