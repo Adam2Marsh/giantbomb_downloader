@@ -120,6 +120,7 @@ SetupLaravelFramework() {
     echo "-*- Final Install Step for Laravel Framework"
     chmod 777 -R /opt/giantbomb_downloader/storage
     chmod 777 -R /opt/giantbomb_downloader/storage/app
+    mkdir -P /opt/giantbomb_downloader/storage/app/gb_videos
     php /opt/giantbomb_downloader/artisan key:generate
 }
 

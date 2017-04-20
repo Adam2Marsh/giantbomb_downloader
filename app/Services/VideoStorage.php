@@ -61,6 +61,7 @@ class VideoStorage
         if(config('gb.use_wget_to_download')) {
             $saveLocation = storage_path() . "/app/" . $saveLocation;
             exec("wget -O {$saveLocation} {$downloadUrl}", $output, $return);
+            exec("chmod 777 {$saveLocation}");
 
             if($return != 0) {
                 Log::error(__METHOD__." Video did not download successfully, output is " . $return);
