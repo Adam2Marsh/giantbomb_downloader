@@ -97,7 +97,7 @@ ConfigureDb() {
         chmod 777 /opt/giantbomb_downloader/database
     fi
 
-    php /opt/giantbomb_downloader/artisan migrate
+    php /opt/giantbomb_downloader/artisan migrate --force
 }
 
 ComposerInstall() {
