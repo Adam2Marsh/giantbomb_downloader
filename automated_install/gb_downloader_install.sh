@@ -141,6 +141,8 @@ ConfigureApache() {
     sudo a2enmod php7.1 
     sudo a2enmod rewrite 
     sudo cp /opt/giantbomb_downloader/automated_install/configs/apache2/giantbomb_downloader.conf /etc/apache2/sites-available/giantbomb_downloader.conf
+    sudo a2ensite giantbomb_downloader
+    sudo a2dissite 000-default
     sudo service apache2 reload 
 }
 
