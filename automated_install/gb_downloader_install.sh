@@ -46,14 +46,14 @@ PackageManagerCheck() {
 InstallPackagesRequiredForInstallScript() {
 
     echo "-*- Installing required packages for installer to run"
-    sudo apt-get update
-    sudo apt-get install -y ${INSTALLER_DEPS[@]}
+    sudo apt-get update >> ${tmpLog}
+    sudo apt-get install -y ${INSTALLER_DEPS[@]} >> ${tmpLog}
     if grep -q repozytorium  /etc/apt/sources.list
     then
         echo "-*- Don't need to add repo as already exists"
     else
-        sudo sh -c 'echo "deb http://repozytorium.mati75.eu/raspbian jessie-backports main contrib non-free" >> /etc/apt/sources.list'
-        sudo sh -c 'gpg --keyserver pgpkeys.mit.edu --recv-key CCD91D6111A06851; gpg --armor --export CCD91D6111A06851 | apt-key add -'
+        sudo sh -c 'echo "deb http://repozytorium.mati75.eu/raspbian jessie-backports main contrib non-free" >> /etc/apt/sources.list' >> ${tmpLog}
+        sudo sh -c 'gpg --keyserver pgpkeys.mit.edu --recv-key CCD91D6111A06851; gpg --armor --export CCD91D6111A06851 | apt-key add -' >> ${tmpLog}
     fi
 }
 
@@ -67,8 +67,8 @@ WelcomeDialogs() {
 InstallPackagesRequiredForGiantbombDownloader() {
 
     echo "-*- Installing required packages for the tool to run"
-    sudo apt-get update
-    sudo -E apt-get -q -y install ${GB_DOWNLOADER_DEPS[@]}
+    sudo apt-get update >> ${tmpLog}
+    sudo -E apt-get -q -y install ${GB_DOWNLOADER_DEPS[@]} >> ${tmpLog}
 }
 
 GrabGiantbombDownloaderFromGit() {
@@ -80,10 +80,10 @@ GrabGiantbombDownloaderFromGit() {
     if [ -d "giantbomb_downloader" ]; then
         echo "-*- You do! Just pulling latest version"
         cd giantbomb_downloader
-        sudo git pull
+        git pull >> ${tmpLog}
     else
         echo "-*- You don't! Cloning Repo"
-        git clone ${GIT_PROJECT_URL}
+        git clone ${GIT_PROJECT_URL} >> ${tmpLog}
     fi
 }
 
@@ -97,7 +97,7 @@ ComposerInstall() {
 
     echo "-*- Running Composer to install site"
     cd /opt/giantbomb_downloader
-    ./composer.phar install
+    ./composer.phar install >> ${tmpLog}
 }
 
 CreateEnvFile() {
@@ -108,21 +108,12 @@ CreateEnvFile() {
     echo "APP_KEY=" >> "/opt/giantbomb_downloader/.env"
 }
 
-ConfigureSupervisor() {
-
-    echo "-*- Configuring Supervisor"
-    sudo supervisorctl stop all
-    sudo cp -R /opt/giantbomb_downloader/automated_install/configs/supervisor/* /etc/supervisor/conf.d/
-    sudo supervisorctl reread
-    sudo supervisorctl start all
-}
-
 SetupLaravelFramework() {
 
     echo "-*- Final Install Step for Laravel Framework"
     chmod 777 -R /opt/giantbomb_downloader/storage/
-    php /opt/giantbomb_downloader/artisan key:generate
-    php /opt/giantbomb_downloader/artisan migrate --force
+    php /opt/giantbomb_downloader/artisan key:generate >> ${tmpLog}
+    php /opt/giantbomb_downloader/artisan migrate --force >> ${tmpLog}
 }
 
 SymlinkGiantbombDownloader() {
@@ -130,33 +121,57 @@ SymlinkGiantbombDownloader() {
     echo "-*- Create Symlink in apache web root so we can access"
     sudo rm /var/www/html/giantbomb_downloader
     sudo ln -s /opt/giantbomb_downloader/public /var/www/html/giantbomb_downloader
+
+    echo "-*- Create Symlink in public folder for thumbnails"
+    mkdir -p /opt/giantbomb_downloader/storage/app/video_thumbnails
+    ln -s /opt/giantbomb_downloader/storage/app/video_thumbnails /opt/giantbomb_downloader/public/video_thumbnails
 }
 
 ConfigureApache() {
 
     echo "-*- Configure Apache"
-    sudo a2dismod php7.0
-    sudo a2enmod php7.1
-    sudo a2enmod rewrite
+    sudo a2dismod php7.0 >> ${tmpLog}
+    sudo a2enmod php7.1 >> ${tmpLog}
+    sudo a2enmod rewrite >> ${tmpLog}
     sudo cp /opt/giantbomb_downloader/automated_install/configs/apache2/giantbomb_downloader.conf /etc/apache2/sites-available/giantbomb_downloader.conf
-    sudo service apache2 reload
+    sudo service apache2 reload >> ${tmpLog}
 }
 
 ConfigureCron() {
 
     echo "-*- Configure Cron"
+
     sudo cp /opt/giantbomb_downloader/automated_install/configs/crontab/giantbomb_downloader /etc/cron.d/giantbomb_downloader
+    USER=`whoami`
+    sudo sed -i -e "s/USERGOESHERE/${USER}/g" /etc/cron.d/giantbomb_downloader
 }
 
 CreateCssAndJsFiles() {
 
     cd /opt/giantbomb_downloader
     echo "-*- Configure Css and Js"
-    sudo npm install -g bower gulp
-    sudo npm install -g npm@latest
-    npm install
-    bower install
-    gulp --production
+    sudo npm install -g bower gulp >> ${tmpLog}
+    sudo npm install -g npm@latest >> ${tmpLog}
+
+    echo "-*- This part will take a while.... around 10-15mins...."
+    npm install >> ${tmpLog}
+    bower install >> ${tmpLog}
+    gulp --production >> ${tmpLog}
+}
+
+ConfigureSupervisor() {
+
+    echo "-*- Configuring Supervisor"
+    sudo supervisorctl stop all >> ${tmpLog}
+    sudo rm /etc/supervisor/conf.d/laravel*
+    sudo cp -R /opt/giantbomb_downloader/automated_install/configs/supervisor/* /etc/supervisor/conf.d/
+    sudo supervisorctl reread >> ${tmpLog}
+    sudo supervisorctl start all >> ${tmpLog}
+}
+
+FinishDialog() {
+
+    whiptail --msgbox --title "Giantbomb Downloader Automated Installer" "\n\nWe're all setup! You should now be able to access me at http://your-ip-of-this-device/giantbomb_downloader" ${r} ${c}
 }
 
 SudoCheck
@@ -169,8 +184,9 @@ ConfigureDb
 ComposerInstall
 CreateEnvFile
 SetupLaravelFramework
-ConfigureSupervisor
 SymlinkGiantbombDownloader
 ConfigureApache
 ConfigureCron
 CreateCssAndJsFiles
+ConfigureSupervisor
+FinishDialog
