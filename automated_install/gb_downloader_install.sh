@@ -90,10 +90,14 @@ GrabGiantbombDownloaderFromGit() {
 ConfigureDb() {
 
     echo "-*- Configuring DB"
-    touch /opt/giantbomb_downloader/database/database.sqlite
-    chmod 777 /opt/giantbomb_downloader/database/database.sqlite
-    chmod 777 /opt/giantbomb_downloader/database
-    php /opt/giantbomb_downloader/artisan migrate --force
+
+    if [[ ! -f /opt/giantbomb_downloader/database/database.sqlite ]]; then
+        touch /opt/giantbomb_downloader/database/database.sqlite
+        chmod 777 /opt/giantbomb_downloader/database/database.sqlite
+        chmod 777 /opt/giantbomb_downloader/database
+    fi
+
+    php /opt/giantbomb_downloader/artisan migrate
 }
 
 ComposerInstall() {
@@ -170,10 +174,10 @@ InstallPackagesRequiredForInstallScript
 WelcomeDialogs
 InstallPackagesRequiredForGiantbombDownloader
 GrabGiantbombDownloaderFromGit
-ConfigureDb
 ComposerInstall
 CreateEnvFile
 SetupLaravelFramework
+ConfigureDb
 SymlinkGiantbombDownloader
 ConfigureApache
 ConfigureCron
