@@ -94,6 +94,7 @@ ConfigureDb() {
     if [[ ! -f /opt/giantbomb_downloader/database/database.sqlite ]]; then
         touch /opt/giantbomb_downloader/database/database.sqlite
         chmod 777 /opt/giantbomb_downloader/database/database.sqlite
+        chmod 777 /opt/giantbomb_downloader/database
     fi
 
     php /opt/giantbomb_downloader/artisan migrate --force
@@ -118,6 +119,7 @@ SetupLaravelFramework() {
 
     echo "-*- Final Install Step for Laravel Framework"
     chmod 777 -R /opt/giantbomb_downloader/storage
+    chmod 777 -R /opt/giantbomb_downloader/storage/app
     php /opt/giantbomb_downloader/artisan key:generate
 }
 
