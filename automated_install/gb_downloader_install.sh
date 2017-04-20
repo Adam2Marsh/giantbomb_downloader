@@ -91,6 +91,8 @@ ConfigureDb() {
 
     echo "-*- Configuring DB"
     touch /opt/giantbomb_downloader/database/database.sqlite
+    chmod 777 /opt/giantbomb_downloader/database/database.sqlite
+    chmod 777 /opt/giantbomb_downloader/database
 }
 
 ComposerInstall() {
