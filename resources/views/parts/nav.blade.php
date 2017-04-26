@@ -1,8 +1,6 @@
 <br>
 <div class="text-center">
-    <h1>GB_Downloads</h1>
-    <!-- <a href="/videos">Videos</a>
-    <a href="/rules">Rules</a> -->
+    <h1>Giantbomb Pi Downloader</h1>
     <ul class="nav nav-tabs">
         @if(Request::path() == "videos")
             <li role="presentation" class="active"><a href="/videos">Videos</a></li>

@@ -21,7 +21,7 @@ require('laravel-elixir-vue');
 
  // Bootstrap Files
 elixir(function(mix) {
-    mix.copy('bower_components/bootstrap/dist/css/bootstrap.css', 'resources/assets/css/bootstrap.css');
+    // mix.copy('bower_components/bootstrap/dist/css/bootstrap.css', 'resources/assets/css/bootstrap.css');
     mix.copy('bower_components/bootstrap/dist/js/bootstrap.js', 'resources/assets/js/bootstrap.js');
 });
 
