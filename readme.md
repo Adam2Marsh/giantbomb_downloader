@@ -12,6 +12,7 @@ It's not perfect, and looks a little ugly currently but works. Thought I'd put o
 * Download videos onto your Pi, ready to download from Pi saving you time
 * **My Favourite Feature!!!** Ability to set up automatic downloads of your favourite video series (rules page)
 * Integration with Slack to sign up to notifications when new videos can be downloaded or have been downloaded
+* If you want you could run a DNLA Server on Pi and then share videos downloaded by me and watch on your TV
 
 ## Who can use this?
 Anyone who has a giantbomb account, you need one as it uses their api.
