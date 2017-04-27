@@ -72,40 +72,61 @@
 						</tr>
 					</thead>
 					<tbody>
+					@if(count($videos))
 						@foreach ($videos as $video)
-						<tr>
-							<td><img class="img-thumbnail" src="{{ $video->videoDetail->image_path }}"></td>
-							<td style="vertical-align: middle;"><a href="{{ $video->url }}"> {{ $video->name }} </a> </td>
-							<td style="vertical-align: middle;">{{ human_filesize($video->videoDetail->file_size) }}</td>
-							<td id="{{ $video->id }}" style="vertical-align: middle;">{{ $video->status }}</td>
-							<td style="vertical-align: middle;">{{ $video->published_date->format('d/m/Y') }}</td>
-							<td style="vertical-align: middle;">
-								@if ($video->status == 'NEW' || $video->status == 'WATCHED')
-								{{ Form::open(['action' => 'VideoController@saveVideo', 'method' => 'post']) }}
-								{{ Form::hidden('id',$video->id) }}
-								<button type="submit" class="btn btn-info">Save</button>
-								{{ Form::close() }}
-								@endif
-
-								@if ($video->status == 'DOWNLOADED')
-								{{ Form::open(['action' => ['VideoController@download', $video->id], 'method' => 'get']) }}
-								<button type="submit" class="btn btn-success">Download</button>
-								{{ Form::close() }}
-
-								{{ Form::open(['action' => ['VideoController@watched', $video->id], 'method' => 'delete']) }}
-								<button type="submit" class="btn btn-danger">Watched</button>
-								{{ Form::close() }}
-								@endif
-
-								@if ($video->status == 'FAILED')
-									{{ Form::open(['action' => ['VideoController@download', $video->id], 'method' => 'get']) }}
-									<button type="submit" class="btn btn-success">Retry Download</button>
+							<tr>
+								<td><img class="img-thumbnail" src="{{ $video->videoDetail->image_path }}"></td>
+								<td style="vertical-align: middle;"><a href="{{ $video->url }}"> {{ $video->name }} </a> </td>
+								<td style="vertical-align: middle;">{{ human_filesize($video->videoDetail->file_size) }}</td>
+								<td id="{{ $video->id }}" style="vertical-align: middle;">{{ $video->status }}</td>
+								<td style="vertical-align: middle;">{{ $video->published_date->format('d/m/Y') }}</td>
+								<td style="vertical-align: middle;">
+									@if ($video->status == 'NEW' || $video->status == 'WATCHED')
+									{{ Form::open(['action' => 'VideoController@saveVideo', 'method' => 'post']) }}
+									{{ Form::hidden('id',$video->id) }}
+									<button type="submit" class="btn btn-info">Save</button>
 									{{ Form::close() }}
-								@endif
+									@endif
+
+									@if ($video->status == 'DOWNLOADED')
+									{{ Form::open(['action' => ['VideoController@download', $video->id], 'method' => 'get']) }}
+									<button type="submit" class="btn btn-success">Download</button>
+									{{ Form::close() }}
+
+									{{ Form::open(['action' => ['VideoController@watched', $video->id], 'method' => 'delete']) }}
+									<button type="submit" class="btn btn-danger">Watched</button>
+									{{ Form::close() }}
+									@endif
+
+									@if ($video->status == 'FAILED')
+										{{ Form::open(['action' => ['VideoController@download', $video->id], 'method' => 'get']) }}
+										<button type="submit" class="btn btn-success">Retry Download</button>
+										{{ Form::close() }}
+									@endif
+								</td>
+							</tr>
+							@endforeach
+						</tbody>
+					@else
+						<tr>
+							<td colspan="6">
+								<h3>Please don't refresh page grabbing videos, will refresh automatically (unless something breaks)</h3>
+								<script type="text/javascript">
+                                    $.ajax({
+										type: 'GET',
+										url: 'NewVideos',
+                                        data: {'_method':'PUT', '_token':'{{ csrf_token() }}'},
+                                        success: function(data) {
+                                            location.reload();
+                                        },
+                                        error: function(data) {
+                                             alert(data);
+                                        }
+									});
+								</script>
 							</td>
 						</tr>
-						@endforeach
-					</tbody>
+					@endif
 				</table>
 			</div>
 		</div>
