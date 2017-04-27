@@ -14,7 +14,7 @@ It's not perfect, and looks a little ugly currently but works. Thought I'd put o
 * Integration with Slack to sign up to notifications when new videos can be downloaded or have been downloaded
 
 ## Who can use this?
-I created this tool for **Premium Giantbomb Subscribers**, if your not a premium user then Giantbomb guys need your support in seeing ads when watching videos on their site! If your not a premium user this won't work; want to use this tool then help Giantbomb guys and become a premium user :)
+Anyone who has a giantbomb account, you need one as it uses their api.
 
 ## How does it work?
 TLDR: It's a PHP Site which uses the Giantbomb API to fetch latest videos. It needs to be hosted and was designed to work and run on a Rapsberry Pi.    
