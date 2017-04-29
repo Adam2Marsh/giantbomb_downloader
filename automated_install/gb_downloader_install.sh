@@ -187,4 +187,8 @@ ConfigureApache
 ConfigureCron
 ConfigureSupervisor
 SetupLaravelFramework
+
+#Quick Temp Fix for Object Object
+chmod 777 -R /opt/giantbomb_downloader/storage
+
 FinishDialog
