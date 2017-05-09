@@ -9,9 +9,11 @@
         <p class="text-center">If you need to unlink me from your giantbomb account then press the button below, <strong>this will stop me from working.</strong></p>
         <br>
         <div class="text-center">
-            {{ Form::open(['route' => ['configs.destroy', $apiKey->id], 'method' => 'delete']) }}
-            <button name="{{ $apiKey->id }}DELETE" type="submit" class="btn btn-danger">Delete</button>
-            {{ Form::close() }}
+            <form class="form" method="post" action="{{ url('configs') . '/' . $apiKey->id }}">
+                <input name="_method" value="DELETE" type="hidden">
+                <input name="_token" value="{{ csrf_token() }}" type="hidden">
+                <button type="submit" class="btn btn-default">Delete</button>
+            </form>
         </div>
     </div>
 
@@ -19,25 +21,42 @@
         <div class="alert alert-info">
             <div class="text-center">
             <p>I can notify you via Slack when a new video is ready to download and when I've downloaded a video, for this to work you need to give me a Slack Web Hook URL.</p>
-                {{ Form::open(['action' => ['ConfigController@update', $slackHookUrl->id],
-                    'method' => 'PUT']) }}
-                    {{ Form::label('slack_hook_text', 'Enter Slack Hook Url - ') }}
-                    {{ Form::text('SLACK_HOOK_URL', $slackHookUrl->value, ['style' => 'width:380px', 'class="form-control"']) }}
-                    {{ Form::submit('Save') }}
-                {{ Form::close() }}
+                <form method="post" action="{{ url('configs') . '/' . $slackHookUrl->id }}">
+                    <input name="_method" value="PUT" type="hidden">
+                    <input name="_token" value="{{ csrf_token() }}" type="hidden">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-8">
+                                <input class="form-control" type="text" name="SLACK_HOOK_URL" value="{{ $slackHookUrl->value }}">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Update</button>
+                    </div>
+                </form>
             </div>
         </div>
     @else
         <div class="alert alert-info">
             <div class="text-center">
                 <p>I can notify you via Slack when a new video is ready to download and when I've downloaded a video, for this to work you need to give me a Slack Web Hook URL.</p>
-                {{ Form::open(['action' => ['ConfigController@store'],
-                    'method' => 'POST']) }}
-                {{ Form::label('slack_hook_text', 'Enter Slack Hook Url - ') }}
-                {{ Form::hidden('name', 'SLACK_HOOK_URL') }}
-                {{ Form::text('value') }}
-                {{ Form::submit('Save') }}
-                {{ Form::close() }}
+                <form class="form" method="post" action="{{ url('configs') }}">
+                    <input name="_token" value="{{ csrf_token() }}" type="hidden">
+                    <input name="name" value="SLACK_HOOK_URL" type="hidden">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-8">
+                                <input class="form-control" type="text" name="value">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     @endif
