@@ -80,4 +80,7 @@ Route::group(['middleware' => ['web', 'premium']], function () {
     Route::get('/stream', 'HttpEventStreamController@returnStorageSize');
     Route::get('/streamTest', 'HttpEventStreamController@returnTestStreamPage');
     Route::get('/stream/{id}/video', 'HttpEventStreamController@returnVideoDownloadPercentage');
+
+    Route::get('/update', 'UpdateController@index');
+    Route::post('/update', 'UpdateController@update');
 });
