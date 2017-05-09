@@ -22,7 +22,7 @@
                 {{ Form::open(['action' => ['ConfigController@update', $slackHookUrl->id],
                     'method' => 'PUT']) }}
                     {{ Form::label('slack_hook_text', 'Enter Slack Hook Url - ') }}
-                    {{ Form::text('SLACK_HOOK_URL', $slackHookUrl->value, ['style' => 'width:380px']) }}
+                    {{ Form::text('SLACK_HOOK_URL', $slackHookUrl->value, ['style' => 'width:380px', 'class="form-control"']) }}
                     {{ Form::submit('Save') }}
                 {{ Form::close() }}
             </div>
