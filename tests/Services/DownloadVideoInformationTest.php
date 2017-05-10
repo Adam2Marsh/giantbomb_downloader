@@ -19,10 +19,10 @@ class DownloadVideoInformationTest extends TestCase
         parent::setUp();
 	}
 
-    //Intergration Tests.......................
+    //Integration Tests.......................
     public function test_updateVideosInDatabase_AddVideo()
     {
-        $response = $this->downloadVideoInformation->updateVideosInDatabase(env('TEST_JSON_URL'),'','');
+        $response = $this->grabVideos();
         $this->assertRegexp('/doesn\'t exists/i',strval($response));
     }
 
@@ -35,15 +35,14 @@ class DownloadVideoInformationTest extends TestCase
         $rule->enabled = 1;
         $rule->save();
 
-        $response = $this->downloadVideoInformation->updateVideosInDatabase(env('TEST_JSON_URL'),'','');
-
+        $response = $this->grabVideos();
         $rule->delete();
     }
 
     public function test_updateVideosInDatabase_VideoAlreadyExists()
     {
-        $addResponse = $this->downloadVideoInformation->updateVideosInDatabase(env('TEST_JSON_URL'),'','');
-        $dupResponse = $this->downloadVideoInformation->updateVideosInDatabase(env('TEST_JSON_URL'),'','');
+        $addResponse = $this->grabVideos();
+        $dupResponse = $this->grabVideos();
         $this->assertRegexp('/already exists/i',strval($dupResponse));
     }
 
@@ -57,6 +56,15 @@ class DownloadVideoInformationTest extends TestCase
     {
         $fileSize = $this->downloadVideoInformation->getVideoFileSize("http://127.0.0.1/Error");
         $this->assertEquals($fileSize, 0);
+    }
+
+    public function grabVideos()
+    {
+        return $this->downloadVideoInformation->updateVideosInDatabase(
+            config('gb.api_address'),
+            config('gb.api_query'),
+            config('')
+        );
     }
 
 }

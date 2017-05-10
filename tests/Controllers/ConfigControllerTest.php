@@ -41,7 +41,7 @@ class ConfigControllerTest extends TestCase
     {
         $this->visit('/configs')
             ->type('https://hooks.slack.com/services/T','value')
-            ->press('Save')
+            ->press('Submit')
             ->seePageIs('/configs')
             ->see('Config Added Successfully');
     }
@@ -55,7 +55,7 @@ class ConfigControllerTest extends TestCase
     {
         $this->visit('/configs')
             ->type('https://hooks.slack.com/services/T','SLACK_HOOK_URL')
-            ->press('Save')
+            ->press('Update')
             ->seePageIs('/configs')
             ->see('Config Updated Successfully');
     }
@@ -69,7 +69,7 @@ class ConfigControllerTest extends TestCase
     {
         $this->visit('/configs')
             ->type('INVALID','SLACK_HOOK_URL')
-            ->press('Save')
+            ->press('Update')
             ->seePageIs('/configs')
             ->see('Slack Hook url doesn\'t look right, please make sure you copied everything');
     }
@@ -84,7 +84,7 @@ class ConfigControllerTest extends TestCase
         $this->visit('/configs')
             ->press('Delete')
             ->seePageIs('/FirstTime')
-            ->see('Welcome to the Giantbomb Local Downloader');
+            ->see('Welcome to the Giantbomb Pi Downloader');
     }
 
 }
