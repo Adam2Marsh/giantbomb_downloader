@@ -62,8 +62,7 @@ Route::get('Error', function () {
 |
 */
 
-Route::group(['middleware' => ['web']], function ()
-{
+Route::group(['middleware' => ['web']], function () {
     Route::get('/FirstTime', 'NewUserController@index');
     Route::post('/FirstTime', 'NewUserController@getApiKeyAndSave');
 });
@@ -82,5 +81,6 @@ Route::group(['middleware' => ['web', 'premium']], function () {
     Route::get('/stream/{id}/video', 'HttpEventStreamController@returnVideoDownloadPercentage');
 
     Route::get('/update', 'UpdateController@index');
+    Route::get('/update/check', 'UpdateController@check');
     Route::post('/update', 'UpdateController@update');
 });
