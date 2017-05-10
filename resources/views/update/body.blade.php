@@ -27,6 +27,7 @@
     </div>
     <div class="text-center" id="updateNotAvailable" style="display: none">
         <h3>No Updates Available</h3>
+        <a href="https://trello.com/b/l4yppMfy/gb-downloads-site" target="_blank">Click here to see what I'm working on</a>
     </div>
     <div class="text-center" id="updateAvailable" style="display: none">
         <h3>Updates Available</h3>
