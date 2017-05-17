@@ -15,25 +15,34 @@ class VideoSizing
 
     private $bytes;
 
+    protected $customStorageLocation;
+
+    protected $disk;
+
     public function __construct()
     {
         $this->bytes = BigInteger::of(0);
+
+        $this->customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first();
+
+        if ($this->customStorageLocation) {
+            $this->disk = "root";
+            $this->customStorageLocation = $this->customStorageLocation->value;
+        } else {
+            $this->disk = "local";
+        }
     }
 
     public function getVideoSize($pathToVideo)
     {
-        $customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first()->value;
-
-        if ($customStorageLocation) {
-            $disk = 'root';
+        if ($this->customStorageLocation) {
             $preFilePath = Storage::disk('root')->getDriver()->getAdapter()->getPathPrefix()
-                . "$customStorageLocation/";
+                . "$this->customStorageLocation/";
         } else {
-            $disk = 'local';
             $preFilePath = storage_path("app/");
         }
 
-        if (Storage::disk($disk)->exists($customStorageLocation ? $preFilePath.$pathToVideo : $pathToVideo)) {
+        if (Storage::disk($this->disk)->exists($this->customStorageLocation ? $preFilePath.$pathToVideo : $pathToVideo)) {
             $file = BigFileTools::createDefault()->getFile($preFilePath.$pathToVideo);
             $this->bytes = $file->getSize();
         } else {
@@ -45,26 +54,22 @@ class VideoSizing
 
     public function getDirectorySize($pathToDirectory)
     {
-        $customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first()->value;
-
         $preFilePath = "";
 
-        if ($customStorageLocation) {
-            $disk = 'root';
-            $pathToDirectory = "$customStorageLocation/$pathToDirectory";
+        if ($this->customStorageLocation) {
+            $pathToDirectory = "$this->customStorageLocation/$pathToDirectory";
             $preFilePath = Storage::disk('root')->getDriver()->getAdapter()->getPathPrefix() . $pathToDirectory;
         } else {
-            $disk = 'local';
             $preFilePath = storage_path("app/");
         }
 
 //        var_dump($pathToDirectory);
 
-        foreach (Storage::disk($disk)->allFiles("$pathToDirectory") as $filePath) {
+        foreach (Storage::disk($this->disk)->allFiles("$pathToDirectory") as $filePath) {
 //            var_dump($filePath);
 
             $file = BigFileTools::createDefault()->getFile(
-                $customStorageLocation ? $filePath : "$preFilePath/$filePath"
+                $this->customStorageLocation ? $filePath : "$preFilePath/$filePath"
             );
 
             $file_size = $file->getSize();

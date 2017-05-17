@@ -21,10 +21,11 @@ class VideoStorage
     {
         $this->videoRepository = new VideoRepository;
 
-        $this->customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first()->value;
+        $this->customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first();
 
         if ($this->customStorageLocation) {
             $this->disk = "root";
+            $this->customStorageLocation = $this->customStorageLocation->value;
         } else {
             $this->disk = "local";
         }
