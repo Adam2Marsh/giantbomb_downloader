@@ -13,9 +13,21 @@ class VideoStorage
 
     protected $videoRepository;
 
+    protected $customStorageLocation;
+
+    protected $disk;
+
     public function __construct()
     {
         $this->videoRepository = new VideoRepository;
+
+        $this->customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first()->value;
+
+        if($this->customStorageLocation) {
+            $this->disk = "root";
+        } else {
+            $this->disk = "local";
+        }
     }
 
     /**
@@ -29,10 +41,11 @@ class VideoStorage
         Log::info(__METHOD__." Downloading Video $video->name");
         $this->videoRepository->updateVideoToDownloadedStatus($video->id, "DOWNLOADING");
 
-        $this->downloadVideofromURL($video->url, "gb_videos", $video->file_name);
+        $video->videoDetail->local_path = $this->downloadVideofromURL($video->url, "gb_videos", $video->file_name);
+        $video->videoDetail->save();
 
-        if ($this->checkForVideo("gb_videos", $video->file_name)) {
-            Log::info(__METHOD__." Video downloaded and stored gb_videos/$video->name");
+        if ($this->checkForVideo($video->videoDetail->local_path)) {
+            Log::info(__METHOD__." Video downloaded and stored $video->videoDetail->local_path");
             $this->videoRepository->updateVideoToDownloadedStatus($video->id, "DOWNLOADED");
             return;
         }
@@ -51,21 +64,17 @@ class VideoStorage
     {
         $downloadUrl = $url."?api_key=".Config::where('name', '=', 'API_KEY')->first()->value;
 
-        $customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first()->value;
-
         Log::info(__METHOD__." Will create download directory if it doesn't exists");
 
-        var_dump($customStorageLocation);
-
-        if ($customStorageLocation == null) {
+        if ($this->customStorageLocation == null) {
             Log::info(__METHOD__ . " Using default directory to save video as no config");
             $saveLocation = storage_path() . "/app/" . "$directory/$file_name";
             Storage::makeDirectory($directory);
         } else {
             Log::info(__METHOD__ . " Using custom directory to save video");
-            Storage::disk('root')->makeDirectory($customStorageLocation . "/$directory");
+            Storage::disk('root')->makeDirectory($this->customStorageLocation . "/$directory");
             $saveLocation = Storage::disk('root')->getDriver()->getAdapter()->getPathPrefix() .
-                "$customStorageLocation/$directory/$file_name";
+                "$this->customStorageLocation/$directory/$file_name";
         }
 
         Log::info(__METHOD__." I've been asked to download a video from $url and save in $saveLocation");
@@ -82,6 +91,8 @@ class VideoStorage
         } else {
             Storage::put("$directory/$file_name", fopen($downloadUrl, "r"));
         }
+
+        return $this->customStorageLocation ? $saveLocation : "$directory/$file_name";
     }
 
 
@@ -91,10 +102,10 @@ class VideoStorage
     * @param string directory
     * @param string file_name
     */
-    public function checkForVideo($directory, $file_name)
+    public function checkForVideo($video)
     {
-        Log::info(__METHOD__." Checking if video called $file_name has been downloaded");
-        if (Storage::has("$directory/$file_name")) {
+        Log::info(__METHOD__." Checking if $video has been downloaded");
+        if(Storage::disk($this->disk)->has($video)) {
             Log::info(__METHOD__." Video has been downloaded, returning true");
             return true;
         }
@@ -109,11 +120,11 @@ class VideoStorage
     * @param string directory
     * @param string file_name
     */
-    public function deleteVideo($directory, $file_name)
+    public function deleteVideo($video)
     {
-        Log::info(__METHOD__." Been asked to delete $directory/$file_name from storage");
-        Storage::delete("$directory/$file_name");
-        Log::info(__METHOD__." $directory/$file_name deleted from storage");
+        Log::info(__METHOD__." Been asked to delete $video from storage");
+        Storage::disk($this->disk)->delete($video);
+        Log::info(__METHOD__." $video deleted from storage");
     }
 
 }
