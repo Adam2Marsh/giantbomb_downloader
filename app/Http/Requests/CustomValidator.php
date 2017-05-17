@@ -7,8 +7,8 @@ use Storage;
 class CustomValidator
 {
 
-    public function validateDirectoryExists($attribute, $value, $parameters, $validator) {
-        Storage::disk('root')->
+    public function validateDirectoryExists($attribute, $value, $parameters, $validator)
+    {
+        return Storage::disk('root')->has($value);
     }
-
 }
