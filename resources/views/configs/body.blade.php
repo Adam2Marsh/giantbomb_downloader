@@ -19,7 +19,7 @@
                 </div>
                 <br>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-success">Update</button>
+                    <button type="submit" class="btn btn-success">Update Slack</button>
                 </div>
             </form>
             <br>
@@ -36,7 +36,7 @@
                 </div>
                 <br>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-success">Update</button>
+                    <button type="submit" class="btn btn-success">Update Storage Location</button>
                 </div>
             </form>
         </div>
