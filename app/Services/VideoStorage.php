@@ -40,7 +40,6 @@ class VideoStorage
         Log::error(__METHOD__." Video failed download");
         $this->videoRepository->updateVideoToDownloadedStatus($video->id, "FAILED");
         throw new \Exception("$video->name failed download", 1);
-
     }
 
     /**
