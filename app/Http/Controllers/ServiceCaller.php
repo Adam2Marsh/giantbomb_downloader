@@ -12,7 +12,7 @@ use Log;
 class ServiceCaller extends Controller
 {
 
-    public function newVideos()
+    public function newVideos($count = 0)
     {
         $dvi = new DownloadVideoInformation;
 
@@ -20,7 +20,13 @@ class ServiceCaller extends Controller
 
         $url=config('gb.api_address');
 
-        $query=config('gb.api_query') . config('gb.max_videos_to_grab_api');
+        $query=config('gb.api_query');
+
+        if ($count==0) {
+            $query = $query . config('gb.max_videos_to_grab_api');
+        } else {
+            $query = $query . '&limit=' . $count;
+        }
 
         $apiKey= Config::where('name', '=', 'API_KEY')->first()->value;
 

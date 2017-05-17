@@ -16,8 +16,6 @@ Route::get('/', function () {
     return redirect('/videos');
 });
 
-Route::get('NewVideos', 'ServiceCaller@newVideos');
-
 // Route::get('ScheduleVideos', 'ServiceCaller@scheduleVideos');
 
 Route::get('/TestVideo', function () {
@@ -83,4 +81,6 @@ Route::group(['middleware' => ['web', 'premium']], function () {
     Route::get('/update', 'UpdateController@index');
     Route::get('/update/check', 'UpdateController@check');
     Route::post('/update', 'UpdateController@update');
+
+    Route::get('NewVideos/{count?}', 'ServiceCaller@newVideos');
 });
