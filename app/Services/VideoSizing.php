@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Log;
 use Storage;
+use App\Config;
 use BigFileTools;
 use Brick\Math\BigInteger;
 use Brick\Math\RoundingMode;
@@ -21,8 +22,19 @@ class VideoSizing
 
     public function getVideoSize($pathToVideo)
     {
-        if (Storage::exists($pathToVideo)) {
-            $file = BigFileTools::createDefault()->getFile(storage_path('app/'.$pathToVideo));
+        $customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first()->value;
+
+        if($customStorageLocation) {
+            $disk = 'root';
+            $preFilePath = Storage::disk('root')->getDriver()->getAdapter()->getPathPrefix()
+                . "$customStorageLocation/";
+        } else {
+            $disk = 'local';
+            $preFilePath = storage_path("app/");
+        }
+
+        if (Storage::disk($disk)->exists($customStorageLocation ? $preFilePath.$pathToVideo : $pathToVideo)) {
+            $file = BigFileTools::createDefault()->getFile($preFilePath.$pathToVideo);
             $this->bytes = $file->getSize();
         } else {
             $this->bytes = 0;
@@ -33,8 +45,28 @@ class VideoSizing
 
     public function getDirectorySize($pathToDirectory)
     {
-        foreach (Storage::allFiles("$pathToDirectory") as $filePath) {
-            $file = BigFileTools::createDefault()->getFile(storage_path('app/'.$filePath));
+        $customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first()->value;
+
+        $preFilePath = "";
+
+        if($customStorageLocation) {
+            $disk = 'root';
+            $pathToDirectory = "$customStorageLocation/$pathToDirectory";
+            $preFilePath = Storage::disk('root')->getDriver()->getAdapter()->getPathPrefix() . $pathToDirectory;
+        } else {
+            $disk = 'local';
+            $preFilePath = storage_path("app/");
+        }
+
+//        var_dump($pathToDirectory);
+
+        foreach (Storage::disk($disk)->allFiles("$pathToDirectory") as $filePath) {
+
+//            var_dump($filePath);
+
+            $file = BigFileTools::createDefault()->getFile(
+                $customStorageLocation ? $filePath : "$preFilePath/$filePath"
+            );
 
             $file_size = $file->getSize();
 

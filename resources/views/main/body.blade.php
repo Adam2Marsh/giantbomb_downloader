@@ -120,11 +120,11 @@
 </body>
 
 <script type="text/javascript">
-    Echo.channel('VideoDownloaded')
-    .listen('VideoDownloadedEvent', (e) => {
-        console.log('Video Finished Downloading, Refreshing Screen');
-        location.reload();
-    });
+//    Echo.channel('VideoDownloaded')
+//    .listen('VideoDownloadedEvent', (e) => {
+//        console.log('Video Finished Downloading, Refreshing Screen');
+//        location.reload();
+//    });
     
     function checkForNewVideos() {
 
@@ -150,19 +150,19 @@
 
     }
 
-    source.addEventListener('message',
-        function (e) {
-            // console.log(e.data);
-            var response = JSON.parse(e.data);
-            // console.log(response);
-            $('#storageSize').css('width', response.percentage).attr('aria-valuenow', response.rawSize).html(response.humanSize);
+	source.addEventListener('message',
+		function (e) {
+			// console.log(e.data);
+			var response = JSON.parse(e.data);
+			// console.log(response);
+			$('#storageSize').css('width', response.percentage).attr('aria-valuenow', response.rawSize).html(response.humanSize);
 
-            for(var i = 0; i < response.downloading.length; i++) {
-                var video = response.downloading[i];
-                // console.log(video.id);
-                // console.log(video.percentage);
+			for(var i = 0; i < response.downloading.length; i++) {
+				var video = response.downloading[i];
+				// console.log(video.id);
+				// console.log(video.percentage);
 
-                $("#" + video.id).html("SAVING " + video.percentage);
-            }
-        }, false);
+				$("#" + video.id).html("SAVING " + video.percentage);
+			}
+		}, false);
 </script>
