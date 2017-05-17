@@ -24,7 +24,7 @@ class VideoSizing
     {
         $customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first()->value;
 
-        if($customStorageLocation) {
+        if ($customStorageLocation) {
             $disk = 'root';
             $preFilePath = Storage::disk('root')->getDriver()->getAdapter()->getPathPrefix()
                 . "$customStorageLocation/";
@@ -49,7 +49,7 @@ class VideoSizing
 
         $preFilePath = "";
 
-        if($customStorageLocation) {
+        if ($customStorageLocation) {
             $disk = 'root';
             $pathToDirectory = "$customStorageLocation/$pathToDirectory";
             $preFilePath = Storage::disk('root')->getDriver()->getAdapter()->getPathPrefix() . $pathToDirectory;
@@ -61,7 +61,6 @@ class VideoSizing
 //        var_dump($pathToDirectory);
 
         foreach (Storage::disk($disk)->allFiles("$pathToDirectory") as $filePath) {
-
 //            var_dump($filePath);
 
             $file = BigFileTools::createDefault()->getFile(
