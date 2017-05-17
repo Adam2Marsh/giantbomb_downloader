@@ -47,6 +47,20 @@ class ConfigControllerTest extends TestCase
     }
 
     /**
+     * Add Slack Url Successfully
+     *
+     * @return void
+     */
+    public function testRemoveSlackHookUrl()
+    {
+        $this->visit('/configs')
+            ->type('','SLACK_HOOK_URLvalue')
+            ->press('Update Slack')
+            ->seePageIs('/configs')
+            ->see('Config Added Successfully');
+    }
+
+    /**
      * Update Slack Url UnSuccessfully
      *
      * @return void
@@ -61,7 +75,7 @@ class ConfigControllerTest extends TestCase
     }
 
     /**
-     * Add Slack Url Successfully
+     * Remove Storage Path Successfully
      *
      * @return void
      */
@@ -69,6 +83,20 @@ class ConfigControllerTest extends TestCase
     {
         $this->visit('/configs')
             ->type('/mnt','STORAGE_LOCATIONvalue')
+            ->press('Update Storage Location')
+            ->seePageIs('/configs')
+            ->see('Config Added Successfully');
+    }
+
+    /**
+     * Remove Storage Path Successfully
+     *
+     * @return void
+     */
+    public function testRemoveStorageDirectory()
+    {
+        $this->visit('/configs')
+            ->type('','STORAGE_LOCATIONvalue')
             ->press('Update Storage Location')
             ->seePageIs('/configs')
             ->see('Config Added Successfully');

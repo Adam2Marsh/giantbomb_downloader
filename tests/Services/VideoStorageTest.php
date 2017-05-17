@@ -49,7 +49,7 @@ class VideoStorageTest extends TestCase
      */
     public function test_checkForVideo_Success()
     {
-        $this->assertTrue($this->videoStorage->checkForVideo("gb_videos","TestVideo.mp4"));
+        $this->assertTrue($this->videoStorage->checkForVideo("gb_videos/TestVideo.mp4"));
     }
 
      /**
@@ -59,7 +59,7 @@ class VideoStorageTest extends TestCase
      */
     public function test_checkForVideo_Failure()
     {
-		$this->assertFalse($this->videoStorage->checkForVideo("gb_videos","WontBeFound.mp4"));
+		$this->assertFalse($this->videoStorage->checkForVideo("gb_videos/Unknown.mp4"));
     }
     
      /**
@@ -69,8 +69,8 @@ class VideoStorageTest extends TestCase
      */
     public function test_deleteVideo_Success()
     {
-    	$this->videoStorage->deleteVideo("gb_videos","TestVideo.mp4");
-		$this->assertFalse($this->videoStorage->checkForVideo("gb_videos","TestVideo.mp4"));
+    	$this->videoStorage->deleteVideo("gb_videos/TestVideo.mp4");
+		$this->assertFalse($this->videoStorage->checkForVideo("gb_videos/TestVideo.mp4"));
     }
 
 }
