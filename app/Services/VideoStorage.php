@@ -23,7 +23,7 @@ class VideoStorage
 
         $this->customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first()->value;
 
-        if($this->customStorageLocation) {
+        if ($this->customStorageLocation) {
             $this->disk = "root";
         } else {
             $this->disk = "local";
@@ -83,7 +83,7 @@ class VideoStorage
             exec("wget --user-agent=\"@Adam2Marsh Giantbomb Downloader\" -O {$saveLocation} {$downloadUrl}", $output, $return);
             exec("chmod 777 {$saveLocation}");
 
-            if($return != 0) {
+            if ($return != 0) {
                 Log::error(__METHOD__." Video did not download successfully, output is " . $return);
                 $this->deleteVideo($directory, $file_name);
             }
