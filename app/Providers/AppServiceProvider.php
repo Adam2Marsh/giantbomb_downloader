@@ -20,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
         Video::observe(VideoObserver::class);
 
         Validator::extend('directory', 'App\Http\Requests\CustomValidator@validateDirectoryExists');
+        Validator::extend('dirPermission', 'App\Http\Requests\CustomValidator@validatePermissionsInDirectory');
     }
 
     /**

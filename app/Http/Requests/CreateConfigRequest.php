@@ -27,7 +27,7 @@ class CreateConfigRequest extends FormRequest
         return [
             'name' => Rule::in(['SLACK_HOOK_URL', 'STORAGE_LOCATION']),
             'SLACK_HOOK_URLvalue' => 'regex:/^https\:\/\/hooks.slack.com\/services\/.*$/',
-            'STORAGE_LOCATIONvalue' => 'directory'
+            'STORAGE_LOCATIONvalue' => 'directory|dirPermission'
         ];
     }
 
@@ -41,7 +41,8 @@ class CreateConfigRequest extends FormRequest
         return [
             'name.in' => 'Invalid Request',
             'SLACK_HOOK_URLvalue.regex' => 'Slack Hook url doesn\'t look right, please make sure you copied everything',
-            'STORAGE_LOCATIONvalue.directory' => 'You need to enter a directory which exists'
+            'STORAGE_LOCATIONvalue.directory' => 'You need to enter a directory which exists',
+            'STORAGE_LOCATIONvalue.dir_permission' => 'Unable to write in the directory, please fix'
         ];
     }
 }

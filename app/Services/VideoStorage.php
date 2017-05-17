@@ -50,16 +50,28 @@ class VideoStorage
     */
     public function downloadVideofromURL($url, $directory, $file_name)
     {
-        Log::info(__METHOD__." I've been asked to download a video from $url and save in $directory");
+        $downloadUrl = $url."?api_key=".Config::where('name', '=', 'API_KEY')->first()->value;
+
+        $customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first()->value;
 
         Log::info(__METHOD__." Will create download directory if it doesn't exists");
-        Storage::makeDirectory($directory);
 
-        $downloadUrl = $url."?api_key=".Config::where('name', '=', 'API_KEY')->first()->value;
-        $saveLocation = "$directory/$file_name";
+        var_dump($customStorageLocation);
 
-        if(config('gb.use_wget_to_download')) {
-            $saveLocation = storage_path() . "/app/" . $saveLocation;
+        if ($customStorageLocation == null) {
+            Log::info(__METHOD__ . " Using default directory to save video as no config");
+            $saveLocation = storage_path() . "/app/" . "$directory/$file_name";
+            Storage::makeDirectory($directory);
+        } else {
+            Log::info(__METHOD__ . " Using custom directory to save video");
+            Storage::disk('root')->makeDirectory($customStorageLocation . "/$directory");
+            $saveLocation = Storage::disk('root')->getDriver()->getAdapter()->getPathPrefix() .
+                "$customStorageLocation/$directory/$file_name";
+        }
+
+        Log::info(__METHOD__." I've been asked to download a video from $url and save in $saveLocation");
+
+        if (config('gb.use_wget_to_download')) {
             exec("wget --user-agent=\"@Adam2Marsh Giantbomb Downloader\" -O {$saveLocation} {$downloadUrl}", $output, $return);
             exec("chmod 777 {$saveLocation}");
 

@@ -11,4 +11,15 @@ class CustomValidator
     {
         return Storage::disk('root')->has($value);
     }
+
+    public function validatePermissionsInDirectory($attribute, $value, $parameters, $validator)
+    {
+        try {
+            Storage::disk('root')->makeDirectory("$value/test");
+            Storage::disk('root')->deleteDirectory("$value/test");
+            return true;
+        } catch (\Exception $exception) {
+            return false;
+        }
+    }
 }
