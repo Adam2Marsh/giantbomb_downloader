@@ -41,24 +41,9 @@ class ConfigControllerTest extends TestCase
     {
         $this->visit('/configs')
             ->type('https://hooks.slack.com/services/T','value')
-            ->press('Submit')
-            ->seePageIs('/configs')
-            ->see('Config Added Successfully');
-    }
-
-    /**
-     * Update Slack Url Successfully
-     *
-     * @return void
-     */
-    public function testUpdateSlackHookUrl()
-    {
-        $this->markTestIncomplete('Removing test as broken, needs fixing');
-        $this->visit('/configs')
-            ->type('https://hooks.slack.com/services/T','SLACK_HOOK_URL')
             ->press('Update')
             ->seePageIs('/configs')
-            ->see('Config Updated Successfully');
+            ->see('Config Added Successfully');
     }
 
     /**
