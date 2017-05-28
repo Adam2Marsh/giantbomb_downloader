@@ -93,7 +93,7 @@ class VideoStorage
             Storage::put("$directory/$file_name", fopen($downloadUrl, "r"));
         }
 
-        return $this->customStorageLocation ? $saveLocation : "$directory/$file_name";
+        return $this->customStorageLocation ? $saveLocation : "app/$directory/$file_name";
     }
 
 
