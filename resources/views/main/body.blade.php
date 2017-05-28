@@ -84,8 +84,9 @@
 									@endif
 
 									@if ($video->status == 'FAILED')
-										{{ Form::open(['action' => ['VideoController@download', $video->id], 'method' => 'get']) }}
-										<button type="submit" class="btn btn-success">Retry Download</button>
+										{{ Form::open(['action' => 'VideoController@saveVideo', 'method' => 'post']) }}
+										{{ Form::hidden('id',$video->id) }}
+											<button type="submit" class="btn btn-success">Retry Download</button>
 										{{ Form::close() }}
 									@endif
 								</td>
