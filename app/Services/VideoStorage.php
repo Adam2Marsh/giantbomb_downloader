@@ -21,7 +21,9 @@ class VideoStorage
     {
         $this->videoRepository = new VideoRepository;
 
-        $this->customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first();
+//        dd(Config::where('name', '=', 'STORAGE_LOCATION')->first());
+
+//        $this->customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first();
 
         if ($this->customStorageLocation) {
             $this->disk = "root";
@@ -93,7 +95,7 @@ class VideoStorage
             Storage::put("$directory/$file_name", fopen($downloadUrl, "r"));
         }
 
-        return $this->customStorageLocation ? $saveLocation : "app/$directory/$file_name";
+        return $this->customStorageLocation ? $saveLocation : "$directory/$file_name";
     }
 
 
@@ -105,7 +107,7 @@ class VideoStorage
     */
     public function checkForVideo($video)
     {
-        Log::info(__METHOD__." Checking if $video has been downloaded");
+        Log::info(__METHOD__." Checking if $video has been downloaded via disk " . $this->disk);
         if(Storage::disk($this->disk)->has($video)) {
             Log::info(__METHOD__." Video has been downloaded, returning true");
             return true;

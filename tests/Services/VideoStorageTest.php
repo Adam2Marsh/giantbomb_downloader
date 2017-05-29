@@ -1,5 +1,6 @@
 <?php
 
+use App\VideoDetails;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -27,6 +28,28 @@ class VideoStorageTest extends TestCase
     {
         $testVid = "https://giantbomb-pdl.akamaized.net/video/ft_nonsubs_060311_3500.mp4";
         $this->videoStorage->downloadVideofromURL($testVid, "gb_videos", "TestVideo.mp4");
+    }
+
+    /**
+     * Test downloading a video which exist
+     */
+    public function test_saveVideo_Success()
+    {
+        $newVideo = new Video;
+        $newVideo->name = "Success Video as good url";
+        $newVideo->file_name = "TestVideo.mp4";
+        $newVideo->url = "https://giantbomb-pdl.akamaized.net/video/ft_nonsubs_060311_3500.mp4";
+        $newVideo->save();
+
+        $newVideoDetails = new VideoDetails([
+            'local_path' => "gb_videos/TestVideo.mp4",
+            'file_size' => 1001,
+            'image_path' => "",
+        ]);
+
+        $newVideo->videoDetail()->save($newVideoDetails);
+
+        $this->videoStorage->saveVideo($newVideo);
     }
 
     /**
