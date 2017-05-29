@@ -23,7 +23,7 @@ class VideoStorage
 
 //        dd(Config::where('name', '=', 'STORAGE_LOCATION')->first());
 
-//        $this->customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first();
+        $this->customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first();
 
         if ($this->customStorageLocation) {
             $this->disk = "root";

@@ -25,7 +25,7 @@ class VideoSizing
 
         $this->customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first();
 
-        if ($this->customStorageLocation) {
+        if ($this->customStorageLocation && $this->customStorageLocation->value != null) {
             $this->disk = "root";
             $this->customStorageLocation = $this->customStorageLocation->value;
         } else {
@@ -35,14 +35,14 @@ class VideoSizing
 
     public function getVideoSize($pathToVideo)
     {
-        if ($this->customStorageLocation) {
+        if ($this->disk == "root") {
             $preFilePath = Storage::disk('root')->getDriver()->getAdapter()->getPathPrefix()
                 . "$this->customStorageLocation/";
         } else {
             $preFilePath = storage_path("app/");
         }
 
-        if (Storage::disk($this->disk)->exists($this->customStorageLocation ? $preFilePath.$pathToVideo : $pathToVideo)) {
+        if (Storage::disk($this->disk)->exists($this->disk == "root" ? $preFilePath.$pathToVideo : $pathToVideo)) {
             $file = BigFileTools::createDefault()->getFile($preFilePath.$pathToVideo);
             $this->bytes = $file->getSize();
         } else {
@@ -56,25 +56,25 @@ class VideoSizing
     {
         $preFilePath = "";
 
-        if ($this->customStorageLocation) {
+        if ($this->disk == "root") {
             $pathToDirectory = "$this->customStorageLocation/$pathToDirectory";
             $preFilePath = Storage::disk('root')->getDriver()->getAdapter()->getPathPrefix() . $pathToDirectory;
         } else {
-            $preFilePath = storage_path("app/");
+            $preFilePath = storage_path("app");
         }
 
-//        var_dump($pathToDirectory);
+//        var_dump($this->disk);
+
+//        dd("$pathToDirectory");
 
         foreach (Storage::disk($this->disk)->allFiles("$pathToDirectory") as $filePath) {
-//            var_dump($filePath);
+//            var_dump("$preFilePath/$filePath");
 
             $file = BigFileTools::createDefault()->getFile(
-                $this->customStorageLocation ? $filePath : "$preFilePath/$filePath"
+                $this->disk == "root" ? $filePath : "$preFilePath/$filePath"
             );
 
             $file_size = $file->getSize();
-
-            // $file_size = $file_size >= 0 ? $file_size : 4*1024*1024*1024 + $file_size;
 
             $this->bytes = $this->bytes->plus($file_size);
         }
