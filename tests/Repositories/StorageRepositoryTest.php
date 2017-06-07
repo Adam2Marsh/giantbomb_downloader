@@ -9,7 +9,7 @@ use App\Repositories\ConfigRepository;
 class StorageRepositoryTest extends TestCase
 {
 
-    use DatabaseTransactions;
+    use DatabaseMigrations;
 
     protected $configRepo;
 
@@ -28,9 +28,11 @@ class StorageRepositoryTest extends TestCase
 
     public function test_returnPath_local()
     {
+        $this->configRepo->UpdateConfig('STORAGE_LOCATION', '');
+
         $storageRepo = new StorageRepository();
 
-        $this->assertEquals("/home/vagrant/giantbomb-downloader/storage/app/", $storageRepo->returnPath());
+        $this->assertContains("giantbomb-downloader/storage/app/", $storageRepo->returnPath());
     }
 
 
@@ -50,6 +52,8 @@ class StorageRepositoryTest extends TestCase
         $storageRepo = new StorageRepository();
 
         $this->assertEquals("//mnt/external/test/", $storageRepo->returnPath());
+
+        $this->configRepo->UpdateConfig('STORAGE_LOCATION', '');
     }
 
 }
