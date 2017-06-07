@@ -1,3 +1,51 @@
+<script type="text/javascript">
+    //    Echo.channel('VideoDownloaded')
+    //    .listen('VideoDownloadedEvent', (e) => {
+    //        console.log('Video Finished Downloading, Refreshing Screen');
+    //        location.reload();
+    //    });
+
+    function checkForNewVideos() {
+
+        $('#refreshIcon').addClass('fa-spin');
+        $('#refreshButton').prop('disabled', true);
+
+        $.ajax({
+            type: 'GET',
+            url: 'NewVideos/60',
+            data: {'_method':'PUT', '_token':'{{ csrf_token() }}'},
+            success: function(data) {
+                location.reload();
+            },
+            error: function(data) {
+                alert(data);
+            }
+        });
+    }
+
+    if (!!window.EventSource) {
+        var source = new EventSource('{{ url('stream') }}');
+    } else {
+
+    }
+
+    source.addEventListener('message',
+        function (e) {
+            // console.log(e.data);
+            var response = JSON.parse(e.data);
+            // console.log(response);
+            $('#storageSize').css('width', response.percentage).attr('aria-valuenow', response.rawSize).html(response.humanSize);
+
+            for(var i = 0; i < response.downloading.length; i++) {
+                var video = response.downloading[i];
+                // console.log(video.id);
+                // console.log(video.percentage);
+
+                $("#" + video.id).html("SAVING " + video.percentage);
+            }
+        }, false);
+</script>
+
 <div class="col-md-8 col-md-offset-2">
 	<div class="row text-center">
 		<h3>Video's Downloaded Size:</h3>
@@ -96,19 +144,9 @@
 					@else
 						<tr>
 							<td colspan="6">
-								<h3>Please don't refresh page grabbing videos, will refresh automatically (unless something breaks)</h3>
+								<h3>Please don't refresh page grabbing latest videos, will refresh automatically (unless something breaks)</h3>
 								<script type="text/javascript">
-                                    $.ajax({
-										type: 'GET',
-										url: 'NewVideos',
-                                        data: {'_method':'PUT', '_token':'{{ csrf_token() }}'},
-                                        success: function(data) {
-                                            location.reload();
-                                        },
-                                        error: function(data) {
-                                             alert(data);
-                                        }
-									});
+                                    $('#refreshButton').click();
 								</script>
 							</td>
 						</tr>
@@ -119,51 +157,3 @@
 		<hr>
 	</div>
 </body>
-
-<script type="text/javascript">
-//    Echo.channel('VideoDownloaded')
-//    .listen('VideoDownloadedEvent', (e) => {
-//        console.log('Video Finished Downloading, Refreshing Screen');
-//        location.reload();
-//    });
-    
-    function checkForNewVideos() {
-
-        $('#refreshIcon').addClass('fa-spin');
-		$('#refreshButton').prop('disabled', true);
-
-        $.ajax({
-            type: 'GET',
-            url: 'NewVideos',
-            data: {'_method':'PUT', '_token':'{{ csrf_token() }}'},
-            success: function(data) {
-                location.reload();
-            },
-            error: function(data) {
-                alert(data);
-            }
-        });
-    }
-
-    if (!!window.EventSource) {
-        var source = new EventSource('{{ url('stream') }}');
-    } else {
-
-    }
-
-	source.addEventListener('message',
-		function (e) {
-			// console.log(e.data);
-			var response = JSON.parse(e.data);
-			// console.log(response);
-			$('#storageSize').css('width', response.percentage).attr('aria-valuenow', response.rawSize).html(response.humanSize);
-
-			for(var i = 0; i < response.downloading.length; i++) {
-				var video = response.downloading[i];
-				// console.log(video.id);
-				// console.log(video.percentage);
-
-				$("#" + video.id).html("SAVING " + video.percentage);
-			}
-		}, false);
-</script>
