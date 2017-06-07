@@ -38,7 +38,7 @@ class VideoSizingTest extends TestCase
      */
     public function test_GetVideoSizeAsBytes()
     {
-        $this->assertEquals("11209849", $this->videoSizing
+        $this->assertRegExp('/\d+/', $this->videoSizing
                     ->getVideoSize("gb_videos/video_size_test.mp4")
                     ->returnAsBytes());
     }
@@ -50,7 +50,7 @@ class VideoSizingTest extends TestCase
      */
     public function test_GetVideoSizeAsHuman()
     {
-        $this->assertEquals("10.69MB", $this->videoSizing
+        $this->assertRegExp('/\d+.\d+MB/', $this->videoSizing
                     ->getVideoSize("gb_videos/video_size_test.mp4")
                     ->returnAsHuman());
     }
@@ -62,7 +62,7 @@ class VideoSizingTest extends TestCase
      */
     public function test_GetVideoSizeAsPercentage()
     {
-        $this->assertEquals("623%", $this->videoSizing
+        $this->assertRegExp('/\d+%/', $this->videoSizing
                     ->getVideoSize("gb_videos/video_size_test.mp4")
                     ->returnAsPercentage(1800631));
     }
@@ -74,7 +74,7 @@ class VideoSizingTest extends TestCase
      */
     public function test_GetDirectorySizeAsBytes()
     {
-        $this->assertEquals("11384398", $this->videoSizing
+        $this->assertRegExp('/\d+/', $this->videoSizing
                     ->getDirectorySize("gb_videos")
                     ->returnAsBytes());
     }
@@ -86,7 +86,7 @@ class VideoSizingTest extends TestCase
      */
     public function test_GetDirectorySizeAsHuman()
     {
-        $this->assertEquals("10.86MB", $this->videoSizing
+        $this->assertRegExp('/\d+.\d+MB/', $this->videoSizing
                     ->getDirectorySize("gb_videos")
                     ->returnAsHuman());
     }
@@ -98,7 +98,7 @@ class VideoSizingTest extends TestCase
      */
     public function test_GetDirectorySizeAsPercentage()
     {
-        $this->assertEquals("129%", $this->videoSizing
+        $this->assertRegExp('/\d+%/', $this->videoSizing
                     ->getDirectorySize("gb_videos")
                     ->returnAsPercentage(8800631));
     }

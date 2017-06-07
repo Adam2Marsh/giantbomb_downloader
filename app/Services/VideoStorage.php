@@ -7,30 +7,20 @@ use Log;
 use Storage;
 use App\Config;
 use App\Repositories\VideoRepository;
+use App\Repositories\StorageRepository;
 
 class VideoStorage
 {
 
     protected $videoRepository;
 
-    protected $customStorageLocation;
-
-    protected $disk;
+    protected $storageRepo;
 
     public function __construct()
     {
         $this->videoRepository = new VideoRepository;
 
-//        dd(Config::where('name', '=', 'STORAGE_LOCATION')->first());
-
-        $this->customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first();
-
-        if ($this->customStorageLocation) {
-            $this->disk = "root";
-            $this->customStorageLocation = $this->customStorageLocation->value;
-        } else {
-            $this->disk = "local";
-        }
+        $this->storageRepo = new StorageRepository();
     }
 
     /**
@@ -69,33 +59,29 @@ class VideoStorage
 
         Log::info(__METHOD__." Will create download directory if it doesn't exists");
 
-        if ($this->customStorageLocation == null) {
-            Log::info(__METHOD__ . " Using default directory to save video as no config");
-            $saveLocation = storage_path() . "/app/" . "$directory/$file_name";
-            Storage::makeDirectory($directory);
-        } else {
-            Log::info(__METHOD__ . " Using custom directory to save video");
-            Storage::disk('root')->makeDirectory($this->customStorageLocation . "/$directory");
-            $saveLocation = Storage::disk('root')->getDriver()->getAdapter()->getPathPrefix() .
-                "$this->customStorageLocation/$directory/$file_name";
-        }
+        $saveLocation = $this->storageRepo->returnPath() . "$directory/$file_name";
+
+        $this->createGbVideosDirectory($directory);
 
         Log::info(__METHOD__." I've been asked to download a video from $url and save in $saveLocation");
 
         if (config('gb.use_wget_to_download')) {
-            exec("wget --user-agent=\"@Adam2Marsh Giantbomb Downloader\" -O {$saveLocation} {$downloadUrl}", $output, $return);
+            exec(
+                "wget --user-agent=\"@Adam2Marsh Giantbomb Downloader\" -O {$saveLocation} {$downloadUrl}",
+                $output,
+                $return
+            );
             exec("chmod 777 {$saveLocation}");
 
             if ($return != 0) {
                 Log::error(__METHOD__." Video did not download successfully, output is " . $return);
                 $this->deleteVideo($directory, $file_name);
             }
-
         } else {
             Storage::put("$directory/$file_name", fopen($downloadUrl, "r"));
         }
 
-        return $this->customStorageLocation ? $saveLocation : "$directory/$file_name";
+        return $this->storageRepo->returnDiskName() == "root" ? $saveLocation : "$directory/$file_name";
     }
 
 
@@ -107,8 +93,10 @@ class VideoStorage
     */
     public function checkForVideo($video)
     {
-        Log::info(__METHOD__." Checking if $video has been downloaded via disk " . $this->disk);
-        if(Storage::disk($this->disk)->has($video)) {
+        Log::info(__METHOD__." Checking if $video has been downloaded via disk "
+            . $this->storageRepo->returnDiskName());
+
+        if (Storage::disk($this->storageRepo->returnDiskName())->has($video)) {
             Log::info(__METHOD__." Video has been downloaded, returning true");
             return true;
         }
@@ -126,8 +114,17 @@ class VideoStorage
     public function deleteVideo($video)
     {
         Log::info(__METHOD__." Been asked to delete $video from storage");
-        Storage::disk($this->disk)->delete($video);
+        Storage::disk($this->storageRepo->returnDiskName())->delete($video);
         Log::info(__METHOD__." $video deleted from storage");
     }
 
+
+    public function createGbVideosDirectory($directory)
+    {
+        if ($this->storageRepo->returnDiskName() == "root") {
+            Storage::disk('root')->makeDirectory($this->storageRepo->returnPath() . "/$directory");
+        } else {
+            Storage::makeDirectory($directory);
+        }
+    }
 }
