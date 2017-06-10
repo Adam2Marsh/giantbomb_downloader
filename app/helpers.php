@@ -3,7 +3,7 @@
 /**
 *       Return sizes readable by humans
 */
-function human_filesize($bytes, $decimals  = 2)
+function human_filesize($bytes, $decimals = 2)
 {
         $size = ['B', 'kB', 'MB', 'GB', 'TB', 'PB'];
         $factor = floor((strlen($bytes) - 1) / 3);
@@ -37,18 +37,18 @@ function getJSON($JSONUrl)
     $client = new \GuzzleHttp\Client();
     $res = $client->request('GET', $JSONUrl);
 
-    if(CheckHTTPCallSucessful($res->getStatusCode())) {
+    if (CheckHTTPCallSucessful($res->getStatusCode())) {
         Log::info(__METHOD__." Guzzle Get Request responded with: ".$res->getBody());
         return json_decode($res->getBody());
-    }
-    else {
-        Log::critical(__METHOD__." HTTP Call to ".$JSONUrl." failed, recieved this back".$res->getStatusCode().$res->getReasonPhrase());
+    } else {
+        Log::critical(__METHOD__." HTTP Call to ".$JSONUrl." failed, recieved this back"
+            .$res->getStatusCode().$res->getReasonPhrase());
     }
 }
 
 function checkHTTPCallSucessful($HttpStatusCode)
 {
-    if($HttpStatusCode != 200) {
+    if ($HttpStatusCode != 200) {
         return false;
     }
     return true;

@@ -40,24 +40,24 @@ class ConfigControllerTest extends TestCase
     public function testAddSlackHookUrl()
     {
         $this->visit('/configs')
-            ->type('https://hooks.slack.com/services/T','value')
-            ->press('Save')
+            ->type('https://hooks.slack.com/services/T','SLACK_HOOK_URLvalue')
+            ->press('Update Slack')
             ->seePageIs('/configs')
             ->see('Config Added Successfully');
     }
 
     /**
-     * Update Slack Url Successfully
+     * Add Slack Url Successfully
      *
      * @return void
      */
-    public function testUpdateSlackHookUrl()
+    public function testRemoveSlackHookUrl()
     {
         $this->visit('/configs')
-            ->type('https://hooks.slack.com/services/T','SLACK_HOOK_URL')
-            ->press('Save')
+            ->type('','SLACK_HOOK_URLvalue')
+            ->press('Update Slack')
             ->seePageIs('/configs')
-            ->see('Config Updated Successfully');
+            ->see('Config Added Successfully');
     }
 
     /**
@@ -68,10 +68,52 @@ class ConfigControllerTest extends TestCase
     public function testUpdateSlackHookUrl_Error()
     {
         $this->visit('/configs')
-            ->type('INVALID','SLACK_HOOK_URL')
-            ->press('Save')
+            ->type('INVALID','SLACK_HOOK_URLvalue')
+            ->press('Update Slack')
             ->seePageIs('/configs')
             ->see('Slack Hook url doesn\'t look right, please make sure you copied everything');
+    }
+
+    /**
+     * Remove Storage Path Successfully
+     *
+     * @return void
+     */
+    public function testAddStorageDirectory()
+    {
+        $this->visit('/configs')
+            ->type('/mnt','STORAGE_LOCATIONvalue')
+            ->press('Update Storage Location')
+            ->seePageIs('/configs')
+            ->see('Config Added Successfully');
+    }
+
+    /**
+     * Remove Storage Path Successfully
+     *
+     * @return void
+     */
+    public function testRemoveStorageDirectory()
+    {
+        $this->visit('/configs')
+            ->type('','STORAGE_LOCATIONvalue')
+            ->press('Update Storage Location')
+            ->seePageIs('/configs')
+            ->see('Config Added Successfully');
+    }
+
+    /**
+     * Update Slack Url UnSuccessfully
+     *
+     * @return void
+     */
+    public function testAddStorageDirectory_Error()
+    {
+        $this->visit('/configs')
+            ->type('INVALID','STORAGE_LOCATIONvalue')
+            ->press('Update Storage Location')
+            ->seePageIs('/configs')
+            ->see('You need to enter a directory which exists');
     }
 
     /**
@@ -84,7 +126,7 @@ class ConfigControllerTest extends TestCase
         $this->visit('/configs')
             ->press('Delete')
             ->seePageIs('/FirstTime')
-            ->see('Welcome to the Giantbomb Local Downloader');
+            ->see('Welcome to the Giantbomb Pi Downloader');
     }
 
 }

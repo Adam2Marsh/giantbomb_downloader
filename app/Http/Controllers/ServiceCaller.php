@@ -12,17 +12,24 @@ use Log;
 class ServiceCaller extends Controller
 {
 
-	public function newVideos()
-	{
-		$dvi = new DownloadVideoInformation;
+    public function newVideos($count = 0)
+    {
+        $dvi = new DownloadVideoInformation;
 
-		Log::info(__METHOD__." Controller has been called to retrieve all new videos and insert into database");
+        Log::info(__METHOD__." Controller has been called to retrieve all new videos and insert into database");
 
-		$url=env('TEST_JSON_URL',config('gb.Website_Address'));
-		$query=env('LATEST_VIDEO_QUERY',config('gb.Latest_Video_Query'));
-		$apiKey= Config::where('name', '=', 'API_KEY')->first()->value;
+        $url=config('gb.api_address');
 
-		$dvi->UpdateVideosInDatabase($url,$query,$apiKey);
-	}
+        $query=config('gb.api_query');
 
+        if ($count==0) {
+            $query = $query . config('gb.max_videos_to_grab_api');
+        } else {
+            $query = $query . '&limit=' . $count;
+        }
+
+        $apiKey= Config::where('name', '=', 'API_KEY')->first()->value;
+
+        $dvi->UpdateVideosInDatabase($url, $query, $apiKey);
+    }
 }

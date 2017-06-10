@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Repositories\StorageRepository;
 use Log;
 use Storage;
+use App\Config;
 use BigFileTools;
 use Brick\Math\BigInteger;
 use Brick\Math\RoundingMode;
@@ -14,15 +16,22 @@ class VideoSizing
 
     private $bytes;
 
+    protected $storageRepo;
+
     public function __construct()
     {
         $this->bytes = BigInteger::of(0);
+
+        $this->storageRepo = new StorageRepository();
     }
 
     public function getVideoSize($pathToVideo)
     {
-        if (Storage::exists($pathToVideo)) {
-            $file = BigFileTools::createDefault()->getFile(storage_path('app/'.$pathToVideo));
+        $disk = $this->storageRepo->returnDiskName();
+        $preFilePath = $this->storageRepo->returnPath();
+
+        if (Storage::disk($disk)->exists($disk == "root" ? $preFilePath.$pathToVideo : $pathToVideo)) {
+            $file = BigFileTools::createDefault()->getFile($preFilePath.$pathToVideo);
             $this->bytes = $file->getSize();
         } else {
             $this->bytes = 0;
@@ -33,12 +42,17 @@ class VideoSizing
 
     public function getDirectorySize($pathToDirectory)
     {
-        foreach (Storage::allFiles("$pathToDirectory") as $filePath) {
-            $file = BigFileTools::createDefault()->getFile(storage_path('app/'.$filePath));
+        $disk = $this->storageRepo->returnDiskName();
+        $preFilePath = $this->storageRepo->returnPath();
+
+        foreach (Storage::disk($disk)->allFiles("$pathToDirectory") as $filePath) {
+//            var_dump("$preFilePath/$filePath");
+
+            $file = BigFileTools::createDefault()->getFile(
+                $disk == "root" ? $filePath : "$preFilePath/$filePath"
+            );
 
             $file_size = $file->getSize();
-
-            // $file_size = $file_size >= 0 ? $file_size : 4*1024*1024*1024 + $file_size;
 
             $this->bytes = $this->bytes->plus($file_size);
         }

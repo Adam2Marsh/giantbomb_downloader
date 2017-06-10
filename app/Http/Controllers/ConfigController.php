@@ -19,8 +19,15 @@ class ConfigController extends Controller
     {
         $apiKey = Config::where('name', '=', 'API_KEY')->first();
         $slackHookUrl = Config::where('name', '=', 'SLACK_HOOK_URL')->first();
+        $storageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first();
 
-        return view('configs', ['apiKey' => $apiKey, 'slackHookUrl' => $slackHookUrl]);
+        return view('configs',
+            [
+                'apiKey' => $apiKey,
+                'slackHookUrl' => $slackHookUrl,
+                'storageLocation' => $storageLocation
+            ]
+        );
     }
 
     /**
@@ -31,7 +38,7 @@ class ConfigController extends Controller
      */
     public function store(CreateConfigRequest $request, ConfigRepository $configRepository)
     {
-        $configRepository->UpdateConfig($request->name, $request->value);
+        $configRepository->UpdateConfig($request->name, $request->{$request->name."value"});
         return redirect('configs')->with('success', 'Config Added Successfully');
     }
 

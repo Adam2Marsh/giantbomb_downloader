@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Video;
+use App\Config;
 use Log;
 use Storage;
 
@@ -73,19 +74,25 @@ class VideoController extends Controller
     public function download($id)
     {
         $video = Video::findOrFail($id);
-//        return response()->download(storage_path("app/gb_videos/$video->file_name"));
-        $fs = Storage::getAdapter();
+
+        $customStorageLocation = Config::where('name', '=', 'STORAGE_LOCATION')->first()->value;
+
+        if ($customStorageLocation) {
+            $disk = "root";
+        } else {
+            $disk = "local";
+        }
+
+        $fs = Storage::disk($disk)->getDriver()->getAdapter();
 
         $file_path = $video->videoDetail->local_path;
 
         $stream = $fs->readStream($file_path);
 
         $stream = $stream["stream"];
-//        $contents = stream_get_contents($stream);
-//        $stream = Storage::get("gb_videos/$video->file_name");
 
         return response()->stream(
-            function() use ($stream) {
+            function () use ($stream) {
 //                while(ob_end_flush());
                 fpassthru($stream);
             },
@@ -108,8 +115,8 @@ class VideoController extends Controller
         $video = Video::findOrFail($id);
         $videoName = $vsr->updateVideoToDownloadedStatus($video->id, 'WATCHED');
 
-        if ($vs->checkForVideo("gb_videos", $video->file_name)) {
-            $vs->deleteVideo("gb_videos", $video->file_name);
+        if ($vs->checkForVideo($video->videoDetail->local_path)) {
+            $vs->deleteVideo($video->videoDetail->local_path);
         }
 
         return redirect('/videos')

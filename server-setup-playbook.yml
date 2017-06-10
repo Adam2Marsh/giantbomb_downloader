@@ -60,3 +60,16 @@
       priv: '*.*:ALL'
       state: present
     become: yes
+
+  - name: Change mnt folder permissions
+    file:
+      path: /mnt
+      mode: 0777
+    become: yes
+
+  - name: Create mnt directory
+    file:
+      path: /mnt/external
+      state: directory
+      mode: 0777
+    become: yes

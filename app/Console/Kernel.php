@@ -37,12 +37,13 @@ class Kernel extends ConsoleKernel
 
             Log::info(__METHOD__." Schedule has been called to retrieve all new videos and insert into database");
 
-            $url=env('TEST_JSON_URL',config('gb.Website_Address'));
-            $query=env('LATEST_VIDEO_QUERY',config('gb.Latest_Video_Query'));
+            $url=config('gb.api_address');
+
+            $query=config('gb.api_query') . config('gb.max_videos_to_grab_api');
+
             $apiKey= Config::where('name', '=', 'API_KEY')->first()->value;
 
-            $dvi->UpdateVideosInDatabase($url,$query,$apiKey);
+            $dvi->UpdateVideosInDatabase($url, $query, $apiKey);
         })->hourly();
-
     }
 }

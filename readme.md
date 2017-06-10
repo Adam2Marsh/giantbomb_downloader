@@ -1,3 +1,5 @@
+[![Build Status](http://jenkins.adam2marsh.co.uk/job/giantbomb-downloader/badge/icon)](http://jenkins.adam2marsh.co.uk/job/giantbomb-downloader)
+
 ## Giantbomb Downloader
 
 If your reading this then our situations could be similar, you love GiantBomb and your internet is just not that great... I developed this tool to download my favourite Giantbomb videos ready for my morning commute, while my power hungry PC and I sleep.

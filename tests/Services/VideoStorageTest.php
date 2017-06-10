@@ -1,5 +1,6 @@
 <?php
 
+use App\VideoDetails;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -30,6 +31,28 @@ class VideoStorageTest extends TestCase
     }
 
     /**
+     * Test downloading a video which exist
+     */
+    public function test_saveVideo_Success()
+    {
+        $newVideo = new Video;
+        $newVideo->name = "Success Video as good url";
+        $newVideo->file_name = "TestVideo.mp4";
+        $newVideo->url = "https://giantbomb-pdl.akamaized.net/video/ft_nonsubs_060311_3500.mp4";
+        $newVideo->save();
+
+        $newVideoDetails = new VideoDetails([
+            'local_path' => "gb_videos/TestVideo.mp4",
+            'file_size' => 1001,
+            'image_path' => "",
+        ]);
+
+        $newVideo->videoDetail()->save($newVideoDetails);
+
+        $this->videoStorage->saveVideo($newVideo);
+    }
+
+    /**
      * Test downloading a video which doesn't exist, should fail
      * @expectedException Exception
      */
@@ -49,7 +72,7 @@ class VideoStorageTest extends TestCase
      */
     public function test_checkForVideo_Success()
     {
-        $this->assertTrue($this->videoStorage->checkForVideo("gb_videos","TestVideo.mp4"));
+        $this->assertTrue($this->videoStorage->checkForVideo("gb_videos/TestVideo.mp4"));
     }
 
      /**
@@ -59,7 +82,7 @@ class VideoStorageTest extends TestCase
      */
     public function test_checkForVideo_Failure()
     {
-		$this->assertFalse($this->videoStorage->checkForVideo("gb_videos","WontBeFound.mp4"));
+		$this->assertFalse($this->videoStorage->checkForVideo("gb_videos/Unknown.mp4"));
     }
     
      /**
@@ -69,8 +92,8 @@ class VideoStorageTest extends TestCase
      */
     public function test_deleteVideo_Success()
     {
-    	$this->videoStorage->deleteVideo("gb_videos","TestVideo.mp4");
-		$this->assertFalse($this->videoStorage->checkForVideo("gb_videos","TestVideo.mp4"));
+    	$this->videoStorage->deleteVideo("gb_videos/TestVideo.mp4");
+		$this->assertFalse($this->videoStorage->checkForVideo("gb_videos/TestVideo.mp4"));
     }
 
 }

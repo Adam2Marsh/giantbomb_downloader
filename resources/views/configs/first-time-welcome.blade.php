@@ -5,7 +5,7 @@
         <img src="/gb-logo.png" alt="giantbomb logo" class="img-responsive center-block">
         <p>If your reading this then our situations could be similar, you love GiantBomb and your internet is just not that great...</p>
         <p>I developed this tool to download my favourite Giantbomb videos ready for my morning commute, while my power hungry PC and I sleep. To use this tool follow the instructions below and let's get you set up.</p>
-        <div class="alert alert-info" role="alert">
+        <div class="alert alert-danger" role="alert">
             <h3>Follow these 3 quick steps</h3>
             <ol>
                 <li>Get your Link code from <a href="https://www.giantbomb.com/app/giantbomb%20pi%20downloader/" target="_blank">https://www.giantbomb.com/app/giantbomb pi downloader/</a></li>

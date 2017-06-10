@@ -11,3 +11,4 @@ echo-server-worker.log
 .idea
 build
 public/video_thumbnails
+*.retry

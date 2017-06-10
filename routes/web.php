@@ -16,8 +16,6 @@ Route::get('/', function () {
     return redirect('/videos');
 });
 
-Route::get('NewVideos', 'ServiceCaller@newVideos');
-
 // Route::get('ScheduleVideos', 'ServiceCaller@scheduleVideos');
 
 Route::get('/TestVideo', function () {
@@ -62,8 +60,7 @@ Route::get('Error', function () {
 |
 */
 
-Route::group(['middleware' => ['web']], function ()
-{
+Route::group(['middleware' => ['web']], function () {
     Route::get('/FirstTime', 'NewUserController@index');
     Route::post('/FirstTime', 'NewUserController@getApiKeyAndSave');
 });
@@ -80,4 +77,10 @@ Route::group(['middleware' => ['web', 'premium']], function () {
     Route::get('/stream', 'HttpEventStreamController@returnStorageSize');
     Route::get('/streamTest', 'HttpEventStreamController@returnTestStreamPage');
     Route::get('/stream/{id}/video', 'HttpEventStreamController@returnVideoDownloadPercentage');
+
+    Route::get('/update', 'UpdateController@index');
+    Route::get('/update/check', 'UpdateController@check');
+    Route::post('/update', 'UpdateController@update');
+
+    Route::get('NewVideos/{count?}', 'ServiceCaller@newVideos');
 });
