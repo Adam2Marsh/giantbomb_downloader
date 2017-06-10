@@ -113,8 +113,9 @@ class VideoStorage
     */
     public function deleteVideo($video)
     {
-        Log::info(__METHOD__." Been asked to delete $video from storage");
-        Storage::disk($this->storageRepo->returnDiskName())->delete($video);
+        Log::info(__METHOD__." Been asked to delete $video from storage locations");
+        Storage::disk("root")->delete($video);
+        Storage::disk("local")->delete($video);
         Log::info(__METHOD__." $video deleted from storage");
     }
 
