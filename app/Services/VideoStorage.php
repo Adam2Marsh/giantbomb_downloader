@@ -73,10 +73,10 @@ class VideoStorage
             );
             exec("chmod 777 {$saveLocation}");
 
-            if ($return != 0) {
-                Log::error(__METHOD__." Video did not download successfully, output is " . $return);
-                $this->deleteVideo($directory, $file_name);
-            }
+//            if ($return != 0) {
+//                Log::error(__METHOD__." Video did not download successfully, output is " . $return);
+//                $this->deleteVideo($directory, $file_name);
+//            }
         } else {
             Storage::put("$directory/$file_name", fopen($downloadUrl, "r"));
         }
