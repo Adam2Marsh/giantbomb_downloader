@@ -25,4 +25,15 @@ class GetVideoDetailsServiceTest extends TestCase
         $this->assertEquals("video_thumbnails/just_testing_something_with_spaces.png", $path);
     }
 
+    public function test_getVideoFileSize()
+    {
+        $fileSize = $this->getVideoDetails->getVideoFileSize(env('TEST_VIDEO_URL',""));
+        $this->assertRegexp('/\d+/', $fileSize);
+    }
+
+    public function test_getVideoFileSize_404Response()
+    {
+        $fileSize = $this->getVideoDetails->getVideoFileSize("http://127.0.0.1/Error");
+        $this->assertEquals($fileSize, 0);
+    }
 }

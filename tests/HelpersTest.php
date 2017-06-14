@@ -28,8 +28,8 @@ class HelpersTest extends TestCase
      */
     public function test_removeSpecialCharactersFromString()
     {
-        $badString = "A/:34x(wFR!de)c&";
-        $niceString = "A34xwFRdec";
+        $badString = "A/:34x(wFR!de)c&\ssss'sssss,deuiefhwef";
+        $niceString = "A34xwFRdecsssssssssdeuiefhwef";
 
         $this->assertEquals($niceString, removeSpecialCharactersFromString($badString));
     }

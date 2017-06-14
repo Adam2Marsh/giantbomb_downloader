@@ -22,6 +22,9 @@ class DownloadVideoInformationTest extends TestCase
     //Integration Tests.......................
     public function test_updateVideosInDatabase_AddVideo()
     {
+        $this->expectsJobs(App\Jobs\GetVideoThumbnailJob::class);
+        $this->expectsJobs(App\Jobs\GetVideoFilesizeJob::class);
+
         $response = $this->grabVideos();
         $this->assertRegexp('/doesn\'t exists/i',strval($response));
     }
@@ -44,18 +47,6 @@ class DownloadVideoInformationTest extends TestCase
         $addResponse = $this->grabVideos();
         $dupResponse = $this->grabVideos();
         $this->assertRegexp('/already exists/i',strval($dupResponse));
-    }
-
-    public function test_getVideoFileSize()
-    {
-        $fileSize = $this->downloadVideoInformation->getVideoFileSize(env('TEST_VIDEO_URL',""));
-        $this->assertRegexp('/\d+/', $fileSize);
-    }
-
-    public function test_getVideoFileSize_404Response()
-    {
-        $fileSize = $this->downloadVideoInformation->getVideoFileSize("http://127.0.0.1/Error");
-        $this->assertEquals($fileSize, 0);
     }
 
     public function grabVideos()
