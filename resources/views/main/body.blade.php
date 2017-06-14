@@ -108,9 +108,17 @@
 					@if(count($videos))
 						@foreach ($videos as $video)
 							<tr>
-								<td><img class="img-thumbnail" src="{{ $video->videoDetail->image_path }}"></td>
+								@if($video->videoDetail->local_image_path != "")
+									<td><img class="img-thumbnail" src="{{ $video->videoDetail->local_image_path }}"></td>
+								@else
+									<td><img class="img-thumbnail" src="{{ $video->videoDetail->remote_image_path }}"></td>
+								@endif
 								<td style="vertical-align: middle;"><a href="{{ $video->url }}"> {{ $video->name }} </a> </td>
-								<td style="vertical-align: middle;">{{ human_filesize($video->videoDetail->file_size) }}</td>
+								@if($video->videoDetail->file_size != null)
+									<td style="vertical-align: middle;">{{ human_filesize($video->videoDetail->file_size) }}</td>
+								@else
+									<td style="vertical-align: middle;">??</td>
+								@endif
 								<td id="{{ $video->id }}" style="vertical-align: middle;">{{ $video->status }}</td>
 								<td style="vertical-align: middle;">{{ $video->published_date->format('d/m/Y') }}</td>
 								<td style="vertical-align: middle;">

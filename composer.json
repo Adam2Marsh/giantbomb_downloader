@@ -11,7 +11,8 @@
         "laravelcollective/html": "^5.2",
         "pusher/pusher-php-server": "^2.6",
         "predis/predis": "^1.1",
-        "jkuchar/BigFileTools": "^2.0"
+        "jkuchar/BigFileTools": "^2.0",
+        "doctrine/dbal": "^2.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -14,7 +14,7 @@ class VideoRepository
     *
     * @param VideoDetails Object
     */
-	public function addVideoToDatabase($video, $fileSize, $thumbnail_path)
+    public function addVideoToDatabase($video, $remote_image_path)
     {
         Log::info(__METHOD__." Adding Video ".$video->name." into database");
 
@@ -32,9 +32,9 @@ class VideoRepository
 
         $newVideoDetails = new VideoDetails([
                 'local_path' => "app/gb_videos/$videoFilename",
-                'file_size' => $fileSize,
-                'image_path' => $thumbnail_path,
+                'remote_image_path' =>$remote_image_path
                 ]);
+
         $newVideoDownloadStatus->videoDetail()->save($newVideoDetails);
 
         Log::info(__METHOD__." Video ".$video->name." inserted into database");
@@ -54,11 +54,10 @@ class VideoRepository
 
         Log::info(__METHOD__." Database returned: ".print_r($databaseResults, true));
 
-        if($databaseResults->isEmpty()) {
+        if ($databaseResults->isEmpty()) {
             Log::info(__METHOD__." No Results Found");
             return false;
-        }
-        else {
+        } else {
             Log::info(__METHOD__." Results Found");
             return true;
         }
@@ -112,15 +111,15 @@ class VideoRepository
      */
     public function findHighestQualityVideo($video)
     {
-        if($video->hd_url != null) {
+        if ($video->hd_url != null) {
             return $video->hd_url;
         }
 
-        if($video->high_url != null) {
+        if ($video->high_url != null) {
             return $video->high_url;
         }
 
-        if($video->low_url != null) {
+        if ($video->low_url != null) {
             return $video->low_url;
         }
     }
@@ -134,5 +133,4 @@ class VideoRepository
     {
         return snake_case(removeSpecialCharactersFromString($videoTitle)).".mp4";
     }
-
 }
