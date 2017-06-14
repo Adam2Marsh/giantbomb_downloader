@@ -44,7 +44,6 @@ class VideoStorageTest extends TestCase
         $newVideoDetails = new VideoDetails([
             'local_path' => "gb_videos/TestVideo.mp4",
             'file_size' => 1001,
-            'image_path' => "",
         ]);
 
         $newVideo->videoDetail()->save($newVideoDetails);
