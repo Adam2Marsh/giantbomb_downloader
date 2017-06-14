@@ -24,6 +24,9 @@ function removeSpecialCharactersFromString($string)
         "&" => "",
         "(" => "",
         ")" => "",
+        "'" => "",
+        "," => "",
+        "\\" => "",
     ];
 
     return str_replace(array_keys($removeChars), array_values($removeChars), $string);
