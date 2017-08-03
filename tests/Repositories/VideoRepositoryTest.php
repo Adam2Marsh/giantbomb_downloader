@@ -27,14 +27,12 @@ class VideoRepositoryTest extends TestCase
         $localVideo->hd_url = 'http://123/testing.co.uk';
         $localVideo->id = 12345;
         $localVideo->name = '123 Testing 321';
-        $localVideo->publish_date = '2015-12-18 20:00:00';
+        $localVideo->publish_date = date('Y-m-d H:i:s');
 
 		$localVideo->image = new \stdClass();
 		$localVideo->image->small_url = "http://thumburl.co.uk";
 
-        $localDetails = 123456;
-
-        $this->videoRepository->addVideoToDatabase($localVideo, $localDetails, "http://thumburl.co.uk");
+        $this->videoRepository->addVideoToDatabase($localVideo, "http://thumburl.co.uk");
         $this->assertTrue($this->videoRepository->CheckIfVideoIsInDatabase($localVideo->name));
         // $deletedRow = App\Video::where('gb_Id', $localVideo->id)->delete();
     }

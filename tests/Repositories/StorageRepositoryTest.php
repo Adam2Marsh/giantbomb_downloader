@@ -56,4 +56,24 @@ class StorageRepositoryTest extends TestCase
         $this->configRepo->UpdateConfig('STORAGE_LOCATION', '');
     }
 
+    public function test_spaceLeftOnDiskAfterDownloadCheck_spaceLeft()
+    {
+        $storageRepo = new StorageRepository();
+
+        $this->assertEquals(
+            $storageRepo->spaceLeftOnDiskAfterDownloadCheck(1024000000),
+            true
+        );
+    }
+
+    public function test_spaceLeftOnDiskAfterDownloadCheck_noSpaceLeft()
+    {
+        $storageRepo = new StorageRepository();
+
+        $this->assertEquals(
+            $storageRepo->spaceLeftOnDiskAfterDownloadCheck(102400000000),
+            false
+        );
+    }
+
 }

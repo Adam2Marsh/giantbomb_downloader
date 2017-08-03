@@ -44,4 +44,15 @@ class StorageRepository
             return storage_path("app/");
         }
     }
+
+    public function spaceLeftOnDiskAfterDownloadCheck($videoSizeInBytes)
+    {
+        $spaceLeft = disk_free_space($this->returnPath()) - $videoSizeInBytes;
+
+        if ($spaceLeft < 1024000000) {
+            return false;
+        }
+
+        return true;
+    }
 }
