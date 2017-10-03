@@ -1,17 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Adam2Marsh
- * Date: 06/06/2017
- * Time: 08:20
- */
 
-namespace App\Repositories;
+namespace App\Services;
 
 use App\Config;
 use Storage;
 
-class StorageRepository
+class StorageService
 {
 
     protected $disk;

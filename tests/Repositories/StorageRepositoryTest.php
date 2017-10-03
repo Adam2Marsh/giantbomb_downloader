@@ -3,7 +3,7 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Repositories\StorageRepository;
+use App\Repositories\StorageService;
 use App\Repositories\ConfigRepository;
 
 class StorageRepositoryTest extends TestCase
@@ -21,7 +21,7 @@ class StorageRepositoryTest extends TestCase
 
     public function test_returnDiskName_local()
     {
-        $storageRepo = new StorageRepository();
+        $storageRepo = new StorageService();
 
         $this->assertEquals("local", $storageRepo->returnDiskName());
     }
@@ -30,7 +30,7 @@ class StorageRepositoryTest extends TestCase
     {
         $this->configRepo->UpdateConfig('STORAGE_LOCATION', '');
 
-        $storageRepo = new StorageRepository();
+        $storageRepo = new StorageService();
 
         $this->assertContains("giantbomb-downloader/storage/app/", $storageRepo->returnPath());
     }
@@ -40,7 +40,7 @@ class StorageRepositoryTest extends TestCase
     {
         $this->configRepo->UpdateConfig('STORAGE_LOCATION', '/mnt/external/test');
 
-        $storageRepo = new StorageRepository();
+        $storageRepo = new StorageService();
 
         $this->assertEquals("root", $storageRepo->returnDiskName());
     }
@@ -49,7 +49,7 @@ class StorageRepositoryTest extends TestCase
     {
         $this->configRepo->UpdateConfig('STORAGE_LOCATION', '/mnt/external/test');
 
-        $storageRepo = new StorageRepository();
+        $storageRepo = new StorageService();
 
         $this->assertEquals("//mnt/external/test/", $storageRepo->returnPath());
 
@@ -58,7 +58,7 @@ class StorageRepositoryTest extends TestCase
 
     public function test_spaceLeftOnDiskAfterDownloadCheck_spaceLeft()
     {
-        $storageRepo = new StorageRepository();
+        $storageRepo = new StorageService();
 
         $this->assertEquals(
             $storageRepo->spaceLeftOnDiskAfterDownloadCheck(1024000000),
@@ -68,7 +68,7 @@ class StorageRepositoryTest extends TestCase
 
     public function test_spaceLeftOnDiskAfterDownloadCheck_noSpaceLeft()
     {
-        $storageRepo = new StorageRepository();
+        $storageRepo = new StorageService();
 
         $this->assertEquals(
             $storageRepo->spaceLeftOnDiskAfterDownloadCheck(102400000000),

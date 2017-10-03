@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\StorageRepository;
+use App\Repositories\StorageService;
 use Log;
 use Storage;
 use App\Config;
@@ -22,7 +22,7 @@ class VideoSizing
     {
         $this->bytes = BigInteger::of(0);
 
-        $this->storageRepo = new StorageRepository();
+        $this->storageRepo = new StorageService();
     }
 
     public function getVideoSize($pathToVideo)

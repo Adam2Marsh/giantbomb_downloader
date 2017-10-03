@@ -7,20 +7,20 @@ use Log;
 use Storage;
 use App\Config;
 use App\Repositories\VideoRepository;
-use App\Repositories\StorageRepository;
+use App\Services\StorageService;
 
 class VideoStorage
 {
 
     protected $videoRepository;
 
-    protected $storageRepo;
+    protected $storageService;
 
     public function __construct()
     {
         $this->videoRepository = new VideoRepository;
 
-        $this->storageRepo = new StorageRepository();
+        $this->storageService = new StorageService();
     }
 
     /**
@@ -59,7 +59,7 @@ class VideoStorage
 
         Log::info(__METHOD__." Will create download directory if it doesn't exists");
 
-        $saveLocation = $this->storageRepo->returnPath() . "$directory/$file_name";
+        $saveLocation = $this->storageService->returnPath() . "$directory/$file_name";
 
         $this->createGbVideosDirectory($directory);
 
@@ -81,7 +81,7 @@ class VideoStorage
             Storage::put("$directory/$file_name", fopen($downloadUrl, "r"));
         }
 
-        return $this->storageRepo->returnDiskName() == "root" ? $saveLocation : "$directory/$file_name";
+        return $this->storageService->returnDiskName() == "root" ? $saveLocation : "$directory/$file_name";
     }
 
 
@@ -89,14 +89,13 @@ class VideoStorage
     * Has the requested video been downloaded
     *
     * @param string directory
-    * @param string file_name
     */
     public function checkForVideo($video)
     {
         Log::info(__METHOD__." Checking if $video has been downloaded via disk "
-            . $this->storageRepo->returnDiskName());
+            . $this->storageService->returnDiskName());
 
-        if (Storage::disk($this->storageRepo->returnDiskName())->has($video)) {
+        if (Storage::disk($this->storageService->returnDiskName())->has($video)) {
             Log::info(__METHOD__." Video has been downloaded, returning true");
             return true;
         }
@@ -122,8 +121,8 @@ class VideoStorage
 
     public function createGbVideosDirectory($directory)
     {
-        if ($this->storageRepo->returnDiskName() == "root") {
-            Storage::disk('root')->makeDirectory($this->storageRepo->returnPath() . "/$directory");
+        if ($this->storageService->returnDiskName() == "root") {
+            Storage::disk('root')->makeDirectory($this->storageService->returnPath() . "/$directory");
         } else {
             Storage::makeDirectory($directory);
         }
