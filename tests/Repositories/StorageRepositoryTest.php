@@ -3,7 +3,7 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Repositories\StorageService;
+use App\Services\StorageService;
 use App\Repositories\ConfigRepository;
 
 class StorageRepositoryTest extends TestCase

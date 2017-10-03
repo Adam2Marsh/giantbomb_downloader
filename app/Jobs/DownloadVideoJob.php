@@ -19,8 +19,6 @@ class DownloadVideoJob extends Job implements ShouldQueue
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct(Video $video)
     {
@@ -31,11 +29,12 @@ class DownloadVideoJob extends Job implements ShouldQueue
      * Execute the job.
      *
      * @param VideoStorage $vs
-     * @param StorageService $sr
-     * @return void
+     * @param StorageService $storageService
      */
-    public function handle(VideoStorage $vs, StorageService $sr)
+    public function handle(VideoStorage $vs, StorageService $storageService)
     {
-        $vs->saveVideo($this->video);
+        if($storageService->spaceLeftOnDiskAfterDownloadCheck($this->video->videoDetail()->file_size)) {
+            $vs->saveVideo($this->video);
+        };
     }
 }
