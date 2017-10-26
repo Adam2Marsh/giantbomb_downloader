@@ -35,6 +35,12 @@ class DownloadVideoJob extends Job implements ShouldQueue
     {
         if($storageService->spaceLeftOnDiskAfterDownloadCheck($this->video->videoDetail()->file_size)) {
             $vs->saveVideo($this->video);
+        } else {
+            $job = (new DownloadVideoJob($this->video))
+                ->delay(Carbon::now()->addMinutes(15))
+                ->OnQueue('video');
+
+            dispatch($job);
         };
     }
 }

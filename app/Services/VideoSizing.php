@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\StorageService;
+use App\Services\StorageService;
 use Log;
 use Storage;
 use App\Config;

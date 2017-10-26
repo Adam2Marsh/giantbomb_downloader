@@ -59,7 +59,9 @@ class VideoController extends Controller
 
         $videoName = $vsr->updateVideoToDownloadedStatus($videoID, "QUEUED");
 
-        $this->dispatch(new DownloadVideoJob($video));
+        $jobDownloadVideo =(new DownloadVideoJob($video))->OnQueue('video');
+
+        $this->dispatch($jobDownloadVideo);
 
         return redirect('/videos')
             ->withSuccess("$video->name added to queue");

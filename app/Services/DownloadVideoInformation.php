@@ -57,7 +57,10 @@ class DownloadVideoInformation
 
                         $videoRepository->updateVideoToDownloadedStatus($savedVideo->id, "QUEUED");
 
-                        $this->dispatch(new DownloadVideoJob($savedVideo));
+                        $jobDownloadVideo =(new DownloadVideoJob($savedVideo))->OnQueue('video');
+
+                        $this->dispatch($jobDownloadVideo);
+
                     }
                 } catch (\Exception $e) {
                     $response = $video->name . " failed adding video because: $e";

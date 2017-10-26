@@ -38,7 +38,7 @@ return [
         'database' => [
             'driver' => 'database',
             'table'  => 'jobs',
-            'queue'  => 'default',
+            'queue'  => 'background',
             'expire' => 60,
         ],
 
