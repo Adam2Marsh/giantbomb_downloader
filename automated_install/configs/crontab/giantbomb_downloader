@@ -1,4 +1,0 @@
-########
-##This is required for the laravel schedule to run
-########
-* * * * * USERGOESHERE php /opt/giantbomb_downloader/artisan schedule:run >> /dev/null 2>&1

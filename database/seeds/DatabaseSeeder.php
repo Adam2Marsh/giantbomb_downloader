@@ -11,7 +11,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-//        $this->call(FillVideoTable::class);
-        $this->call(CreateBaseConfigs::class);
+         $this->call(AddGiantbombService::class);
     }
 }

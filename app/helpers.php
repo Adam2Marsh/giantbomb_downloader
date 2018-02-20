@@ -42,7 +42,7 @@ function getJSON($JSONUrl)
 
     if (CheckHTTPCallSucessful($res->getStatusCode())) {
         Log::info(__METHOD__." Guzzle Get Request responded with: ".$res->getBody());
-        return json_decode($res->getBody());
+        return json_decode($res->getBody(), true);
     } else {
         Log::critical(__METHOD__." HTTP Call to ".$JSONUrl." failed, recieved this back"
             .$res->getStatusCode().$res->getReasonPhrase());
@@ -55,4 +55,9 @@ function checkHTTPCallSucessful($HttpStatusCode)
         return false;
     }
     return true;
+}
+
+function returnServiceId($service)
+{
+    return \App\VideoService::where('service', '=', $service)->first()->id;
 }
