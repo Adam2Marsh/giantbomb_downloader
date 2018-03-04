@@ -27,9 +27,17 @@ function removeSpecialCharactersFromString($string)
         "'" => "",
         "," => "",
         "\\" => "",
+        "-" => "",
+        "?" => "",
+        "." => "",
     ];
 
     return str_replace(array_keys($removeChars), array_values($removeChars), $string);
+}
+
+function localFilename($name)
+{
+    return snake_case(removeSpecialCharactersFromString($name));
 }
 
 function getJSON($JSONUrl)
@@ -59,5 +67,10 @@ function checkHTTPCallSucessful($HttpStatusCode)
 
 function returnServiceId($service)
 {
-    return \App\VideoService::where('service', '=', $service)->first()->id;
+    return \App\Service::where('name', '=', $service)->first()->id;
+}
+
+function thumbnailDownloaded($filename)
+{
+    return \Storage::disk('thumbnails')->exists($filename);
 }

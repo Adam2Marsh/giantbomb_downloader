@@ -11,7 +11,7 @@ namespace App\Repositories;
 use App\Video;
 use Log;
 
-class VideoServiceVideoRepository
+class VideoRepository
 {
     public function addVideoToDatabase($service_id, $videos, $mappings)
     {
@@ -19,14 +19,13 @@ class VideoServiceVideoRepository
 
         $count = 0;
         foreach ($videos as $video) {
-//            dd($video);
             if(!$this->checkForVideo($video[$mappings["service_video_id"]])) {
                 $newVideo = new Video();
                 $newVideo->service_id = $service_id;
                 $newVideo->service_video_id = $video[$mappings["service_video_id"]];
                 $newVideo->name = $video[$mappings["name"]];
                 $newVideo->description = $video[$mappings["description"]];
-                $newVideo->video_url = $video[$mappings["video_url"]];
+                $newVideo->video_url = is_null($video[$mappings["video_url"][0]]) ? $video[$mappings["video_url"][1]] : $video[$mappings["video_url"][0]];
                 $newVideo->thumbnail_url = $video["image"][$mappings["thumbnail_url"]];
                 $newVideo->size = -1;
                 $newVideo->state = "new";
@@ -48,5 +47,16 @@ class VideoServiceVideoRepository
             return true;
         }
         return false;
+    }
+
+    public function updateVideoState($id, $state)
+    {
+        Log::info("Updating video $id to a status of $state");
+
+        $video = Video::findOrFail($id);
+        $video->state = "new";
+        $video->save();
+
+        return "Video state $id Updated";
     }
 }

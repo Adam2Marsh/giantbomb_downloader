@@ -12,6 +12,7 @@
         "laravel/tinker": "~1.0"
     },
     "require-dev": {
+        "felixfbecker/language-server": "^5.3",
         "filp/whoops": "~2.0",
         "nunomaduro/collision": "~1.1",
         "fzaninotto/faker": "~1.4",

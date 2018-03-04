@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-use App\VideoService;
+use App\Service;
 
 class AddGiantbombService extends Seeder
 {
@@ -13,8 +13,8 @@ class AddGiantbombService extends Seeder
      */
     public function run()
     {
-        $newService = new VideoService();
-        $newService->service = "Giantbomb";
+        $newService = new Service();
+        $newService->name = "Giantbomb";
         $newService->enabled = 1;
         $newService->save();
     }

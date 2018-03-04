@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVideoServicesTable extends Migration
+class CreateServicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateVideoServicesTable extends Migration
      */
     public function up()
     {
-        Schema::create('video_services', function (Blueprint $table) {
+        Schema::create('services', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('service');
+            $table->text('name');
             $table->boolean('enabled');
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ class CreateVideoServicesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('video_services');
+        Schema::dropIfExists('services');
     }
 }

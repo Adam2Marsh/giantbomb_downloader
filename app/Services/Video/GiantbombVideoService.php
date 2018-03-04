@@ -10,21 +10,21 @@ namespace App\Services\Video;
 
 use App\Interfaces\VideoServiceInterface;
 use App\Repositories\VideoServiceConfigurationRepository;
-use App\Repositories\VideoServiceVideoRepository;
+use App\Repositories\VideoRepository;
 
 class GiantbombVideoService implements VideoServiceInterface
 {
 
     protected $giantbombApi;
-    protected  $videoServiceConfigurationRepository;
-    protected $videoServiceVideoRepository;
+    protected $videoServiceConfigurationRepository;
+    protected $videoRepository;
     protected $serviceId;
 
     public function __construct()
     {
         $this->giantbombApi = new GiantbombApi();
         $this->videoServiceConfigurationRepository = new VideoServiceConfigurationRepository();
-        $this->videoServiceVideoRepository = new VideoServiceVideoRepository();
+        $this->videoRepository = new VideoRepository();
         $this->serviceId = returnServiceId('Giantbomb');
     }
 
@@ -55,7 +55,7 @@ class GiantbombVideoService implements VideoServiceInterface
 
         $response = getJSON($requestURL.config('gb.max_videos_to_grab_api'));
 
-        $videosAdded = $this->videoServiceVideoRepository->addVideoToDatabase(
+        $videosAdded = $this->videoRepository->addVideoToDatabase(
             $this->serviceId,
             $response["results"],
             $this->returnVideoToDatabaseMappings()
@@ -72,7 +72,11 @@ class GiantbombVideoService implements VideoServiceInterface
             "description" => "deck",
             "publish_date" => "publish_date",
             "thumbnail_url" => "medium_url",
-            "video_url" => "hd_url"
+            "video_url" => 
+                [
+                    "hd_url",
+                    "high_url",
+                ]
         ];
     }
 }

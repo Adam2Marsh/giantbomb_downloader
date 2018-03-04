@@ -21,6 +21,7 @@ class CreateVideosTable extends Migration
             $table->text('description');
             $table->text('video_url');
             $table->text('thumbnail_url');
+            $table->text('thumbnail_local_url')->nullable();
             $table->integer('size');
             $table->text('state');
             $table->dateTime('published_date');
