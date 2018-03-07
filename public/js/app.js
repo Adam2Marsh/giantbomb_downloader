@@ -69434,6 +69434,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -69522,6 +69532,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     video.state = state;
                 }
             });
+        },
+        downloadVideo: function downloadVideo(event, video) {
+            alert("Download Video");
         }
     }
 });
@@ -69681,34 +69694,91 @@ var render = function() {
                           [
                             props.item.state == "downloaded"
                               ? _c(
-                                  "v-btn",
-                                  {
-                                    attrs: {
-                                      block: "",
-                                      flat: "",
-                                      color: "red"
-                                    },
-                                    nativeOn: {
-                                      click: function($event) {
-                                        _vm.updateVideoStatus(
-                                          this,
-                                          props.item,
-                                          "watched"
-                                        )
-                                      }
-                                    }
-                                  },
+                                  "div",
                                   [
-                                    _c("i", { staticClass: "material-icons" }, [
-                                      _vm._v("delete")
-                                    ]),
-                                    _vm._v(" "),
-                                    props.item.size != 0
-                                      ? _c("div", [
-                                          _vm._v(_vm._s(props.item.size))
-                                        ])
-                                      : _vm._e()
-                                  ]
+                                    _c(
+                                      "v-layout",
+                                      {
+                                        attrs: {
+                                          row: "",
+                                          wrap: "",
+                                          "align-center": ""
+                                        }
+                                      },
+                                      [
+                                        _c(
+                                          "v-btn",
+                                          {
+                                            attrs: {
+                                              block: "",
+                                              flat: "",
+                                              color: "green"
+                                            },
+                                            nativeOn: {
+                                              click: function($event) {
+                                                _vm.downloadVideo(
+                                                  this,
+                                                  props.item
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c(
+                                              "i",
+                                              { staticClass: "material-icons" },
+                                              [_vm._v("file_download")]
+                                            ),
+                                            _vm._v(" "),
+                                            props.item.size != 0
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    _vm._s(props.item.size)
+                                                  )
+                                                ])
+                                              : _vm._e()
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-btn",
+                                          {
+                                            attrs: {
+                                              block: "",
+                                              flat: "",
+                                              color: "red"
+                                            },
+                                            nativeOn: {
+                                              click: function($event) {
+                                                _vm.updateVideoStatus(
+                                                  this,
+                                                  props.item,
+                                                  "watched"
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c(
+                                              "i",
+                                              { staticClass: "material-icons" },
+                                              [_vm._v("delete")]
+                                            ),
+                                            _vm._v(" "),
+                                            props.item.size != 0
+                                              ? _c("div", [
+                                                  _vm._v(
+                                                    _vm._s(props.item.size)
+                                                  )
+                                                ])
+                                              : _vm._e()
+                                          ]
+                                        )
+                                      ],
+                                      1
+                                    )
+                                  ],
+                                  1
                                 )
                               : props.item.state == "queued"
                                 ? _c(
