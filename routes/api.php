@@ -15,5 +15,7 @@ use Illuminate\Http\Request;
 
 Route::get('/videos/all', 'VideosController@returnAllVideos');
 
+Route::post('/video/{id}/updateStatus', 'VideosController@updateStatus');
+
 Route::post('/{service}/register', 'VideoServiceController@registerService');
 Route::get('/{service}/fetch', 'VideoServiceController@fetchVideosFromServices');

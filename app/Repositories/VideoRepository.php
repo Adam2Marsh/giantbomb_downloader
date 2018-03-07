@@ -54,9 +54,18 @@ class VideoRepository
         Log::info("Updating video $id to a status of $state");
 
         $video = Video::findOrFail($id);
-        $video->state = "new";
+
+        $oldState = $video->state;
+
+        $video->state = $state;
+
         $video->save();
 
-        return "Video state $id Updated";
+        return [
+            "id" => $id,
+            "oldState" => $oldState,
+            "newState" => $state
+        ];
+
     }
 }

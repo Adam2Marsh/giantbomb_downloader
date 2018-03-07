@@ -14,13 +14,8 @@ class VideosController extends Controller
         return response()->json(Video::limit(100)->orderBy('published_date', 'desc')->get());
     }
 
-    public function downloadVideo($id, VideoRepository $videoServiceVideoRepository)
+    public function updateStatus($id, Request $request, VideoRepository $videoServiceVideoRepository)
     {
-        return response($videoServiceVideoRepository->updateVideoState($id, "downloaded"));
-    }
-
-    public function deleteVideoLocally($id, VideoRepository $videoServiceVideoRepository)
-    {
-        return response($videoServiceVideoRepository->updateVideoState($id, "watched"));
+        return response($videoServiceVideoRepository->updateVideoState($id, $request->state));
     }
 }

@@ -79,4 +79,9 @@ class GiantbombVideoService implements VideoServiceInterface
                 ]
         ];
     }
+
+    public function buildUrl($url)
+    {
+        return $url. "?api_key=" . $this->videoServiceConfigurationRepository->getServiceApiKey($this->serviceId);
+    }
 }
