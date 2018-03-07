@@ -8,20 +8,18 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class DownloadVideo implements ShouldQueue
+class DeleteLocalVideoDownload implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    protected $video;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($video)
+    public function __construct()
     {
-        $this->video = $video;
+        //
     }
 
     /**
@@ -31,7 +29,6 @@ class DownloadVideo implements ShouldQueue
      */
     public function handle()
     {
-        $this->video->state = "downloaded";
-        $this->video->save();
+        //
     }
 }

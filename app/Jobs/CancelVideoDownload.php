@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class DownloadVideo implements ShouldQueue
+class CancelVideoDownload implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -31,7 +31,7 @@ class DownloadVideo implements ShouldQueue
      */
     public function handle()
     {
-        $this->video->state = "downloaded";
+        $this->video->state = "watched";
         $this->video->save();
     }
 }
