@@ -43,7 +43,7 @@ class VideoRepository
 
     public function checkForVideo($id)
     {
-        if (count(Video::where('service_video_id', '=', $id)->first()) == 1) {
+        if (Video::where('service_video_id', '=', $id)->first() != null) {
             return true;
         }
         return false;

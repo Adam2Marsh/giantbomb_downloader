@@ -44,7 +44,7 @@ class GiantbombVideoService implements VideoServiceInterface
     {
         $api_key = $this->videoServiceConfigurationRepository->getServiceApiKey($this->serviceId);
 
-        if(count($api_key) == 0) {
+        if($api_key == null) {
             return "Need to register";
         }
 

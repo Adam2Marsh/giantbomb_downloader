@@ -9,5 +9,5 @@ bower_components
 echo-server-worker.log
 .idea
 build
-public/video_thumbnails
 *.retry
+public/storage
