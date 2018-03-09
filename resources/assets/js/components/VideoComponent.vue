@@ -1,0 +1,182 @@
+<template>
+    <v-container fluid grid-list-md>
+        <v-layout row wrap>
+            <v-flex xs1>
+                <v-btn flat icon color="green" @click="refreshLocalVideos">
+                    <v-icon>cached</v-icon>
+                </v-btn>
+            </v-flex>
+            <v-flex xs11>
+                <v-text-field
+                        append-icon="search"
+                        label="Search"
+                        v-model="search"
+                ></v-text-field>
+            </v-flex>
+        </v-layout>
+        <v-data-iterator
+                content-tag="v-layout"
+                row
+                wrap
+                :items="items"
+                :rows-per-page-items="rowsPerPageItems"
+                :pagination.sync="pagination"
+                :loading="true"
+                :search="search"
+        >
+            <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+            <v-flex
+                    slot="item"
+                    slot-scope="props"
+                    xs12
+                    sm6
+                    md4
+                    lg3
+            >
+                <v-card>
+                    <v-card-media
+                            class="white--text"
+                            height="200px"
+                            v-bind:src="returnThumbnail(props.item)"
+                    >
+                        <v-container fill-height fluid>
+                            <v-layout fill-height>
+                                <v-flex xs12 align-end flexbox>
+                                    <span class="headline">
+                                        <v-icon v-if='props.item.state == "new"' class="material-icons">new_releases</v-icon>
+                                    </span>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                    </v-card-media>
+                    <v-card-title primary-title>
+                        <div>
+                            <h3 class="headline mb-0">{{ props.item.name }}</h3>
+                            <div>{{ props.item.description }}</div>
+                        </div>
+                    </v-card-title>
+                    <v-card-actions>
+                        <div v-if='props.item.state == "downloaded"'>
+                            <v-layout row wrap align-center>
+                                <!--<v-flex class="text-center">-->
+                                    <v-btn v-on:click.native='downloadVideo(this, props.item)' block flat color="green">
+                                        <i class="material-icons">file_download</i>
+                                        <div v-if="props.item.size != 0">{{ props.item.size }}</div>
+                                    </v-btn>
+                                    <v-btn v-on:click.native='updateVideoStatus(this, props.item, "watched")' block flat color="red">
+                                        <i class="material-icons">delete</i>
+                                        <div v-if="props.item.size != 0">{{ props.item.size }}</div>
+                                    </v-btn>
+                                <!--</v-flex>-->
+                            </v-layout>
+                        </div>
+                        <v-btn v-on:click.native='updateVideoStatus(this, props.item, "watched")' block v-else-if='props.item.state == "queued"' flat color="orange">
+                            <v-icon left class="material-icons">cancel</v-icon>
+                        </v-btn>
+                        <v-btn v-on:click.native='updateVideoStatus(this, props.item, "queued")' block v-else flat color="orange">
+                            <v-icon left class="material-icons">cloud_download</v-icon>
+                            <div v-if="props.item.size != 0">{{ props.item.size }}</div>
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-flex>
+        </v-data-iterator>
+    </v-container>
+</template>
+
+
+
+<script>
+
+    export default {
+        data () {
+            return {
+                search: '',
+                rowsPerPageItems: [8, 12],
+                pagination: {
+                    rowsPerPage: 8
+                },
+                loading: true,
+                items: [
+
+                ]
+            }
+        },
+        mounted: function () {
+            this.getData();
+            this.$echo.channel('video.state').listen('VideoStateUpdated', (e) => {
+                console.log(e);
+                this.updateLocalVideoStatus(e.id, e.state);
+            });
+        }
+        ,methods:{
+            getData() {
+                let tb = this;
+                tb.loading = true;
+                $.ajax({
+                    url: "/api/videos/all" ,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data);
+                        // alert("Success");
+                        tb.items = data;
+                        tb.loading = false;
+                    },
+                    error: function() {
+                        alert('Failed!');
+                    },
+                });
+            },
+            capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            },
+            refreshLocalVideos() {
+                $.ajax({
+                    url: "/api/Giantbomb/fetch" ,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        getData();
+                    },
+                    error: function() {
+                        alert('Failed fetching new videos!');
+                    },
+                });
+            },
+            returnThumbnail(video) {
+                if(video.thumbnail_local_url == "") {
+                    return video.thumbnail_url;
+                }
+                return video.thumbnail_local_url;
+            },
+            updateVideoStatus(event, video, state) {
+                $.ajax({
+                    url: "/api/video/" + video.id + "/updateStatus",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        'state': state
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        video.state = state;
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert("Failed: " + textStatus);
+                    }
+                })
+            },
+            updateLocalVideoStatus(id, state) {
+                let tb = this;
+                tb.items.forEach(function(video) {
+                    if(video.id == id) {
+                        video.state = state;
+                    }
+                });
+            },
+            downloadVideo(event, video) {
+                alert("Download Video");
+            }
+        }
+    }
+</script>

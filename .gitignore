@@ -6,7 +6,6 @@ Homestead.json
 .vagrant
 worker.log
 bower_components
-resources/assets
 echo-server-worker.log
 .idea
 build
