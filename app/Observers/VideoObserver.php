@@ -44,6 +44,6 @@ class VideoObserver
             break;
         }
 
-        event(new VideoStateUpdated($video->id, $video->state));
+        event(new VideoStateUpdated($video));
     }
 }

@@ -104,9 +104,9 @@
         },
         mounted: function () {
             this.getData();
-            this.$echo.channel('video.state').listen('VideoStateUpdated', (e) => {
+            this.$echo.channel('video.updated').listen('VideoStateUpdated', (e) => {
                 console.log(e);
-                this.updateLocalVideoStatus(e.id, e.state);
+                this.updateLocalVideoStatus(e.video);
             });
         }
         ,methods:{
@@ -132,12 +132,13 @@
                 return string.charAt(0).toUpperCase() + string.slice(1);
             },
             refreshLocalVideos() {
+                var self = this;
                 $.ajax({
                     url: "/api/Giantbomb/fetch" ,
                     type: 'GET',
-                    dataType: 'json',
+                    // dataType: 'json',
                     success: function(data) {
-                        getData();
+                        self.getData();
                     },
                     error: function() {
                         alert('Failed fetching new videos!');
@@ -166,11 +167,14 @@
                     }
                 })
             },
-            updateLocalVideoStatus(id, state) {
+            updateLocalVideoStatus(updatedVideo) {
                 let tb = this;
+                // console.log(updatedVideo);
                 tb.items.forEach(function(video) {
-                    if(video.id == id) {
-                        video.state = state;
+                    if(video.id == updatedVideo.id) {
+                        console.log("Video updated");
+                        video.size = updatedVideo.size;
+                        video.state = updatedVideo.state;
                     }
                 });
             },

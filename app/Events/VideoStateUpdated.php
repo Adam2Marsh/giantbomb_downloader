@@ -12,18 +12,16 @@ class VideoStateUpdated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $id;
-    public $state;
+    public $video;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($id, $state)
+    public function __construct($video)
     {
-        $this->id = $id;
-        $this->state = $state;
+        $this->video = $video;
     }
 
     /**
@@ -33,6 +31,6 @@ class VideoStateUpdated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('video.state');
+        return new Channel('video.updated');
     }
 }
