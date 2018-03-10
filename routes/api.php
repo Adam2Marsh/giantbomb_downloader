@@ -19,3 +19,7 @@ Route::post('/video/{id}/updateStatus', 'VideosController@updateStatus');
 
 Route::post('/{service}/register', 'VideoServiceController@registerService');
 Route::get('/{service}/fetch', 'VideoServiceController@fetchVideosFromServices');
+
+Route::get('/rules/all', 'RulesController@returnAll');
+Route::post('/rule/{id}/delete', 'RulesController@deleteRule');
+Route::post('/rule/{id}/update', 'RulesController@updateRule');

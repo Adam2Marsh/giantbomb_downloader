@@ -15,6 +15,8 @@ class CreateRulesTable extends Migration
     {
         Schema::create('rules', function (Blueprint $table) {
             $table->increments('id');
+            $table->text('rule');
+            $table->boolean('enabled');
             $table->timestamps();
         });
     }

@@ -70785,7 +70785,7 @@ exports = module.exports = __webpack_require__(12)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -70833,9 +70833,109 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: "RuleComponent"
+    name: "RuleComponent",
+    data: function data() {
+        return {
+            search: '',
+            headers: [{ text: 'Rule', value: 'rule' }, { text: 'Enabled', value: 'enabled' }, { text: 'Delete', value: 'delete' }],
+            items: []
+        };
+    },
+
+    mounted: function mounted() {
+        this.getData();
+    },
+    methods: {
+        getData: function getData() {
+            var tb = this;
+            tb.loading = true;
+            $.ajax({
+                url: "/api/rules/all",
+                type: 'GET',
+                dataType: 'json',
+                success: function success(data) {
+                    console.log(data);
+                    // alert("Success");
+                    tb.items = data;
+                    tb.loading = false;
+                },
+                error: function error() {
+                    alert('Failed!');
+                }
+            });
+        },
+        deleteRule: function deleteRule(event, rule) {
+            var self = this;
+            $.ajax({
+                url: "/api/rule/" + rule.id + "/delete",
+                type: 'POST',
+                dataType: 'json',
+                success: function success(data, textStatus, jqXHR) {
+                    self.getData();
+                },
+                error: function error(jqXHR, textStatus, errorThrown) {
+                    alert("Failed: " + textStatus);
+                }
+            });
+        },
+        toggleRule: function toggleRule(rule) {
+            console.log(rule);
+            $.ajax({
+                url: "/api/rule/" + rule.id + "/update",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'enabled': rule.enabled
+                },
+                success: function success(data, textStatus, jqXHR) {
+                    self.getData();
+                },
+                error: function error(jqXHR, textStatus, errorThrown) {
+                    alert("Failed: " + textStatus);
+
+                    if (rule.enabled) {
+                        rule.enabled = false;
+                    } else {
+                        rule.enabled = true;
+                    }
+                }
+            });
+        }
+    }
 });
 
 /***/ }),
@@ -70846,7 +70946,150 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("h1", [_vm._v("Rules")])
+  return _c(
+    "v-card",
+    [
+      _c(
+        "v-card-title",
+        [
+          _vm._v("\n        Rules\n        "),
+          _c("v-spacer"),
+          _vm._v(" "),
+          _c("v-text-field", {
+            attrs: {
+              "append-icon": "search",
+              label: "Search",
+              "single-line": "",
+              "hide-details": ""
+            },
+            model: {
+              value: _vm.search,
+              callback: function($$v) {
+                _vm.search = $$v
+              },
+              expression: "search"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-data-table",
+        {
+          attrs: { headers: _vm.headers, items: _vm.items, search: _vm.search },
+          scopedSlots: _vm._u([
+            {
+              key: "items",
+              fn: function(props) {
+                return [
+                  _c("td", [_vm._v(_vm._s(props.item.rule))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: props.item.enabled,
+                          expression: "props.item.enabled"
+                        }
+                      ],
+                      attrs: { type: "checkbox" },
+                      domProps: {
+                        checked: Array.isArray(props.item.enabled)
+                          ? _vm._i(props.item.enabled, null) > -1
+                          : props.item.enabled
+                      },
+                      on: {
+                        change: [
+                          function($event) {
+                            var $$a = props.item.enabled,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  (props.item.enabled = $$a.concat([$$v]))
+                              } else {
+                                $$i > -1 &&
+                                  (props.item.enabled = $$a
+                                    .slice(0, $$i)
+                                    .concat($$a.slice($$i + 1)))
+                              }
+                            } else {
+                              _vm.$set(props.item, "enabled", $$c)
+                            }
+                          },
+                          function($event) {
+                            _vm.toggleRule(props.item)
+                          }
+                        ]
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    [
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { block: "", flat: "", color: "red" },
+                          nativeOn: {
+                            click: function($event) {
+                              _vm.deleteRule(this, props.item)
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "v-icon",
+                            {
+                              staticClass: "material-icons",
+                              attrs: { left: "" }
+                            },
+                            [_vm._v("delete")]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ]
+              }
+            }
+          ])
+        },
+        [
+          _c(
+            "v-alert",
+            {
+              attrs: {
+                slot: "no-results",
+                value: true,
+                color: "error",
+                icon: "warning"
+              },
+              slot: "no-results"
+            },
+            [
+              _vm._v(
+                '\n            Your search for "' +
+                  _vm._s(_vm.search) +
+                  '" found no results.\n        '
+              )
+            ]
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
