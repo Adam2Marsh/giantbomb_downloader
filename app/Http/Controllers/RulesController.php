@@ -12,9 +12,13 @@ class RulesController extends Controller
         return response()->json(Rule::orderBy('rule', 'desc')->get());
     }
 
-    public function addRule()
+    public function addRule(Request $request)
     {
-
+        $rule = new Rule();
+        $rule->rule = $request->rule;
+        $rule->enabled = 1;
+        $rule->save();
+        return response()->json($rule);
     }
 
     public function updateRule($id, Request $request)

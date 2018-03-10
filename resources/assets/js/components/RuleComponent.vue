@@ -1,7 +1,10 @@
 <template>
     <v-card>
         <v-card-title>
-            Rules
+            <input v-model="rule" placeholder="New Rule">
+            <v-btn v-on:click.native='addRule(this, rule)' block flat color="green">
+                <v-icon left class="material-icons">add_box</v-icon>
+            </v-btn>
             <v-spacer></v-spacer>
             <v-text-field
                     append-icon="search"
@@ -17,11 +20,11 @@
                 :search="search"
         >
             <template slot="items" slot-scope="props">
-                <td>{{ props.item.rule }}</td>
-                <td>
+                <td class="text-xs-center">{{ props.item.rule }}</td>
+                <td class="text-xs-center">
                     <input type="checkbox" v-model="props.item.enabled" v-on:change="toggleRule(props.item)">
                 </td>
-                <td>
+                <td class="text-xs-center">
                     <v-btn v-on:click.native='deleteRule(this, props.item)' block flat color="red">
                         <v-icon left class="material-icons">delete</v-icon>
                     </v-btn>
@@ -41,9 +44,9 @@
             return {
                 search: '',
                 headers: [
-                    {text: 'Rule', value: 'rule'},
-                    {text: 'Enabled', value: 'enabled'},
-                    {text: 'Delete', value: 'delete'},
+                    {text: 'Rule', value: 'rule', align: 'center'},
+                    {text: 'Enabled', value: 'enabled', align: 'center'},
+                    {text: 'Delete', value: 'delete', sortable: false, align: 'center'},
                 ],
                 items: [],
             }
@@ -86,6 +89,7 @@
             },
             toggleRule(rule)
             {
+                var self = this;
                 console.log(rule);
                 $.ajax({
                     url: "/api/rule/" + rule.id + "/update",
@@ -105,6 +109,24 @@
                         } else {
                             rule.enabled = true;
                         }
+                    }
+                });
+            },
+            addRule(event, rule)
+            {
+                var self = this;
+                $.ajax({
+                    url: "/api/rule/add",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        'rule' : rule
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        self.getData();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert("Failed: " + textStatus);
                     }
                 });
             }

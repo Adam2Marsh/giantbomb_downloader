@@ -70785,7 +70785,7 @@ exports = module.exports = __webpack_require__(12)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -70865,13 +70865,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "RuleComponent",
     data: function data() {
         return {
             search: '',
-            headers: [{ text: 'Rule', value: 'rule' }, { text: 'Enabled', value: 'enabled' }, { text: 'Delete', value: 'delete' }],
+            headers: [{ text: 'Rule', value: 'rule', align: 'center' }, { text: 'Enabled', value: 'enabled', align: 'center' }, { text: 'Delete', value: 'delete', sortable: false, align: 'center' }],
             items: []
         };
     },
@@ -70913,6 +70916,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         toggleRule: function toggleRule(rule) {
+            var self = this;
             console.log(rule);
             $.ajax({
                 url: "/api/rule/" + rule.id + "/update",
@@ -70934,6 +70938,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }
                 }
             });
+        },
+        addRule: function addRule(event, rule) {
+            var self = this;
+            $.ajax({
+                url: "/api/rule/add",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'rule': rule
+                },
+                success: function success(data, textStatus, jqXHR) {
+                    self.getData();
+                },
+                error: function error(jqXHR, textStatus, errorThrown) {
+                    alert("Failed: " + textStatus);
+                }
+            });
         }
     }
 });
@@ -70952,7 +70973,47 @@ var render = function() {
       _c(
         "v-card-title",
         [
-          _vm._v("\n        Rules\n        "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.rule,
+                expression: "rule"
+              }
+            ],
+            attrs: { placeholder: "New Rule" },
+            domProps: { value: _vm.rule },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.rule = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "v-btn",
+            {
+              attrs: { block: "", flat: "", color: "green" },
+              nativeOn: {
+                click: function($event) {
+                  _vm.addRule(this, _vm.rule)
+                }
+              }
+            },
+            [
+              _c(
+                "v-icon",
+                { staticClass: "material-icons", attrs: { left: "" } },
+                [_vm._v("add_box")]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
           _c("v-spacer"),
           _vm._v(" "),
           _c("v-text-field", {
@@ -70983,9 +71044,11 @@ var render = function() {
               key: "items",
               fn: function(props) {
                 return [
-                  _c("td", [_vm._v(_vm._s(props.item.rule))]),
+                  _c("td", { staticClass: "text-xs-center" }, [
+                    _vm._v(_vm._s(props.item.rule))
+                  ]),
                   _vm._v(" "),
-                  _c("td", [
+                  _c("td", { staticClass: "text-xs-center" }, [
                     _c("input", {
                       directives: [
                         {
@@ -71033,6 +71096,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "td",
+                    { staticClass: "text-xs-center" },
                     [
                       _c(
                         "v-btn",
