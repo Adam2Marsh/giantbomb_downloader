@@ -71251,7 +71251,7 @@ exports = module.exports = __webpack_require__(12)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -71266,9 +71266,76 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: "SettingComponent"
+    name: "SettingComponent",
+    data: function data() {
+        return {
+            headers: [{ text: 'Service', value: 'service', align: 'center' }, { text: 'Enabled', value: 'enabled', align: 'center' }],
+            items: []
+        };
+    },
+
+    mounted: function mounted() {
+        this.getServices();
+    },
+    methods: {
+        getServices: function getServices() {
+            var tb = this;
+            $.ajax({
+                url: "/api/settings/services",
+                type: 'GET',
+                dataType: 'json',
+                success: function success(data) {
+                    console.log(data);
+                    // alert("Success");
+                    tb.items = data;
+                },
+                error: function error() {
+                    alert('Failed!');
+                }
+            });
+        },
+        toggleService: function toggleService(service) {
+            var self = this;
+            console.log(service);
+            $.ajax({
+                url: "/api/settings/" + service.id + "/update",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'enabled': service.enabled
+                },
+                success: function success(data, textStatus, jqXHR) {
+                    self.getServices();
+                },
+                error: function error(jqXHR, textStatus, errorThrown) {
+                    alert("Failed: " + textStatus);
+
+                    if (service.enabled) {
+                        service.enabled = false;
+                    } else {
+                        service.enabled = true;
+                    }
+                }
+            });
+        }
+    }
 });
 
 /***/ }),
@@ -71279,7 +71346,75 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("h1", [_vm._v("Settings")])
+  return _c(
+    "v-card",
+    [
+      _c("v-card-title", [_c("h1", [_vm._v("Settings")])]),
+      _vm._v(" "),
+      _c("v-data-table", {
+        attrs: { headers: _vm.headers, items: _vm.items },
+        scopedSlots: _vm._u([
+          {
+            key: "items",
+            fn: function(props) {
+              return [
+                _c("td", { staticClass: "text-xs-center" }, [
+                  _vm._v(_vm._s(props.item.name))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "text-xs-center" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: props.item.enabled,
+                        expression: "props.item.enabled"
+                      }
+                    ],
+                    attrs: { type: "checkbox" },
+                    domProps: {
+                      checked: Array.isArray(props.item.enabled)
+                        ? _vm._i(props.item.enabled, null) > -1
+                        : props.item.enabled
+                    },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$a = props.item.enabled,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = null,
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 &&
+                                (props.item.enabled = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (props.item.enabled = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.$set(props.item, "enabled", $$c)
+                          }
+                        },
+                        function($event) {
+                          _vm.toggleService(props.item)
+                        }
+                      ]
+                    }
+                  })
+                ])
+              ]
+            }
+          }
+        ])
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

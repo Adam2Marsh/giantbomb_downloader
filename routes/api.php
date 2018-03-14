@@ -24,3 +24,6 @@ Route::get('/rules/all', 'RulesController@returnAll');
 Route::post('/rule/add', 'RulesController@addRule');
 Route::post('/rule/{id}/delete', 'RulesController@deleteRule');
 Route::post('/rule/{id}/update', 'RulesController@updateRule');
+
+Route::get('/settings/services', 'SettingsController@returnServices');
+Route::post('/settings/{id}/update', 'SettingsController@updateService');
