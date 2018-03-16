@@ -71251,7 +71251,7 @@ exports = module.exports = __webpack_require__(12)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -71281,13 +71281,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "SettingComponent",
     data: function data() {
         return {
-            headers: [{ text: 'Service', value: 'service', align: 'center' }, { text: 'Enabled', value: 'enabled', align: 'center' }],
-            items: []
+            headers: [{ text: 'Service', value: 'service', align: 'center' }, { text: 'ApiKey', value: 'apikey', align: 'center' }, { text: 'Enabled', value: 'enabled', align: 'center' }],
+            items: [],
+            apikey: ""
         };
     },
 
@@ -71334,6 +71338,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }
                 }
             });
+        },
+        updateApiKey: function updateApiKey(service, key) {
+            var self = this;
+            console.log(service);
+            $.ajax({
+                url: "/api/" + service + "/register",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'key': key
+                },
+                success: function success(data, textStatus, jqXHR) {
+                    self.getServices();
+                },
+                error: function error(jqXHR, textStatus, errorThrown) {
+                    alert("Failed: " + textStatus);
+
+                    if (service.enabled) {
+                        service.enabled = false;
+                    } else {
+                        service.enabled = true;
+                    }
+                }
+            });
         }
     }
 });
@@ -71360,6 +71388,32 @@ var render = function() {
               return [
                 _c("td", { staticClass: "text-xs-center" }, [
                   _vm._v(_vm._s(props.item.name))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "text-xs-center" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.apikey,
+                        expression: "apikey"
+                      }
+                    ],
+                    attrs: { placeholder: "enter apikey or link code" },
+                    domProps: { value: _vm.apikey },
+                    on: {
+                      change: function($event) {
+                        _vm.updateApiKey(props.item.name, _vm.apikey)
+                      },
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.apikey = $event.target.value
+                      }
+                    }
+                  })
                 ]),
                 _vm._v(" "),
                 _c("td", { staticClass: "text-xs-center" }, [

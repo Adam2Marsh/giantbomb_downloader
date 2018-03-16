@@ -10,6 +10,9 @@
             <template slot="items" slot-scope="props">
                 <td class="text-xs-center">{{ props.item.name }}</td>
                 <td class="text-xs-center">
+                    <input v-on:change="updateApiKey(props.item.name, apikey)" v-model="apikey" placeholder="enter apikey or link code">
+                </td>
+                <td class="text-xs-center">
                     <input type="checkbox" v-model="props.item.enabled" v-on:change="toggleService(props.item)">
                 </td>
             </template>
@@ -24,9 +27,11 @@
             return {
                 headers: [
                     {text: 'Service', value: 'service', align: 'center'},
+                    {text: 'ApiKey', value: 'apikey', align: 'center'},
                     {text: 'Enabled', value: 'enabled', align: 'center'},
                 ],
                 items: [],
+                apikey: "",
             }
         },
         mounted: function() {
@@ -59,6 +64,31 @@
                     dataType: 'json',
                     data: {
                         'enabled' : service.enabled
+                    },
+                    success: function(data, textStatus, jqXHR) {
+                        self.getServices();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert("Failed: " + textStatus);
+
+                        if(service.enabled) {
+                            service.enabled = false;
+                        } else {
+                            service.enabled = true;
+                        }
+                    }
+                });
+            },
+            updateApiKey(service, key)
+            {
+                var self = this;
+                console.log(service);
+                $.ajax({
+                    url: "/api/" + service + "/register",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        'key' : key
                     },
                     success: function(data, textStatus, jqXHR) {
                         self.getServices();

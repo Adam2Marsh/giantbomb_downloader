@@ -14,4 +14,12 @@ class Service extends Model
     {
         return $this->hasMany('App\Video');
     }
+
+    /**
+     * Get all settings for the service.
+     */
+    public function settings()
+    {
+        return $this->hasMany('App\Setting');
+    }
 }
