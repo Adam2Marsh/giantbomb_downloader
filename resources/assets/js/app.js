@@ -62,8 +62,3 @@ new Vue({
     router,
     el: '#app'
 });
-
-// window.Echo.channel('video.state')
-//     .listen('VideoStateUpdated', (e) => {
-//         console.log(e);
-//     });

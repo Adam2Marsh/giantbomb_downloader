@@ -10,7 +10,13 @@
             <template slot="items" slot-scope="props">
                 <td class="text-xs-center">{{ props.item.name }}</td>
                 <td class="text-xs-center">
-                    <input v-on:change="updateApiKey(props.item.name, apikey)" v-model="apikey" placeholder="enter apikey or link code">
+                    <input
+                            v-on:change="updateApiKey(props.item.name, props.item.apiKey)"
+                            v-model="props.item.apiKey"
+                            placeholder="enter apikey or link code">
+                </td>
+                <td class="text-xs-center">
+                    <a v-bind:href="props.item.apiLink" target="_blank">Api Link</a>
                 </td>
                 <td class="text-xs-center">
                     <input type="checkbox" v-model="props.item.enabled" v-on:change="toggleService(props.item)">
@@ -28,10 +34,10 @@
                 headers: [
                     {text: 'Service', value: 'service', align: 'center'},
                     {text: 'ApiKey', value: 'apikey', align: 'center'},
+                    {text: 'Api Key Link', value: 'apikeylink', align: 'center'},
                     {text: 'Enabled', value: 'enabled', align: 'center'},
                 ],
                 items: [],
-                apikey: "",
             }
         },
         mounted: function() {
@@ -41,7 +47,7 @@
             getServices() {
                 let tb = this;
                 $.ajax({
-                    url: "/api/settings/services" ,
+                    url: "/api/services",
                     type: 'GET',
                     dataType: 'json',
                     success: function(data) {
@@ -59,7 +65,7 @@
                 var self = this;
                 console.log(service);
                 $.ajax({
-                    url: "/api/settings/" + service.id + "/update",
+                    url: "/api/service/" + service.id + "/update",
                     type: 'POST',
                     dataType: 'json',
                     data: {
@@ -95,12 +101,6 @@
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert("Failed: " + textStatus);
-
-                        if(service.enabled) {
-                            service.enabled = false;
-                        } else {
-                            service.enabled = true;
-                        }
                     }
                 });
             }

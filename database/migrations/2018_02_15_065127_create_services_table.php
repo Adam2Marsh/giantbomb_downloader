@@ -17,6 +17,7 @@ class CreateServicesTable extends Migration
             $table->increments('id');
             $table->text('name');
             $table->boolean('enabled');
+            $table->text('apiLink');
             $table->timestamps();
         });
     }

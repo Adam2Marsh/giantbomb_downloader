@@ -15,7 +15,8 @@ class AddGiantbombService extends Seeder
     {
         $newService = new Service();
         $newService->name = "Giantbomb";
-        $newService->enabled = 1;
+        $newService->enabled = 0;
+        $newService->apiLink = "https://www.giantbomb.com/app/giantbomb%20pi%20downloader/";
         $newService->save();
     }
 }

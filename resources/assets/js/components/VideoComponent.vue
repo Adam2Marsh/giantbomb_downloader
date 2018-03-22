@@ -80,6 +80,12 @@
                     </v-card-actions>
                 </v-card>
             </v-flex>
+            <template slot="no-data">
+                <v-alert :value="true" color="error" icon="warning">
+                    Sorry, nothing to display here :(<br>
+                    Check you have an active service in settings
+                </v-alert>
+            </template>
         </v-data-iterator>
     </v-container>
 </template>

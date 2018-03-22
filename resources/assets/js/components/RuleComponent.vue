@@ -49,6 +49,7 @@
                     {text: 'Delete', value: 'delete', sortable: false, align: 'center'},
                 ],
                 items: [],
+                rule: '',
             }
         },
         mounted: function () {

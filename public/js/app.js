@@ -14278,11 +14278,6 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#app'
 });
 
-// window.Echo.channel('video.state')
-//     .listen('VideoStateUpdated', (e) => {
-//         console.log(e);
-//     });
-
 /***/ }),
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -70257,6 +70252,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -70681,9 +70682,28 @@ var render = function() {
           _c("v-progress-linear", {
             attrs: { slot: "progress", color: "blue", indeterminate: "" },
             slot: "progress"
-          })
+          }),
+          _vm._v(" "),
+          _c(
+            "template",
+            { slot: "no-data" },
+            [
+              _c(
+                "v-alert",
+                { attrs: { value: true, color: "error", icon: "warning" } },
+                [
+                  _vm._v("\n                Sorry, nothing to display here :("),
+                  _c("br"),
+                  _vm._v(
+                    "\n                Check you have an active service in settings\n            "
+                  )
+                ]
+              )
+            ],
+            1
+          )
         ],
-        1
+        2
       )
     ],
     1
@@ -70785,7 +70805,7 @@ exports = module.exports = __webpack_require__(12)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -70875,7 +70895,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             search: '',
             headers: [{ text: 'Rule', value: 'rule', align: 'center' }, { text: 'Enabled', value: 'enabled', align: 'center' }, { text: 'Delete', value: 'delete', sortable: false, align: 'center' }],
-            items: []
+            items: [],
+            rule: ''
         };
     },
 
@@ -71284,14 +71305,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "SettingComponent",
     data: function data() {
         return {
-            headers: [{ text: 'Service', value: 'service', align: 'center' }, { text: 'ApiKey', value: 'apikey', align: 'center' }, { text: 'Enabled', value: 'enabled', align: 'center' }],
-            items: [],
-            apikey: ""
+            headers: [{ text: 'Service', value: 'service', align: 'center' }, { text: 'ApiKey', value: 'apikey', align: 'center' }, { text: 'Api Key Link', value: 'apikeylink', align: 'center' }, { text: 'Enabled', value: 'enabled', align: 'center' }],
+            items: []
         };
     },
 
@@ -71302,7 +71328,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         getServices: function getServices() {
             var tb = this;
             $.ajax({
-                url: "/api/settings/services",
+                url: "/api/services",
                 type: 'GET',
                 dataType: 'json',
                 success: function success(data) {
@@ -71319,7 +71345,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var self = this;
             console.log(service);
             $.ajax({
-                url: "/api/settings/" + service.id + "/update",
+                url: "/api/service/" + service.id + "/update",
                 type: 'POST',
                 dataType: 'json',
                 data: {
@@ -71354,12 +71380,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 },
                 error: function error(jqXHR, textStatus, errorThrown) {
                     alert("Failed: " + textStatus);
-
-                    if (service.enabled) {
-                        service.enabled = false;
-                    } else {
-                        service.enabled = true;
-                    }
                 }
             });
         }
@@ -71396,24 +71416,32 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.apikey,
-                        expression: "apikey"
+                        value: props.item.apiKey,
+                        expression: "props.item.apiKey"
                       }
                     ],
                     attrs: { placeholder: "enter apikey or link code" },
-                    domProps: { value: _vm.apikey },
+                    domProps: { value: props.item.apiKey },
                     on: {
                       change: function($event) {
-                        _vm.updateApiKey(props.item.name, _vm.apikey)
+                        _vm.updateApiKey(props.item.name, props.item.apiKey)
                       },
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.apikey = $event.target.value
+                        _vm.$set(props.item, "apiKey", $event.target.value)
                       }
                     }
                   })
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "text-xs-center" }, [
+                  _c(
+                    "a",
+                    { attrs: { href: props.item.apiLink, target: "_blank" } },
+                    [_vm._v("Api Link")]
+                  )
                 ]),
                 _vm._v(" "),
                 _c("td", { staticClass: "text-xs-center" }, [
