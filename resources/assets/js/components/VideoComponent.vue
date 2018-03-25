@@ -1,5 +1,13 @@
 <template>
     <v-container fluid grid-list-md>
+        <div>
+            Disk Space:
+            <v-tooltip bottom>
+                <v-progress-linear slot="activator" value="45" color="success"></v-progress-linear>
+                <span>Tooltip</span>
+            </v-tooltip>
+
+        </div>
         <v-layout row wrap>
             <v-flex xs1>
                 <v-btn flat icon color="green" @click="refreshLocalVideos">
@@ -37,7 +45,7 @@
                     <v-card-media
                             class="white--text"
                             height="200px"
-                            v-bind:src="returnThumbnail(props.item)"
+                            :src="returnThumbnail(props.item)"
                     >
                         <v-container fill-height fluid>
                             <v-layout fill-height>
@@ -61,11 +69,11 @@
                                 <!--<v-flex class="text-center">-->
                                     <v-btn v-on:click.native='downloadVideo(this, props.item)' block flat color="green">
                                         <i class="material-icons">file_download</i>
-                                        <div v-if="props.item.size != 0">{{ props.item.size }}</div>
+                                        <div v-if="props.item.human_size != 0">{{ props.item.human_size }}</div>
                                     </v-btn>
                                     <v-btn v-on:click.native='updateVideoStatus(this, props.item, "watched")' block flat color="red">
                                         <i class="material-icons">delete</i>
-                                        <div v-if="props.item.size != 0">{{ props.item.size }}</div>
+                                        <div v-if="props.item.human_size != 0">{{ props.item.human_size }}</div>
                                     </v-btn>
                                 <!--</v-flex>-->
                             </v-layout>
@@ -75,7 +83,7 @@
                         </v-btn>
                         <v-btn v-on:click.native='updateVideoStatus(this, props.item, "queued")' block v-else flat color="orange">
                             <v-icon left class="material-icons">cloud_download</v-icon>
-                            <div v-if="props.item.size != 0">{{ props.item.size }}</div>
+                            <div v-if="props.item.human_size != 0">{{ props.item.human_size }}</div>
                         </v-btn>
                     </v-card-actions>
                 </v-card>
@@ -113,6 +121,9 @@
             this.$echo.channel('video.updated').listen('VideoStateUpdated', (e) => {
                 console.log(e);
                 this.updateLocalVideoStatus(e.video);
+            });
+            this.$echo.channel('disk.space').listen('CurrentDiskSpace', (space) => {
+                console.log(space);
             });
         }
         ,methods:{
@@ -152,7 +163,7 @@
                 });
             },
             returnThumbnail(video) {
-                if(video.thumbnail_local_url == "") {
+                if(video.thumbnail_local_url == null) {
                     return video.thumbnail_url;
                 }
                 return video.thumbnail_local_url;
@@ -179,7 +190,7 @@
                 tb.items.forEach(function(video) {
                     if(video.id == updatedVideo.id) {
                         console.log("Video updated");
-                        video.size = updatedVideo.size;
+                        video.human_size = updatedVideo.human_size;
                         video.state = updatedVideo.state;
                     }
                 });

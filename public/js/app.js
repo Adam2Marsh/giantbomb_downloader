@@ -70258,6 +70258,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -70280,6 +70288,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.$echo.channel('video.updated').listen('VideoStateUpdated', function (e) {
             console.log(e);
             _this.updateLocalVideoStatus(e.video);
+        });
+        this.$echo.channel('disk.space').listen('CurrentDiskSpace', function (space) {
+            console.log(space);
         });
     },
     methods: {
@@ -70319,7 +70330,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         returnThumbnail: function returnThumbnail(video) {
-            if (video.thumbnail_local_url == "") {
+            if (video.thumbnail_local_url == null) {
                 return video.thumbnail_url;
             }
             return video.thumbnail_local_url;
@@ -70346,7 +70357,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             tb.items.forEach(function (video) {
                 if (video.id == updatedVideo.id) {
                     console.log("Video updated");
-                    video.size = updatedVideo.size;
+                    video.human_size = updatedVideo.human_size;
                     video.state = updatedVideo.state;
                 }
             });
@@ -70369,6 +70380,27 @@ var render = function() {
     "v-container",
     { attrs: { fluid: "", "grid-list-md": "" } },
     [
+      _c(
+        "div",
+        [
+          _vm._v("\n        Disk Space:\n        "),
+          _c(
+            "v-tooltip",
+            { attrs: { bottom: "" } },
+            [
+              _c("v-progress-linear", {
+                attrs: { slot: "activator", value: "45", color: "success" },
+                slot: "activator"
+              }),
+              _vm._v(" "),
+              _c("span", [_vm._v("Tooltip")])
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
       _c(
         "v-layout",
         { attrs: { row: "", wrap: "" } },
@@ -70548,10 +70580,12 @@ var render = function() {
                                               [_vm._v("file_download")]
                                             ),
                                             _vm._v(" "),
-                                            props.item.size != 0
+                                            props.item.human_size != 0
                                               ? _c("div", [
                                                   _vm._v(
-                                                    _vm._s(props.item.size)
+                                                    _vm._s(
+                                                      props.item.human_size
+                                                    )
                                                   )
                                                 ])
                                               : _vm._e()
@@ -70583,10 +70617,12 @@ var render = function() {
                                               [_vm._v("delete")]
                                             ),
                                             _vm._v(" "),
-                                            props.item.size != 0
+                                            props.item.human_size != 0
                                               ? _c("div", [
                                                   _vm._v(
-                                                    _vm._s(props.item.size)
+                                                    _vm._s(
+                                                      props.item.human_size
+                                                    )
                                                   )
                                                 ])
                                               : _vm._e()
@@ -70657,9 +70693,11 @@ var render = function() {
                                         [_vm._v("cloud_download")]
                                       ),
                                       _vm._v(" "),
-                                      props.item.size != 0
+                                      props.item.human_size != 0
                                         ? _c("div", [
-                                            _vm._v(_vm._s(props.item.size))
+                                            _vm._v(
+                                              _vm._s(props.item.human_size)
+                                            )
                                           ])
                                         : _vm._e()
                                     ],

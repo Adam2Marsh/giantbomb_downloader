@@ -7,14 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Video extends Model
 {
 
-//    public function setSizeAttribute($value)
-//    {
-//        $this->attributes['size'] = human_filesize($value);
-//    }
+    protected $appends = ['human_size'];
 
-    public function getSizeAttribute($value)
+    public function getHumanSizeAttribute()
     {
-        return human_filesize($value);
+        return human_filesize($this->size);
     }
 
     /**
