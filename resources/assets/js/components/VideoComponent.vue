@@ -3,8 +3,8 @@
         <div>
             Disk Space:
             <v-tooltip bottom>
-                <v-progress-linear slot="activator" value="45" color="success"></v-progress-linear>
-                <span>Tooltip</span>
+                <v-progress-linear slot="activator" :value="diskSpacePercentage" color="success"></v-progress-linear>
+                <span>{{diskSpaceHuman}}</span>
             </v-tooltip>
 
         </div>
@@ -113,7 +113,9 @@
                 loading: true,
                 items: [
 
-                ]
+                ],
+                diskSpacePercentage: "",
+                diskSpaceHuman: "",
             }
         },
         mounted: function () {
@@ -124,6 +126,8 @@
             });
             this.$echo.channel('disk.space').listen('CurrentDiskSpace', (space) => {
                 console.log(space);
+                this.diskSpaceHuman = space.human_size;
+                this.diskSpacePercentage = space.percentage;
             });
         }
         ,methods:{

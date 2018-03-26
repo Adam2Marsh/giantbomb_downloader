@@ -70277,7 +70277,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 rowsPerPage: 8
             },
             loading: true,
-            items: []
+            items: [],
+            diskSpacePercentage: "",
+            diskSpaceHuman: ""
         };
     },
 
@@ -70291,6 +70293,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
         this.$echo.channel('disk.space').listen('CurrentDiskSpace', function (space) {
             console.log(space);
+            _this.diskSpaceHuman = space.human_size;
+            _this.diskSpacePercentage = space.percentage;
         });
     },
     methods: {
@@ -70389,11 +70393,15 @@ var render = function() {
             { attrs: { bottom: "" } },
             [
               _c("v-progress-linear", {
-                attrs: { slot: "activator", value: "45", color: "success" },
+                attrs: {
+                  slot: "activator",
+                  value: _vm.diskSpacePercentage,
+                  color: "success"
+                },
                 slot: "activator"
               }),
               _vm._v(" "),
-              _c("span", [_vm._v("Tooltip")])
+              _c("span", [_vm._v(_vm._s(_vm.diskSpaceHuman))])
             ],
             1
           )

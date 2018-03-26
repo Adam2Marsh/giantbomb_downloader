@@ -37,12 +37,10 @@ class BroadcastDiskSpace implements ShouldQueue
 
         foreach (Video::all() as $video) {
             if($video->state == "downloaded") {
-//                Log::info("Video size is " . $video->HumanSize . " adding to $space");
                 $space += (int)$video->size;
-//                Log::info("$space after video added");
             }
         }
 
-        event(new CurrentDiskSpace(human_filesize($space)));
+        event(new CurrentDiskSpace(human_filesize($space), round(($space/20000000000)*100)));
     }
 }

@@ -14,16 +14,18 @@ class CurrentDiskSpace implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $space;
+    public $byte_size, $human_size, $percentage;
 
     /**
      * Create a new event instance.
      *
-     * @return void
+     * @param $human_size
+     * @param $percentage
      */
-    public function __construct($space)
+    public function __construct($human_size, $percentage)
     {
-        $this->space = $space;
+        $this->human_size = $human_size;
+        $this->percentage = $percentage;
     }
 
     /**
