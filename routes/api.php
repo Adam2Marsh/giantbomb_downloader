@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/videos/all', 'VideosController@returnAllVideos');
+Route::get('/videos/space', 'VideosController@triggerDiskSpaceCheck');
 
 Route::post('/video/{id}/updateStatus', 'VideosController@updateStatus');
 

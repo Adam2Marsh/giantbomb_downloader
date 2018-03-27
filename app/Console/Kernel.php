@@ -29,8 +29,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
 
-        $schedule->job(new BroadcastDiskSpace)
-            ->everyMinute();
+//        $schedule->job(new BroadcastDiskSpace)
+//            ->everyMinute();
     }
 
     /**

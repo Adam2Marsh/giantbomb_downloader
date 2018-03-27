@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Log;
 use App\Video;
 use App\Repositories\VideoRepository;
+use App\Jobs\BroadcastDiskSpace;
 
 class VideosController extends Controller
 {
@@ -17,5 +18,10 @@ class VideosController extends Controller
     public function updateStatus($id, Request $request, VideoRepository $videoServiceVideoRepository)
     {
         return response($videoServiceVideoRepository->updateVideoState($id, $request->state));
+    }
+
+    public function triggerDiskSpaceCheck()
+    {
+        BroadcastDiskSpace::dispatch();
     }
 }
