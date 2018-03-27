@@ -129,7 +129,6 @@
                 this.diskSpaceHuman = space.human_size;
                 this.diskSpacePercentage = space.percentage;
             });
-            this.triggerDiskSpace();
         }
         ,methods:{
             getData() {
@@ -202,14 +201,6 @@
             },
             downloadVideo(event, video) {
                 alert("Download Video");
-            },
-            triggerDiskSpace()
-            {
-                const self = this;
-                $.get('/api/videos/space', function (data, status) {
-                    console.log("Disk Space Requested");
-                    setTimeout(self.triggerDiskSpace(),5000);
-                });
             }
         }
     }

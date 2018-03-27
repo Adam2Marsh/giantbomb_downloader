@@ -33,6 +33,18 @@ class BroadcastDiskSpace implements ShouldQueue
      */
     public function handle()
     {
+        $time = 0;
+
+        while($time < 55) {
+            $space = $this->calculateDiskSpace();
+            event(new CurrentDiskSpace(human_filesize($space), round(($space / 20000000000) * 100)));
+            $time+=5;
+            sleep(5);
+        }
+    }
+
+    public function calculateDiskSpace()
+    {
         $space = (int)0;
 
         foreach (Video::all() as $video) {
@@ -41,6 +53,6 @@ class BroadcastDiskSpace implements ShouldQueue
             }
         }
 
-        event(new CurrentDiskSpace(human_filesize($space), round(($space/20000000000)*100)));
+        return $space;
     }
 }
