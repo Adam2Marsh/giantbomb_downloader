@@ -8,18 +8,23 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
+use Storage;
+use Log;
+
 class DeleteLocalVideoDownload implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    protected $video;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($video)
     {
-        //
+        $this->video = $video;
     }
 
     /**
@@ -29,6 +34,7 @@ class DeleteLocalVideoDownload implements ShouldQueue
      */
     public function handle()
     {
-        //
+        Log::info("Deleting video named: " . $this->video->name);
+        Storage::delete("videos/" . $this->video->service->name . "/" . localFilename($this->video->name) . ".mp4");
     }
 }

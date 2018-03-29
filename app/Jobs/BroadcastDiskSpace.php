@@ -11,6 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 
 use App\Events\CurrentDiskSpace;
 use Log;
+use Storage;
 
 class BroadcastDiskSpace implements ShouldQueue
 {
@@ -33,6 +34,8 @@ class BroadcastDiskSpace implements ShouldQueue
      */
     public function handle()
     {
+        Log::info("Checking disk space");
+
         $time = 0;
 
         while($time < 55) {
@@ -47,10 +50,9 @@ class BroadcastDiskSpace implements ShouldQueue
     {
         $space = (int)0;
 
-        foreach (Video::all() as $video) {
-            if($video->state == "downloaded") {
-                $space += (int)$video->size;
-            }
+        foreach (Storage::allFiles("videos") as $file) {
+            Log::info("$file is " . Storage::size($file));
+            $space += Storage::size($file);
         }
 
         return $space;
