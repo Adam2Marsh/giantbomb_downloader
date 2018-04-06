@@ -78,6 +78,10 @@
                                 <!--</v-flex>-->
                             </v-layout>
                         </div>
+                        <div v-else-if='props.item.state == "downloading"'>
+                            <!--{{ returnDownloadedPercentage(props.item) }}-->
+                            {{ props.item.downloaded_percentage }}
+                        </div>
                         <v-btn v-on:click.native='updateVideoStatus(this, props.item, "watched")' block v-else-if='props.item.state == "queued"' flat color="orange">
                             <v-icon left class="material-icons">cancel</v-icon>
                         </v-btn>
@@ -128,6 +132,7 @@
                 console.log(space);
                 this.diskSpaceHuman = space.human_size;
                 this.diskSpacePercentage = space.percentage;
+                this.updateDownloadedPercentage(space.downloading);
             });
         }
         ,methods:{
@@ -201,6 +206,17 @@
             },
             downloadVideo(event, video) {
                 alert("Download Video");
+            },
+            updateDownloadedPercentage(downloadingPercentage) {
+                let tb = this;
+                downloadingPercentage.forEach(function (downloadingVideo) {
+                    console.log(downloadingVideo);
+                    tb.items.forEach(function (video) {
+                        if(video.id == downloadingVideo.id) {
+                            video.downloaded_percentage = downloadingVideo.download_percentage;
+                        }
+                    })
+                });
             }
         }
     }

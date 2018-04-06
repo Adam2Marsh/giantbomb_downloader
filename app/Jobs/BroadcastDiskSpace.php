@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Video;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -10,8 +9,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
 use App\Events\CurrentDiskSpace;
+use App\Services\DiskService;
 use Log;
-use Storage;
 
 class BroadcastDiskSpace implements ShouldQueue
 {
@@ -30,31 +29,26 @@ class BroadcastDiskSpace implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @return void
+     * @param DiskService $diskService
      */
-    public function handle()
+    public function handle(DiskService $diskService)
     {
         Log::info("Checking disk space");
 
         $time = 0;
 
         while($time < 55) {
-            $space = $this->calculateDiskSpace();
-            event(new CurrentDiskSpace(human_filesize($space), round(($space / 20000000000) * 100)));
+            $space = $diskService->calculateDiskSpace();
+            $downloading = $diskService->videosDownloadingProgress();
+
+            event(new CurrentDiskSpace(
+                human_filesize($space),
+                round(($space / 20000000000) * 100),
+                $downloading)
+            );
+
             $time+=5;
             sleep(5);
         }
-    }
-
-    public function calculateDiskSpace()
-    {
-        $space = (int)0;
-
-        foreach (Storage::allFiles("videos") as $file) {
-            Log::info("$file is " . Storage::size($file));
-            $space += Storage::size($file);
-        }
-
-        return $space;
     }
 }

@@ -11,6 +11,7 @@ use Log;
 use Storage;
 
 use Symfony\Component\Process\Process;
+use App\Services\DiskService;
 
 class DownloadVideo implements ShouldQueue
 {
@@ -37,29 +38,30 @@ class DownloadVideo implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(DiskService $diskService)
     {
-        Log::info("Downloading video to " . $this->path . "/" .  localFilename($this->video->name) . ".mp4");
+        if(($diskService->calculateDiskSpace() + $this->video->size) < 10000000000) {
+            Log::info("Downloading video to " . $this->path . "/" . localFilename($this->video->name) . ".mp4");
 
-//        $command = "mkfile -n ".
-//            $this->video->size . "b  " .
-//            $this->path . "/" .  localFilename($this->video->name) . ".mp4";
+            $this->video->state = "downloading";
 
-//        $command = "cd /Users/adam2marsh/Sites/giantbomb_downloader/storage/app/videos/Giantbomb && dd if=/dev/zero of=output.dat bs=24m count=1";
+            $this->video->save();
 
-        $command = "cd $this->path && pwd && dd " .
-            "if=/dev/zero " .
-            "of=" . localFilename($this->video->name) . ".mp4 " .
-            "bs=1m count=" . (round($this->video->size / 1024 / 1024));
+            $command = "cd $this->path && pwd && dd " .
+                "if=/dev/zero " .
+                "of=" . localFilename($this->video->name) . ".mp4 " .
+                "bs=1m count=" . (round($this->video->size / 1024 / 1024));
 
-        $process = new Process($command);
+            $process = new Process($command);
 
-        $process->run();
+            $process->run();
 
-        Log::info((round($this->video->size / 1024 / 1024)));
+            $this->video->state = "downloaded";
 
-        $this->video->state = "downloaded";
-
-        $this->video->save();
+            $this->video->save();
+        } else {
+            Log::info($this->video->name . " download has been delayed as not enough room on disk");
+            DownloadVideo::dispatch($this->video)->delay(now()->addMinute(1));
+        }
     }
 }
