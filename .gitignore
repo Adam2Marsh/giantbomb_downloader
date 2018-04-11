@@ -11,3 +11,7 @@ echo-server-worker.log
 build
 *.retry
 public/storage
+
+supervisord\.log
+
+*.pid

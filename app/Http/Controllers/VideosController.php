@@ -24,4 +24,11 @@ class VideosController extends Controller
     {
         BroadcastDiskSpace::dispatch();
     }
+
+    public function downloadVideo($id)
+    {
+        $video = Video::findOrFail($id);
+
+        return response()->download(storage_path("app/videos/" . $video->service->name . "/" . localFilename($video->name) . ".mp4"));
+    }
 }

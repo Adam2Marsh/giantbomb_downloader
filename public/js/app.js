@@ -70371,9 +70371,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             });
         },
-        downloadVideo: function downloadVideo(event, video) {
-            alert("Download Video");
-        },
         updateDownloadedPercentage: function updateDownloadedPercentage(downloadingPercentage) {
             var tb = this;
             downloadingPercentage.forEach(function (downloadingVideo) {

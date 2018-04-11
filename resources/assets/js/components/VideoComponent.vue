@@ -204,9 +204,6 @@
                     }
                 });
             },
-            downloadVideo(event, video) {
-                alert("Download Video");
-            },
             updateDownloadedPercentage(downloadingPercentage) {
                 let tb = this;
                 downloadingPercentage.forEach(function (downloadingVideo) {

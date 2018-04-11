@@ -40,7 +40,7 @@ class DownloadVideo implements ShouldQueue
      */
     public function handle(DiskService $diskService)
     {
-        if(($diskService->calculateDiskSpace() + $this->video->size) < 10000000000) {
+        if(($diskService->calculateDiskSpace() + $this->video->size) < config('gb.disk_space')) {
             Log::info("Downloading video to " . $this->path . "/" . localFilename($this->video->name) . ".mp4");
 
             $this->video->state = "downloading";
@@ -61,7 +61,7 @@ class DownloadVideo implements ShouldQueue
             $this->video->save();
         } else {
             Log::info($this->video->name . " download has been delayed as not enough room on disk");
-            DownloadVideo::dispatch($this->video)->delay(now()->addMinute(1));
+            DownloadVideo::dispatch($this->video)->delay(now()->addMinute(config('gb.video_download_retry_time')));
         }
     }
 }
