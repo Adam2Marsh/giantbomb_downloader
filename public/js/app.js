@@ -70270,6 +70270,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -70578,39 +70580,50 @@ var render = function() {
                                       },
                                       [
                                         _c(
-                                          "v-btn",
+                                          "form",
                                           {
                                             attrs: {
-                                              block: "",
-                                              flat: "",
-                                              color: "green"
-                                            },
-                                            nativeOn: {
-                                              click: function($event) {
-                                                _vm.downloadVideo(
-                                                  this,
-                                                  props.item
-                                                )
-                                              }
+                                              action:
+                                                "/api/video/" +
+                                                props.item.id +
+                                                "/download",
+                                              method: "get"
                                             }
                                           },
                                           [
                                             _c(
-                                              "i",
-                                              { staticClass: "material-icons" },
-                                              [_vm._v("file_download")]
-                                            ),
-                                            _vm._v(" "),
-                                            props.item.human_size != 0
-                                              ? _c("div", [
-                                                  _vm._v(
-                                                    _vm._s(
-                                                      props.item.human_size
-                                                    )
-                                                  )
-                                                ])
-                                              : _vm._e()
-                                          ]
+                                              "v-btn",
+                                              {
+                                                attrs: {
+                                                  block: "",
+                                                  flat: "",
+                                                  color: "green",
+                                                  type: "submit"
+                                                }
+                                              },
+                                              [
+                                                _c(
+                                                  "i",
+                                                  {
+                                                    staticClass:
+                                                      "material-icons"
+                                                  },
+                                                  [_vm._v("file_download")]
+                                                ),
+                                                _vm._v(" "),
+                                                props.item.human_size != 0
+                                                  ? _c("div", [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          props.item.human_size
+                                                        )
+                                                      )
+                                                    ])
+                                                  : _vm._e()
+                                              ]
+                                            )
+                                          ],
+                                          1
                                         ),
                                         _vm._v(" "),
                                         _c(

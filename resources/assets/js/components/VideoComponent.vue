@@ -66,11 +66,13 @@
                     <v-card-actions>
                         <div v-if='props.item.state == "downloaded"'>
                             <v-layout row wrap align-center>
-                                <!--<v-flex class="text-center">-->
-                                    <v-btn v-on:click.native='downloadVideo(this, props.item)' block flat color="green">
+                                <form :action="'/api/video/' + props.item.id + '/download'" method="get">
+                                    <v-btn block flat color="green" type="submit">
                                         <i class="material-icons">file_download</i>
                                         <div v-if="props.item.human_size != 0">{{ props.item.human_size }}</div>
                                     </v-btn>
+                                </form>
+                                <!--<v-flex class="text-center">-->
                                     <v-btn v-on:click.native='updateVideoStatus(this, props.item, "watched")' block flat color="red">
                                         <i class="material-icons">delete</i>
                                         <div v-if="props.item.human_size != 0">{{ props.item.human_size }}</div>
