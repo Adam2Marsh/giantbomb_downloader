@@ -84,10 +84,10 @@
                             <!--{{ returnDownloadedPercentage(props.item) }}-->
                             {{ props.item.downloaded_percentage }}
                         </div>
-                        <v-btn v-on:click.native='updateVideoStatus(this, props.item, "watched")' block v-else-if='props.item.state == "queued"' flat color="orange">
+                        <v-btn v-else-if='props.item.state == "queued"' v-on:click.native='updateVideoStatus(this, props.item, "watched")' block flat color="orange">
                             <v-icon left class="material-icons">cancel</v-icon>
                         </v-btn>
-                        <v-btn v-on:click.native='updateVideoStatus(this, props.item, "queued")' block v-else flat color="orange">
+                        <v-btn v-else block v-on:click.native='updateVideoStatus(this, props.item, "queued")' flat color="orange">
                             <v-icon left class="material-icons">cloud_download</v-icon>
                             <div v-if="props.item.human_size != 0">{{ props.item.human_size }}</div>
                         </v-btn>

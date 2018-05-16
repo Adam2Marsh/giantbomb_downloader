@@ -70069,7 +70069,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("v-toolbar-title", [_vm._v("Giantbomb Local Downloader")])
+          _c("v-toolbar-title", [_vm._v("Pi Local Downloader")])
         ],
         1
       ),

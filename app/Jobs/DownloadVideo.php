@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Services\VideoService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -20,6 +21,8 @@ class DownloadVideo implements ShouldQueue
     protected $video;
     protected $path;
 
+    protected $videoService;
+
     /**
      * Create a new job instance.
      *
@@ -31,6 +34,8 @@ class DownloadVideo implements ShouldQueue
         Storage::makeDirectory("videos/" . $video->service->name);
 
         $this->path = storage_path("app/videos/" . $video->service->name);
+
+        $this->videoService = new VideoService($this->video->service->name);
     }
 
     /**
@@ -47,14 +52,22 @@ class DownloadVideo implements ShouldQueue
 
             $this->video->save();
 
-            $command = "cd $this->path && pwd && dd " .
-                "if=/dev/zero " .
-                "of=" . localFilename($this->video->name) . ".mp4 " .
-                "bs=1m count=" . (round($this->video->size / 1024 / 1024));
+            if(env('TEST_DOWNLOAD', 0) == 1) {
 
-            $process = new Process($command);
+                $command = "cd $this->path && pwd && dd " .
+                    "if=/dev/zero " .
+                    "of=" . localFilename($this->video->name) . ".mp4 " .
+                    "bs=1m count=" . (round($this->video->size / 1024 / 1024));
 
-            $process->run();
+                $process = new Process($command);
+
+                $process->run();
+            } else {
+                $this->videoService->downloadVideo(
+                    $this->video->video_url,
+                    $this->path . "/" . localFilename($this->video->name) . ".mp4"
+                );
+            }
 
             $this->video->state = "downloaded";
 
@@ -63,5 +76,13 @@ class DownloadVideo implements ShouldQueue
             Log::info($this->video->name . " download has been delayed as not enough room on disk");
             DownloadVideo::dispatch($this->video)->delay(now()->addMinute(config('gb.video_download_retry_time')));
         }
+    }
+
+    public function failed(\Exception $e = null) {
+        Log::info("Failed to download " . $this->video->name);
+
+        $this->video->state = "failed";
+
+        $this->video->save();
     }
 }

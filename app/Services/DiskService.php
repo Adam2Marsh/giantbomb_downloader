@@ -29,7 +29,7 @@ class DiskService
             array_push($downloading,
                 [
                     "id" => $video->id,
-                    "download_percentage" => "15%"
+                    "download_percentage" => $video->downloaded_percentage
                 ]);
         }
 

@@ -32,20 +32,28 @@ class VideoService
         return url('storage/thumbnails/' . $filename);
     }
 
-    public function downloadVideo($videoUrl, $savePath)
+    public function downloadVideo($url, $savePath)
     {
-        Log::info("Downloading video from $videoUrl");
+        Log::info("Downloading video from $url");
 
         $options = array(
             CURLOPT_FILE => is_resource($savePath) ? $savePath : fopen($savePath, 'w'),
             CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_URL => $videoUrl,
-            CURLOPT_FAILONERROR => true, // HTTP code > 400 will throw curl error
+            CURLOPT_URL => $this->service->buildUrl($url)
         );
 
         $ch = curl_init();
         curl_setopt_array($ch, $options);
         curl_exec($ch);
+
+        $curlInfo = curl_getinfo($ch);
+
+        if($curlInfo["http_code"] != 200) {
+            Log:info(curl_error($ch));
+            Throw new \Exception("Failed to download video");
+        }
+
+        Log::info("Video downloaded successfully");
     }
 
     /**

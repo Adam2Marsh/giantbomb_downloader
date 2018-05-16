@@ -35,7 +35,7 @@
         </v-navigation-drawer>
         <v-toolbar app fixed clipped-left>
             <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-            <v-toolbar-title>Giantbomb Local Downloader</v-toolbar-title>
+            <v-toolbar-title>Pi Local Downloader</v-toolbar-title>
         </v-toolbar>
         <v-content>
             <v-container fluid fill-height>

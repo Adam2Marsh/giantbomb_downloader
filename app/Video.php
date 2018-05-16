@@ -17,7 +17,13 @@ class Video extends Model
 
     public function getDownloadedPercentageAttribute()
     {
-        return 0;
+        $filePath = "videos/" . $this->service->name . "/" . localFilename($this->name) . ".mp4";
+
+        if(Storage::exists($filePath)) {
+            return round((Storage::size($filePath) / $this->size) * 100) . "%";
+        } else {
+            return "0%";
+        }
     }
 
     /**

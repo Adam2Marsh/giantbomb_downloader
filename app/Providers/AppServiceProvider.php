@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 use App\Video;
 use App\Observers\VideoObserver;
+use Log;
 
 class AppServiceProvider extends ServiceProvider
 {
