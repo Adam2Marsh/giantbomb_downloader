@@ -71354,7 +71354,7 @@ exports = module.exports = __webpack_require__(12)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -71393,18 +71393,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "SettingComponent",
     data: function data() {
         return {
-            headers: [{ text: 'Service', value: 'service', align: 'center' }, { text: 'ApiKey', value: 'apikey', align: 'center' }, { text: 'Api Key Link', value: 'apikeylink', align: 'center' }, { text: 'Enabled', value: 'enabled', align: 'center' }],
-            items: []
+            service_headers: [{ text: 'Service', value: 'service', align: 'center' }, { text: 'ApiKey', value: 'apikey', align: 'center' }, { text: 'Api Key Link', value: 'apikeylink', align: 'center' }, { text: 'Enabled', value: 'enabled', align: 'center' }],
+            settings_headers: [{ text: 'Key', value: 'key', align: 'center' }, { text: 'Vaule', value: 'value', align: 'center' }],
+            items: [],
+            storage_sizes: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+            settings: []
         };
     },
 
     mounted: function mounted() {
         this.getServices();
+        this.getSettings();
     },
     methods: {
         getServices: function getServices() {
@@ -71464,6 +71484,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     alert("Failed: " + textStatus);
                 }
             });
+        },
+        getSettings: function getSettings() {
+            var self = this;
+            $.ajax({
+                url: "/api/settings",
+                type: 'GET',
+                dataType: 'json',
+                success: function success(data, textStatus, jqXHR) {
+                    console.log(data);
+                    self.settings = data;
+                },
+                error: function error(jqXHR, textStatus, errorThrown) {
+                    alert("Failed: " + textStatus);
+                }
+            });
+        },
+        updateSettings: function updateSettings(key, value) {
+            var self = this;
+            $.ajax({
+                url: "/api/settings",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    'key': key,
+                    'value': value
+                },
+                success: function success(data, textStatus, jqXHR) {
+                    console.log(data);
+                    self.settings = data;
+                },
+                error: function error(jqXHR, textStatus, errorThrown) {
+                    alert("Failed: " + textStatus);
+                }
+            });
         }
     }
 });
@@ -71477,105 +71531,163 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-card",
+    "v-container",
+    { attrs: { fluid: "" } },
     [
-      _c("v-card-title", [_c("h1", [_vm._v("Settings")])]),
-      _vm._v(" "),
-      _c("v-data-table", {
-        attrs: { headers: _vm.headers, items: _vm.items },
-        scopedSlots: _vm._u([
-          {
-            key: "items",
-            fn: function(props) {
-              return [
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _vm._v(_vm._s(props.item.name))
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: props.item.apiKey,
-                        expression: "props.item.apiKey"
-                      }
-                    ],
-                    attrs: { placeholder: "enter apikey or link code" },
-                    domProps: { value: props.item.apiKey },
-                    on: {
-                      change: function($event) {
-                        _vm.updateApiKey(props.item.name, props.item.apiKey)
-                      },
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(props.item, "apiKey", $event.target.value)
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _c(
-                    "a",
-                    { attrs: { href: props.item.apiLink, target: "_blank" } },
-                    [_vm._v("Api Link")]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "text-xs-center" }, [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: props.item.enabled,
-                        expression: "props.item.enabled"
-                      }
-                    ],
-                    attrs: { type: "checkbox" },
-                    domProps: {
-                      checked: Array.isArray(props.item.enabled)
-                        ? _vm._i(props.item.enabled, null) > -1
-                        : props.item.enabled
-                    },
-                    on: {
-                      change: [
-                        function($event) {
-                          var $$a = props.item.enabled,
-                            $$el = $event.target,
-                            $$c = $$el.checked ? true : false
-                          if (Array.isArray($$a)) {
-                            var $$v = null,
-                              $$i = _vm._i($$a, $$v)
-                            if ($$el.checked) {
-                              $$i < 0 &&
-                                (props.item.enabled = $$a.concat([$$v]))
-                            } else {
-                              $$i > -1 &&
-                                (props.item.enabled = $$a
-                                  .slice(0, $$i)
-                                  .concat($$a.slice($$i + 1)))
-                            }
-                          } else {
-                            _vm.$set(props.item, "enabled", $$c)
+      _c(
+        "v-card",
+        [
+          _c("v-subheader", [_vm._v("Service Settings")]),
+          _vm._v(" "),
+          _c("v-data-table", {
+            attrs: { headers: _vm.service_headers, items: _vm.items },
+            scopedSlots: _vm._u([
+              {
+                key: "items",
+                fn: function(props) {
+                  return [
+                    _c("td", { staticClass: "text-xs-center" }, [
+                      _vm._v(_vm._s(props.item.name))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "text-xs-center" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: props.item.apiKey,
+                            expression: "props.item.apiKey"
                           }
-                        },
-                        function($event) {
-                          _vm.toggleService(props.item)
+                        ],
+                        attrs: { placeholder: "enter apikey or link code" },
+                        domProps: { value: props.item.apiKey },
+                        on: {
+                          change: function($event) {
+                            _vm.updateApiKey(props.item.name, props.item.apiKey)
+                          },
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(props.item, "apiKey", $event.target.value)
+                          }
                         }
-                      ]
-                    }
-                  })
-                ])
-              ]
-            }
-          }
-        ])
-      })
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "text-xs-center" }, [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: props.item.apiLink, target: "_blank" }
+                        },
+                        [_vm._v("Api Link")]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "text-xs-center" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: props.item.enabled,
+                            expression: "props.item.enabled"
+                          }
+                        ],
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          checked: Array.isArray(props.item.enabled)
+                            ? _vm._i(props.item.enabled, null) > -1
+                            : props.item.enabled
+                        },
+                        on: {
+                          change: [
+                            function($event) {
+                              var $$a = props.item.enabled,
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = null,
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 &&
+                                    (props.item.enabled = $$a.concat([$$v]))
+                                } else {
+                                  $$i > -1 &&
+                                    (props.item.enabled = $$a
+                                      .slice(0, $$i)
+                                      .concat($$a.slice($$i + 1)))
+                                }
+                              } else {
+                                _vm.$set(props.item, "enabled", $$c)
+                              }
+                            },
+                            function($event) {
+                              _vm.toggleService(props.item)
+                            }
+                          ]
+                        }
+                      })
+                    ])
+                  ]
+                }
+              }
+            ])
+          }),
+          _vm._v(" "),
+          _c("v-divider"),
+          _vm._v(" "),
+          _c("v-subheader", [_vm._v("General Settings")]),
+          _vm._v(" "),
+          _c("v-data-table", {
+            attrs: { headers: _vm.settings_headers, items: _vm.settings },
+            scopedSlots: _vm._u([
+              {
+                key: "items",
+                fn: function(props) {
+                  return [
+                    _c("td", { staticClass: "text-xs-center" }, [
+                      _vm._v(_vm._s(props.item.key) + " in GB")
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "text-xs-center" }, [
+                      _vm._v(_vm._s(props.item.value))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "text-xs-center" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: props.item.value,
+                            expression: "props.item.value"
+                          }
+                        ],
+                        domProps: { value: props.item.value },
+                        on: {
+                          change: function($event) {
+                            _vm.updateSettings(props.item.key, props.item.value)
+                          },
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(props.item, "value", $event.target.value)
+                          }
+                        }
+                      })
+                    ])
+                  ]
+                }
+              }
+            ])
+          })
+        ],
+        1
+      )
     ],
     1
   )
