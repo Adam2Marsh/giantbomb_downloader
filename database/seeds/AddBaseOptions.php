@@ -16,7 +16,7 @@ class AddBaseOptions extends Seeder
         $newSetting = new Setting();
         $newSetting->service_id = 0;
         $newSetting->key = "storage_limit";
-        $newSetting->value = "10";
+        $newSetting->value = "10000000000";
         $newSetting->save();
     }
 }

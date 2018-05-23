@@ -11,4 +11,13 @@ class SettingsController extends Controller
     {
         return response()->json(Setting::where("service_id", 0)->get());
     }
+
+    public function update(Request $request)
+    {
+        $setting = Setting::where('key', '=', $request->key)->first();
+        $setting->value = $request->value;
+        $setting->save();
+
+        return redirect('/api/settings');
+    }
 }

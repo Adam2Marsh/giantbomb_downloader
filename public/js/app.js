@@ -70887,7 +70887,7 @@ exports = module.exports = __webpack_require__(12)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -70931,6 +70931,8 @@ module.exports = function listToStyles (parentId, list) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -71071,185 +71073,196 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-card",
+    "v-container",
+    { attrs: { fluid: "" } },
     [
       _c(
-        "v-card-title",
+        "v-card",
         [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.rule,
-                expression: "rule"
-              }
-            ],
-            attrs: { placeholder: "New Rule" },
-            domProps: { value: _vm.rule },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.rule = $event.target.value
-              }
-            }
-          }),
-          _vm._v(" "),
           _c(
-            "v-btn",
-            {
-              attrs: { block: "", flat: "", color: "green" },
-              nativeOn: {
-                click: function($event) {
-                  _vm.addRule(this, _vm.rule)
-                }
-              }
-            },
+            "v-card-title",
             [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.rule,
+                    expression: "rule"
+                  }
+                ],
+                attrs: { placeholder: "New Rule" },
+                domProps: { value: _vm.rule },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.rule = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
               _c(
-                "v-icon",
-                { staticClass: "material-icons", attrs: { left: "" } },
-                [_vm._v("add_box")]
-              )
+                "v-btn",
+                {
+                  attrs: { block: "", flat: "", color: "green" },
+                  nativeOn: {
+                    click: function($event) {
+                      _vm.addRule(this, _vm.rule)
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "v-icon",
+                    { staticClass: "material-icons", attrs: { left: "" } },
+                    [_vm._v("add_box")]
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c("v-text-field", {
+                attrs: {
+                  "append-icon": "search",
+                  label: "Search",
+                  "single-line": "",
+                  "hide-details": ""
+                },
+                model: {
+                  value: _vm.search,
+                  callback: function($$v) {
+                    _vm.search = $$v
+                  },
+                  expression: "search"
+                }
+              })
             ],
             1
           ),
           _vm._v(" "),
-          _c("v-spacer"),
-          _vm._v(" "),
-          _c("v-text-field", {
-            attrs: {
-              "append-icon": "search",
-              label: "Search",
-              "single-line": "",
-              "hide-details": ""
-            },
-            model: {
-              value: _vm.search,
-              callback: function($$v) {
-                _vm.search = $$v
-              },
-              expression: "search"
-            }
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-data-table",
-        {
-          attrs: { headers: _vm.headers, items: _vm.items, search: _vm.search },
-          scopedSlots: _vm._u([
+          _c(
+            "v-data-table",
             {
-              key: "items",
-              fn: function(props) {
-                return [
-                  _c("td", { staticClass: "text-xs-center" }, [
-                    _vm._v(_vm._s(props.item.rule))
-                  ]),
-                  _vm._v(" "),
-                  _c("td", { staticClass: "text-xs-center" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: props.item.enabled,
-                          expression: "props.item.enabled"
-                        }
-                      ],
-                      attrs: { type: "checkbox" },
-                      domProps: {
-                        checked: Array.isArray(props.item.enabled)
-                          ? _vm._i(props.item.enabled, null) > -1
-                          : props.item.enabled
-                      },
-                      on: {
-                        change: [
-                          function($event) {
-                            var $$a = props.item.enabled,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  (props.item.enabled = $$a.concat([$$v]))
-                              } else {
-                                $$i > -1 &&
-                                  (props.item.enabled = $$a
-                                    .slice(0, $$i)
-                                    .concat($$a.slice($$i + 1)))
-                              }
-                            } else {
-                              _vm.$set(props.item, "enabled", $$c)
+              attrs: {
+                headers: _vm.headers,
+                items: _vm.items,
+                search: _vm.search
+              },
+              scopedSlots: _vm._u([
+                {
+                  key: "items",
+                  fn: function(props) {
+                    return [
+                      _c("td", { staticClass: "text-xs-center" }, [
+                        _vm._v(_vm._s(props.item.rule))
+                      ]),
+                      _vm._v(" "),
+                      _c("td", { staticClass: "text-xs-center" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: props.item.enabled,
+                              expression: "props.item.enabled"
                             }
+                          ],
+                          attrs: { type: "checkbox" },
+                          domProps: {
+                            checked: Array.isArray(props.item.enabled)
+                              ? _vm._i(props.item.enabled, null) > -1
+                              : props.item.enabled
                           },
-                          function($event) {
-                            _vm.toggleRule(props.item)
+                          on: {
+                            change: [
+                              function($event) {
+                                var $$a = props.item.enabled,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (props.item.enabled = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (props.item.enabled = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.$set(props.item, "enabled", $$c)
+                                }
+                              },
+                              function($event) {
+                                _vm.toggleRule(props.item)
+                              }
+                            ]
                           }
-                        ]
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "td",
-                    { staticClass: "text-xs-center" },
-                    [
+                        })
+                      ]),
+                      _vm._v(" "),
                       _c(
-                        "v-btn",
-                        {
-                          attrs: { block: "", flat: "", color: "red" },
-                          nativeOn: {
-                            click: function($event) {
-                              _vm.deleteRule(this, props.item)
-                            }
-                          }
-                        },
+                        "td",
+                        { staticClass: "text-xs-center" },
                         [
                           _c(
-                            "v-icon",
+                            "v-btn",
                             {
-                              staticClass: "material-icons",
-                              attrs: { left: "" }
+                              attrs: { block: "", flat: "", color: "red" },
+                              nativeOn: {
+                                click: function($event) {
+                                  _vm.deleteRule(this, props.item)
+                                }
+                              }
                             },
-                            [_vm._v("delete")]
+                            [
+                              _c(
+                                "v-icon",
+                                {
+                                  staticClass: "material-icons",
+                                  attrs: { left: "" }
+                                },
+                                [_vm._v("delete")]
+                              )
+                            ],
+                            1
                           )
                         ],
                         1
                       )
-                    ],
-                    1
-                  )
-                ]
-              }
-            }
-          ])
-        },
-        [
-          _c(
-            "v-alert",
-            {
-              attrs: {
-                slot: "no-results",
-                value: true,
-                color: "error",
-                icon: "warning"
-              },
-              slot: "no-results"
+                    ]
+                  }
+                }
+              ])
             },
             [
-              _vm._v(
-                '\n            Your search for "' +
-                  _vm._s(_vm.search) +
-                  '" found no results.\n        '
+              _c(
+                "v-alert",
+                {
+                  attrs: {
+                    slot: "no-results",
+                    value: true,
+                    color: "error",
+                    icon: "warning"
+                  },
+                  slot: "no-results"
+                },
+                [
+                  _vm._v(
+                    '\n            Your search for "' +
+                      _vm._s(_vm.search) +
+                      '" found no results.\n        '
+                  )
+                ]
               )
-            ]
+            ],
+            1
           )
         ],
         1
@@ -71354,7 +71367,7 @@ exports = module.exports = __webpack_require__(12)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -71365,7 +71378,6 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
 //
 //
 //
@@ -71649,11 +71661,7 @@ var render = function() {
                 fn: function(props) {
                   return [
                     _c("td", { staticClass: "text-xs-center" }, [
-                      _vm._v(_vm._s(props.item.key) + " in GB")
-                    ]),
-                    _vm._v(" "),
-                    _c("td", { staticClass: "text-xs-center" }, [
-                      _vm._v(_vm._s(props.item.value))
+                      _vm._v(_vm._s(props.item.nice_format) + " in GB")
                     ]),
                     _vm._v(" "),
                     _c("td", { staticClass: "text-xs-center" }, [

@@ -1,4 +1,5 @@
 <template>
+    <v-container fluid>
     <v-card>
         <v-card-title>
             <input v-model="rule" placeholder="New Rule">
@@ -35,6 +36,7 @@
             </v-alert>
         </v-data-table>
     </v-card>
+    </v-container>
 </template>
 
 <script>

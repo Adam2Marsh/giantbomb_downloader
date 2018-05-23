@@ -30,3 +30,4 @@ Route::post('/rule/{id}/delete', 'RulesController@deleteRule');
 Route::post('/rule/{id}/update', 'RulesController@updateRule');
 
 Route::get('/settings', 'SettingsController@returnAll');
+Route::post('/settings', 'SettingsController@update');

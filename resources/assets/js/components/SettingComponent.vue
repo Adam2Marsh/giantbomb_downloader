@@ -29,8 +29,7 @@
                 :items="settings"
         >
             <template slot="items" slot-scope="props">
-                <td class="text-xs-center">{{ props.item.key }} in GB</td>
-                <td class="text-xs-center">{{ props.item.value }}</td>
+                <td class="text-xs-center">{{ props.item.nice_format }} in GB</td>
                 <td class="text-xs-center">
                     <input
                             v-on:change="updateSettings(props.item.key, props.item.value)"

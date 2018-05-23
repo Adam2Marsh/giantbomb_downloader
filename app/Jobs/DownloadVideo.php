@@ -13,6 +13,7 @@ use Storage;
 
 use Symfony\Component\Process\Process;
 use App\Services\DiskService;
+use App\Setting;
 
 class DownloadVideo implements ShouldQueue
 {
@@ -22,6 +23,8 @@ class DownloadVideo implements ShouldQueue
     protected $path;
 
     protected $videoService;
+
+    protected $maxStorageLimit;
 
     /**
      * Create a new job instance.
@@ -36,16 +39,20 @@ class DownloadVideo implements ShouldQueue
         $this->path = storage_path("app/videos/" . $video->service->name);
 
         $this->videoService = new VideoService($this->video->service->name);
+
+        $this->maxStorageLimit = Setting::where('key', '=', 'storage_limit')->first()->value;
     }
 
     /**
      * Execute the job.
      *
+     * @param DiskService $diskService
      * @return void
+     * @throws \Exception
      */
     public function handle(DiskService $diskService)
     {
-        if(($diskService->calculateDiskSpace() + $this->video->size) < config('gb.disk_space')) {
+        if(($diskService->calculateDiskSpace() + $this->video->size) < $this->maxStorageLimit) {
             Log::info("Downloading video to " . $this->path . "/" . localFilename($this->video->name) . ".mp4");
 
             $this->video->state = "downloading";
