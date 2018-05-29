@@ -1,5 +1,13 @@
 <template>
     <v-container fluid>
+    <v-alert
+            :value="alert"
+            type="success"
+            transition="scale-transition"
+    >
+        Settings Updated
+    </v-alert>
+    <loading-component :value="loading"></loading-component>
     <v-card>
         <v-subheader>Service Settings</v-subheader>
         <v-data-table
@@ -10,7 +18,7 @@
                 <td class="text-xs-center">{{ props.item.name }}</td>
                 <td class="text-xs-center">
                     <input
-                            v-on:change="updateApiKey(props.item.name, props.item.apiKey)"
+                            v-on:change="updateApiKey(props.item.name, props.item.apiKey, this)"
                             v-model="props.item.apiKey"
                             placeholder="enter apikey or link code">
                 </td>
@@ -32,7 +40,7 @@
                 <td class="text-xs-center">{{ props.item.nice_format }} in GB</td>
                 <td class="text-xs-center">
                     <input
-                            v-on:change="updateSettings(props.item.key, props.item.value)"
+                            v-on:change="updateSettings(props.item.key, props.item.value, this)"
                             v-model="props.item.value">
                 </td>
             </template>
@@ -58,7 +66,9 @@
                 ],
                 items: [],
                 storage_sizes: [10,20,30,40,50,60,70,80,90,100],
-                settings: []
+                settings: [],
+                alert: false,
+                loading: false
             }
         },
         mounted: function() {
@@ -86,6 +96,7 @@
             {
                 var self = this;
                 console.log(service);
+                self.loading = true;
                 $.ajax({
                     url: "/api/service/" + service.id + "/update",
                     type: 'POST',
@@ -95,9 +106,13 @@
                     },
                     success: function(data, textStatus, jqXHR) {
                         self.getServices();
+                        self.alert = true;
+                        setTimeout(self.hideSuccessMessage, 2000)
+                        self.loading = false;
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert("Failed: " + textStatus);
+                        self.loading = false;
 
                         if(service.enabled) {
                             service.enabled = false;
@@ -110,7 +125,8 @@
             updateApiKey(service, key)
             {
                 var self = this;
-                console.log(service);
+                self.loading = true;
+                // console.log(service);
                 $.ajax({
                     url: "/api/" + service + "/register",
                     type: 'POST',
@@ -120,9 +136,13 @@
                     },
                     success: function(data, textStatus, jqXHR) {
                         self.getServices();
+                        self.alert = true;
+                        setTimeout(self.hideSuccessMessage, 2000)
+                        self.loading = false;
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert("Failed: " + textStatus);
+                        self.loading = false;
                     }
                 });
             },
@@ -145,6 +165,7 @@
             updateSettings(key, value)
             {
                 var self = this;
+                self.loading = true;
                 $.ajax({
                     url: "/api/settings",
                     type: 'POST',
@@ -156,11 +177,20 @@
                     success: function(data, textStatus, jqXHR) {
                         console.log(data);
                         self.settings = data;
+                        self.alert = true;
+                        setTimeout(self.hideSuccessMessage, 2000)
+                        self.loading = false;
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert("Failed: " + textStatus);
+                        self.loading = false;
                     }
                 });
+            },
+            hideSuccessMessage()
+            {
+                var self = this;
+                self.alert = false;
             }
         }
     }

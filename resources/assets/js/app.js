@@ -55,6 +55,7 @@ Vue.component('main-layout', require('./components/app'));
 Vue.component('video-component', require('./components/VideoComponent'));
 Vue.component('rule-component', require('./components/RuleComponent'));
 Vue.component('setting-component', require('./components/SettingComponent'));
+Vue.component('loading-component', require('./components/LoadingComponent'));
 
 Vue.use(Vuetify);
 
