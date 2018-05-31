@@ -61,6 +61,7 @@ class VideoService
      *
      * @param $url
      * @return int
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     function getVideoFileSize($url)
     {
