@@ -2,7 +2,7 @@
 You need to run the following
 
 ```bash
-php artisan migrate:refresh && php artisan db:seed && php artisan db:seed --class VideoFactory
+php artisan migrate:refresh && php artisan db:seed && php artisan db:seed --class CreateTestDataForTestsSeeder
 ```
 
 Then you can run

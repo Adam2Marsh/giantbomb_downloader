@@ -8,7 +8,7 @@
 
 namespace App\Repositories;
 
-use App\VideoService;
+use App\Service;
 use Log;
 
 class VideoServicesRepository
@@ -18,9 +18,14 @@ class VideoServicesRepository
 
     public function __construct($service)
     {
-        $this->service = VideoService::where('service', '=', $service)->first();
+        $this->service = Service::where('name', '=', $service)->first();
     }
 
+    /**
+     * Toggles a service from enabled to disabled for automatic video discovery
+     *
+     * @param $state
+     */
     public function toggleService($state)
     {
         Log::info('Update ' . $this->service->name . " to new state of $state");

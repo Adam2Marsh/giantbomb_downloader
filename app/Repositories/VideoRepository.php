@@ -13,6 +13,16 @@ use Log;
 
 class VideoRepository
 {
+
+//    TODO Refactor to remove logic for videos and images
+    /**
+     * Adds a video to the database using an array to map keys from videos array to db
+     *
+     * @param $service_id
+     * @param $videos
+     * @param $mappings
+     * @return int
+     */
     public function addVideoToDatabase($service_id, $videos, $mappings)
     {
         Log::info("Adding new videos for service $service_id");
@@ -41,6 +51,12 @@ class VideoRepository
         return $count;
     }
 
+    /**
+     * Checks the DB to see if the video has already been added using it's external id
+     *
+     * @param $id
+     * @return bool
+     */
     public function checkForVideo($id)
     {
         if (Video::where('service_video_id', '=', $id)->first() != null) {
@@ -49,6 +65,13 @@ class VideoRepository
         return false;
     }
 
+    /**
+     * Updates the video in DB with a new state providing an audit of what was changed
+     *
+     * @param $id
+     * @param $state
+     * @return array
+     */
     public function updateVideoState($id, $state)
     {
         Log::info("Updating video $id to a status of $state");

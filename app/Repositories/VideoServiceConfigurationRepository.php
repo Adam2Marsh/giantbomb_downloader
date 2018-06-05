@@ -15,6 +15,12 @@ use Log;
 class VideoServiceConfigurationRepository
 {
 
+    /**
+     * Stores the api_key into the db for a service
+     *
+     * @param $service_id
+     * @param $api_key
+     */
     public function storeServiceApiKey($service_id, $api_key)
     {
         Log::info("Saving new api_key for $service_id");
@@ -28,6 +34,13 @@ class VideoServiceConfigurationRepository
         Log::info("Saved new api_key for $service_id");
     }
 
+
+    /**
+     * Returns api_key for a service
+     *
+     * @param $service
+     * @return null
+     */
     public function getServiceApiKey($service)
     {
         Log::info("Returning api_key for $service");

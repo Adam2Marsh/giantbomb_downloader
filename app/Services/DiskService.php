@@ -9,6 +9,11 @@ use Log;
 class DiskService
 {
 
+    /**
+     * Calculates Total Disk Space Used
+     *
+     * @return int
+     */
     public function calculateDiskSpace()
     {
         $space = (int)0;
@@ -21,6 +26,11 @@ class DiskService
         return $space;
     }
 
+    /**
+     * Returns download percentage for any videos which are downloading
+     *
+     * @return array
+     */
     public function videosDownloadingProgress()
     {
         $downloading = [];
