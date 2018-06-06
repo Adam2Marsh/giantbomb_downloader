@@ -3,7 +3,7 @@
 /**
 *       Return sizes readable by humans
 */
-function human_filesize($bytes, $decimals = 2)
+function humanFilesize($bytes, $decimals = 2)
 {
         $size = ['B', 'kB', 'MB', 'GB', 'TB', 'PB'];
         $factor = floor((strlen($bytes) - 1) / 3);
@@ -35,11 +35,24 @@ function removeSpecialCharactersFromString($string)
     return str_replace(array_keys($removeChars), array_values($removeChars), $string);
 }
 
+/**
+ * Provides a name back in a format for local disk use
+ *
+ * @param $name
+ * @return string
+ */
 function localFilename($name)
 {
     return snake_case(removeSpecialCharactersFromString($name));
 }
 
+/**
+ * How I perform all get requests and decode the json response
+ *
+ * @param $JSONUrl
+ * @return mixed
+ * @throws \GuzzleHttp\Exception\GuzzleException
+ */
 function getJSON($JSONUrl)
 {
 
@@ -48,7 +61,7 @@ function getJSON($JSONUrl)
     $client = new \GuzzleHttp\Client();
     $res = $client->request('GET', $JSONUrl);
 
-    if (CheckHTTPCallSucessful($res->getStatusCode())) {
+    if (checkHTTPCallSuccessful($res->getStatusCode())) {
         Log::info(__METHOD__." Guzzle Get Request responded with: ".$res->getBody());
         return json_decode($res->getBody(), true);
     } else {
@@ -57,7 +70,13 @@ function getJSON($JSONUrl)
     }
 }
 
-function checkHTTPCallSucessful($HttpStatusCode)
+/**
+ * Check http response code is successful
+ *
+ * @param $HttpStatusCode
+ * @return bool
+ */
+function checkHTTPCallSuccessful($HttpStatusCode)
 {
     if ($HttpStatusCode != 200) {
         return false;
@@ -65,12 +84,13 @@ function checkHTTPCallSucessful($HttpStatusCode)
     return true;
 }
 
+/**
+ * Return service id for a service name
+ *
+ * @param $service
+ * @return mixed
+ */
 function returnServiceId($service)
 {
     return \App\Service::where('name', '=', $service)->first()->id;
-}
-
-function thumbnailDownloaded($filename)
-{
-    return \Storage::disk('thumbnails')->exists($filename);
 }

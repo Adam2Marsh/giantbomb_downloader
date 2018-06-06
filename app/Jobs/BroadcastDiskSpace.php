@@ -42,7 +42,7 @@ class BroadcastDiskSpace implements ShouldQueue
             $downloading = $diskService->videosDownloadingProgress();
 
             event(new CurrentDiskSpace(
-                human_filesize($space),
+                humanFilesize($space),
                 round(($space / 20000000000) * 100),
                 $downloading)
             );

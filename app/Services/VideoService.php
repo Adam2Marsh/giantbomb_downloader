@@ -21,7 +21,7 @@ class VideoService
     {
         Log::info("Downloading thumbnail for video " . $video->name);
 
-        if(!thumbnailDownloaded($filename)) {
+        if(!Storage::disk('thumbnails')->exists($filename)) {
             $options = array('http' => array('user_agent' => config('app.name')));
 
             $context = stream_context_create($options);
@@ -69,7 +69,7 @@ class VideoService
         $client = new \GuzzleHttp\Client();
         try {
             $res = $client->request('HEAD', $this->service->buildUrl($url));
-            if(CheckHTTPCallSucessful($res->getStatusCode())) {
+            if(checkHTTPCallSuccessful($res->getStatusCode())) {
                 Log::info(__METHOD__." Guzzle HEAD Request responded with: ".$res->getHeader('Content-Length')[0]);
                 return $res->getHeader('Content-Length')[0];
             }

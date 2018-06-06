@@ -12,7 +12,7 @@ class Video extends Model
 
     public function getHumanSizeAttribute()
     {
-        return human_filesize($this->size);
+        return humanFilesize($this->size);
     }
 
     public function getDownloadedPercentageAttribute()
