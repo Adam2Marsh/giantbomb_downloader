@@ -26,8 +26,8 @@ Route::get('/{service}/fetch', 'VideoServiceController@fetchVideosFromServices')
 
 Route::get('/rules/all', 'RulesController@returnAll');
 Route::post('/rule/add', 'RulesController@addRule');
-Route::post('/rule/{id}/delete', 'RulesController@deleteRule');
 Route::post('/rule/{id}/update', 'RulesController@updateRule');
+Route::post('/rule/{id}/delete', 'RulesController@deleteRule');
 
 Route::get('/settings', 'SettingsController@returnAll');
 Route::post('/settings', 'SettingsController@update');

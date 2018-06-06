@@ -7,11 +7,22 @@ use App\Rule;
 
 class RulesController extends Controller
 {
+    /**
+     * Return all rules
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function returnAll()
     {
         return response()->json(Rule::orderBy('rule', 'desc')->get());
     }
 
+    /**
+     * Add a new rule
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function addRule(Request $request)
     {
         $rule = new Rule();
@@ -21,6 +32,13 @@ class RulesController extends Controller
         return response()->json($rule);
     }
 
+    /**
+     * Toggle a rule
+     *
+     * @param $id
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateRule($id, Request $request)
     {
         $rule = Rule::findORFail($id);
@@ -29,6 +47,12 @@ class RulesController extends Controller
         return response()->json($rule);
     }
 
+    /**
+     * Delete a rule
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteRule($id)
     {
         Rule::destroy($id);

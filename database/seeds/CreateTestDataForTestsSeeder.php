@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 use App\Video;
 use App\Service;
+use App\Rule;
 
 class CreateTestDataForTestsSeeder extends Seeder
 {
@@ -18,6 +19,7 @@ class CreateTestDataForTestsSeeder extends Seeder
         $this->createVideo(2, "DiskServiceTest", "downloading");
         $this->createVideo(3, "DiskServiceTest", "downloading");
         $this->createService("VideoServicesRepositoryTest", 0);
+        $this->createRule("RuleApiTest");
     }
 
     public function createVideo($id, $name, $state)
@@ -42,5 +44,13 @@ class CreateTestDataForTestsSeeder extends Seeder
         $newService->enabled = $enabled;
         $newService->apiLink = $name;
         $newService->save();
+    }
+
+    public function createRule($rule)
+    {
+        $newRule = new Rule();
+        $newRule->rule = $rule;
+        $newRule->enabled = 0;
+        $newRule->save();
     }
 }

@@ -4,8 +4,6 @@ namespace Tests\Feature;
 
 use App\Repositories\VideoServiceConfigurationRepository;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class VideoServiceConfigurationRepositoryTest extends TestCase
 {
