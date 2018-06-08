@@ -6,6 +6,7 @@ git:
 
 services:
   - mysql
+  - redis
 
 addons:
   apt:
