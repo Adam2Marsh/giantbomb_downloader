@@ -31,7 +31,7 @@ class VideoServiceTest extends TestCase
         $testVideo = Video::findOrFail(1);
 
         $this->assertEquals(
-            "http://giantbomb_downloader.test/storage/thumbnails/TestThumbnail",
+            "http://". config('url') ."/storage/thumbnails/TestThumbnail",
             $this->videoService->downloadThumbnail(
                 $testVideo,
                 "TestThumbnail"
@@ -46,13 +46,15 @@ class VideoServiceTest extends TestCase
      */
     public function test_downloadVideo()
     {
-        $this->assertEquals(
-            "http://giantbomb_downloader.test/storage/thumbnails/TestThumbnail",
-            $this->videoService->downloadThumbnail(
-                "https://giantbomb-pdl.akamaized.net/video/ft_nonsubs_060311_3500.mp4",
-                "TestDownload"
-            )
-        );
+
+        $this->markTestIncomplete('Needs doing!');
+//        $this->assertEquals(
+//            "http://giantbomb_downloader.test/storage/thumbnails/TestThumbnail",
+//            $this->videoService->downloadThumbnail(
+//                "https://giantbomb-pdl.akamaized.net/video/ft_nonsubs_060311_3500.mp4",
+//                "TestDownload"
+//            )
+//        );
     }
 
     /**

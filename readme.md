@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Adam2Marsh/giantbomb_downloader.svg?branch=gbd_vue)](https://travis-ci.org/Adam2Marsh/giantbomb_downloader)
+
 ### Integration Testing
 You need to run the following
 
