@@ -12,6 +12,10 @@ matrix:
   include:
     - php: 7.1
 
+before_install:
+  - mysql -e 'CREATE DATABASE giantbomb_test;'
+  - cp .env.travis .env
+
 install:
   - composer update --prefer-dist --no-interaction --prefer-stable --no-suggest
 
