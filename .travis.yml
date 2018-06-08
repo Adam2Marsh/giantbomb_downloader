@@ -12,5 +12,7 @@ matrix:
   include:
     - php: 7.1
 
+install:
+  - composer update --prefer-dist --no-interaction --prefer-stable --no-suggest
 
 script: vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clove
