@@ -31,7 +31,7 @@ class VideoServiceTest extends TestCase
         $testVideo = Video::findOrFail(1);
 
         $this->assertEquals(
-            "http://". config('app.url') ."/storage/thumbnails/TestThumbnail",
+            config('app.url') ."/storage/thumbnails/TestThumbnail",
             $this->videoService->downloadThumbnail(
                 $testVideo,
                 "TestThumbnail"
