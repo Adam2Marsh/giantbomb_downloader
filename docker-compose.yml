@@ -1,8 +1,68 @@
 version: '3'
 services:
+
   web:
-    build: .
+    container_name: gb_nginx
+    image: nginx:latest
     ports:
-     - "8080:80"
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx.conf:/etc/nginx/conf.d/site.conf
+    links:
+      - php
+    restart: always
+
+  php:
+    container_name: gb_php
+    build:
+      context: ./docker/php
+    volumes:
+      - ./:/var/www/html
+    links:
+      - db
+      - redis
+    restart: always
+
   redis:
-    image: "redis:alpine"
+    container_name: gb_redis
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ../data/redis:/data
+    links:
+      - echo-server
+    restart: always
+
+  db:
+    container_name: gb_mysql
+    image: mysql:5.7
+    volumes:
+      - /var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=database
+    ports:
+      - "3306:3306"
+    restart: always
+
+  echo-server:
+    container_name: gb_echo_server
+    image: lagun4ik/laravel-echo-server
+    ports:
+     - "6001:6001"
+    volumes:
+     - ./:/app/
+    restart: always
+
+  queue-worker:
+    container_name: gb_queue_worker
+    build:
+      context: ./docker/queue-worker
+    volumes:
+      - ./:/var/www/html
+    links:
+      - db
+      - redis
+    restart: always

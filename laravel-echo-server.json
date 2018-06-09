@@ -1,15 +1,18 @@
 {
-	"authHost": "http://giantbomb_downloader.test",
+	"authHost": "http://docker.local",
 	"authEndpoint": "/broadcasting/auth",
 	"clients": [
 		{
 			"appId": "86aa43c6a2f8aa4c",
-			"key": "42ac8e96a1c6e915d8a42906044dfb4c"
+			"key": "f732a1f84e84992888a130f6587a4e28"
 		}
 	],
 	"database": "redis",
 	"databaseConfig": {
-		"redis": {},
+		"redis": {
+			"port": "6379",
+			"host": "gb_redis"
+		},
 		"sqlite": {
 			"databasePath": "/database/laravel-echo-server.sqlite"
 		}
@@ -22,11 +25,5 @@
 	"sslCertPath": "",
 	"sslKeyPath": "",
 	"sslCertChainPath": "",
-	"sslPassphrase": "",
-	"apiOriginAllow": {
-		"allowCors": false,
-		"allowOrigin": "",
-		"allowMethods": "",
-		"allowHeaders": ""
-	}
+	"sslPassphrase": ""
 }

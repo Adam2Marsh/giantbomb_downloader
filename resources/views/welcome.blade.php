@@ -22,7 +22,7 @@
         </div>
     </body>
     <footer>
-        <script src="{{ url()->current() }}:6001/socket.io/socket.io.js"></script>
+        <script src="{{ explode(':', url()->current())[0] . ':' . explode(':', url()->current())[1] }}:6001/socket.io/socket.io.js"></script>
         <script src="js/app.js" type="text/javascript"></script>
     </footer>
 </html>
