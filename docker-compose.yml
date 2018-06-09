@@ -45,11 +45,10 @@ services:
 
   echo-server:
     container_name: gb_echo_server
-    image: lagun4ik/laravel-echo-server
+    build:
+      context: ./docker/echo-server
     ports:
      - "6001:6001"
-    volumes:
-     - ./:/app/
     restart: always
 
   queue-worker:
