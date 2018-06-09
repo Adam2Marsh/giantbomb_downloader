@@ -1,4 +1,6 @@
-FROM node:alpine
+#FROM node:alpine
+#FROM container4armhf/armhf-alpine
+FROM easypi/alpine-arm
 
 # Create app directory
 RUN mkdir -p /usr/src/app
@@ -11,7 +13,8 @@ RUN apk add --update \
     python \
     python-dev \
     py-pip \
-    build-base
+    build-base \
+    nodejs
 
 RUN npm install
 
