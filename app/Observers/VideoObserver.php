@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Events\NewVideo;
 use App\Events\VideoStateUpdated;
 use App\Jobs\CancelVideoDownload;
 use App\Jobs\DeleteLocalVideoDownload;
@@ -24,6 +25,7 @@ class VideoObserver
         GetVideoSize::dispatch($video);
         DownloadVideoThumbnail::dispatch($video);
         VideoRuleCheck::dispatch($video);
+        NewVideo::dispatch($video);
     }
 
     /**

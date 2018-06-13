@@ -22,7 +22,7 @@ Route::get('/video/{id}/download', 'VideosController@downloadVideo');
 Route::post('/{service}/register', 'VideoServiceController@registerService');
 Route::post('/service/{id}/update', 'VideoServiceController@updateService');
 Route::get('/services', 'VideoServiceController@returnServices');
-Route::get('/{service}/fetch', 'VideoServiceController@fetchVideosFromServices');
+Route::get('/services/fetch', 'VideoServiceController@fetchVideosFromServices');
 
 Route::get('/rules/all', 'RulesController@returnAll');
 Route::post('/rule/add', 'RulesController@addRule');

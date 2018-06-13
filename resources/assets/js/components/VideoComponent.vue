@@ -127,14 +127,18 @@
         mounted: function () {
             this.getData();
             this.$echo.channel('video.updated').listen('VideoStateUpdated', (e) => {
-                console.log(e);
+                // console.log(e);
                 this.updateLocalVideoStatus(e.video);
             });
             this.$echo.channel('disk.space').listen('CurrentDiskSpace', (space) => {
-                console.log(space);
+                // console.log(space);
                 this.diskSpaceHuman = space.human_size;
                 this.diskSpacePercentage = space.percentage;
                 this.updateDownloadedPercentage(space.downloading);
+            });
+            this.$echo.channel('video.new').listen('NewVideo', (e) => {
+                console.log("New video created, adding to array");
+                this.items.unshift(e.video);
             });
         }
         ,methods:{
@@ -162,7 +166,7 @@
             refreshLocalVideos() {
                 var self = this;
                 $.ajax({
-                    url: "/api/Giantbomb/fetch" ,
+                    url: "/api/services/fetch" ,
                     type: 'GET',
                     // dataType: 'json',
                     success: function(data) {
@@ -197,7 +201,7 @@
             },
             updateLocalVideoStatus(updatedVideo) {
                 let tb = this;
-                // console.log(updatedVideo);
+                console.log(updatedVideo);
                 tb.items.forEach(function(video) {
                     if(video.id == updatedVideo.id) {
                         console.log("Video updated");

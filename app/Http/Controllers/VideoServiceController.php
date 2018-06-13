@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\VideoServicesRepository;
+use App\Jobs\FetchNewVideosForAllServices;
 use App\Service;
 use Illuminate\Http\Request;
 
@@ -56,12 +56,11 @@ class VideoServiceController
         return response()->json($service->register($request->key));
     }
 
-    public function fetchVideosFromServices($service)
+    public function fetchVideosFromServices()
     {
-        $newService = "\\App\Services\Video\\".$service."VideoService";
-        $service = new $newService;
+        dispatch(new FetchNewVideosForAllServices());
 
-        return response($service->fetchLatestVideosFromApi());
+        return response("Video Services Refreshed");
     }
     
 }
