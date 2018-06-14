@@ -60,7 +60,7 @@ class VideoServiceController
     {
         dispatch(new FetchNewVideosForAllServices());
 
-        return response("Video Services Refreshed");
+        return response()->json("Video Services Refreshed");
     }
     
 }

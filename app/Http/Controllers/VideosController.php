@@ -23,6 +23,8 @@ class VideosController extends Controller
     public function triggerDiskSpaceCheck()
     {
         BroadcastDiskSpace::dispatch();
+
+        return response()->json('Disk Space Job Triggered');
     }
 
     public function downloadVideo($id)
