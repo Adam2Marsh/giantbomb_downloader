@@ -15,17 +15,6 @@ class FetchNewVideosForAllServices implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $services;
-
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->services = Service::all();
-    }
 
     /**
      * Execute the job.
@@ -35,7 +24,10 @@ class FetchNewVideosForAllServices implements ShouldQueue
     public function handle()
     {
         Log::info("Fetching new videos for all services");
-        foreach ($this->services as $service) {
+
+        $services = Service::all();
+
+        foreach ($services as $service) {
             if($service->enabled) {
                 Log::info("Fetching new videos for " . $service->name . " service");
 
