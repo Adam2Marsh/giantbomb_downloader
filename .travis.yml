@@ -30,7 +30,7 @@ matrix:
 
 before_install:
   - mysql -e 'CREATE DATABASE giantbomb_test;'
-  - cp .env.travis .env
+  - openssl aes-256-cbc -K $encrypted_5e7297588eb9_key -iv $encrypted_5e7297588eb9_iv -in .env.travis.enc -out .env -d
 
 install:
   - composer update --prefer-dist --no-interaction --prefer-stable --no-suggest

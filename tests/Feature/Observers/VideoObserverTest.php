@@ -43,7 +43,7 @@ class VideoObserverTest extends TestCase
     public function test_videoCreatedEventsDispatched()
     {
         $this->marktestIncomplete("Come back and fix");
-        
+
         $this->createVideo(5, "VideoObserverTest", "new");
 
         Event::fake();
