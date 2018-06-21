@@ -26,7 +26,7 @@ class VideoObserverTest extends TestCase
      */
     public function test_videoCreatedJobsDispatched()
     {
-        $this->createVideo(4, "VideoObserverTest", "new");
+        $this->createVideo(6, "VideoObserverTest", "new");
 
         Bus::fake();
 
@@ -44,7 +44,7 @@ class VideoObserverTest extends TestCase
     {
         $this->marktestIncomplete("Come back and fix");
 
-        $this->createVideo(5, "VideoObserverTest", "new");
+        $this->createVideo(7, "VideoObserverTest", "new");
 
         Event::fake();
 
