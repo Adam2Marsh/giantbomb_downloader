@@ -25,11 +25,12 @@ class VideoObserver
         GetVideoSize::dispatch($video);
         DownloadVideoThumbnail::dispatch($video);
         VideoRuleCheck::dispatch($video);
-        NewVideo::dispatch($video);
+
+        event(new NewVideo($video));
     }
 
     /**
-     * Listen to the Video created event.
+     * Listen to the Video updated event.
      *
      * @param Video $video
      * @return void
