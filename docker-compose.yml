@@ -28,19 +28,20 @@ services:
     container_name: gb_redis
     image: redis
     volumes:
-      - ../data/redis:/data
+      - ./.docker/redis:/data
     links:
       - echo-server
     restart: always
 
   db:
-    container_name: gb_mysql
-    image: hypriot/rpi-mysql
+    container_name: gb_db
+    image: postgres
     volumes:
-      - /var/lib/mysql
+      - ./.docker/postgres:/var/lib/postgresql/data
     environment:
-      - MYSQL_ROOT_PASSWORD=123456
-      - MYSQL_DATABASE=database
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=database
+      - POSTGRES_PASSWORD=mysecretpassword
     restart: always
 
   echo-server:

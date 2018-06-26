@@ -58,7 +58,7 @@ class VideoObserverTest extends TestCase
      */
     public function test_videoUpdatedQueuedStatusDispatched()
     {
-        $video = Video::where('service_video_id', '=', 4)->first();
+        $video = Video::where('service_video_id', '=', 6)->first();
         $video->state = "queued";
         $video->save();
 
@@ -74,7 +74,7 @@ class VideoObserverTest extends TestCase
      */
     public function test_videoUpdatedWatchedStatusDispatched()
     {
-        $video = Video::where('service_video_id', '=', 4)->first();
+        $video = Video::where('service_video_id', '=', 6)->first();
         $video->state = "watched";
         $video->save();
 
@@ -93,7 +93,7 @@ class VideoObserverTest extends TestCase
     {
         $this->marktestIncomplete("Come back and fix");
 
-        $video = Video::where('service_video_id', '=', 5)->first();
+        $video = Video::where('service_video_id', '=', 7)->first();
         $video->state = "watched";
         $video->save();
 

@@ -37,6 +37,7 @@ class GiantbombVideoService implements VideoServiceInterface
         $apikey = $this->giantbombApi->getApiKey($key);
 
         $this->videoServiceConfigurationRepository->storeServiceApiKey($this->serviceId, $apikey["api_key"]);
+
         return "Successful Registration";
     }
 
@@ -57,27 +58,29 @@ class GiantbombVideoService implements VideoServiceInterface
 
         $videosAdded = $this->videoRepository->addVideoToDatabase(
             $this->serviceId,
-            $response["results"],
-            $this->returnVideoToDatabaseMappings()
+            $this->transformGbFormatForDBFormat($response["results"])
         );
 
         return "$videosAdded videos were added for Giantbomb";
     }
 
-    public function returnVideoToDatabaseMappings()
+
+    public function transformGbFormatForDBFormat($videos)
     {
-        return [
-            "service_video_id" => "id",
-            "name" => "name",
-            "description" => "deck",
-            "publish_date" => "publish_date",
-            "thumbnail_url" => "medium_url",
-            "video_url" => 
-                [
-                    "hd_url",
-                    "high_url",
-                ]
-        ];
+        $videosFormatted = [];
+
+        foreach ($videos as $video) {
+            $videosFormatted[] = [
+                'service_video_id' => $video['id'],
+                'name' => $video['name'],
+                'description' => $video['deck'],
+                'video_url' => is_null($video['hd_url']) ? $video['high_url'] : $video['hd_url'],
+                'thumbnail_url' => $video['image']['medium_url'],
+                'published_date' => $video['publish_date']
+            ];
+        }
+
+        return $videosFormatted;
     }
 
     public function buildUrl($url)

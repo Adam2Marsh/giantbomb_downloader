@@ -1,10 +1,8 @@
 FROM php:7.2-fpm
 
-RUN docker-php-ext-install pdo_mysql
+RUN apt-get update && apt-get install -y libpq-dev supervisor
 
-USER root
-
-RUN apt-get update && apt-get install -y supervisor
+RUN docker-php-ext-install pdo_pgsql
 
 COPY supervisord.conf /etc/supervisord.conf
 

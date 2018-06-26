@@ -12,3 +12,9 @@ Then you can run
 ```bash
 vendor/bin/phpunit
 ```
+
+
+### Run Inside Docker
+1. ```docker-compose up -d```
+2. ```docker exec -it gb_php php artisan migrate```
+3. ```docker exec -it gb_php php artisan db:seed```

@@ -31,30 +31,14 @@ class VideoRepositoryTest extends TestCase
     {
         Event::fake();
 
-        $mappings = [
-            "service_video_id" => "id",
-            "name" => "name",
-            "description" => "deck",
-            "publish_date" => "publish_date",
-            "thumbnail_url" => "medium_url",
-            "video_url" =>
-                [
-                    "hd_url",
-                    "high_url",
-                ]
-        ];
-
         $videos = [
             [
-                "id" => 4,
+                "service_video_id" => 4,
                 "name" => "addVideoToDatabase",
-                "deck" => "addVideoToDatabase",
-                "publish_date" => Carbon::now(),
-                "image" => [
-                    "medium_url" => "http://static.giantbomb.com/uploads/scale_small/23/233047/2867124-ddpsu31.jpg"
-                ],
-                "hd_url" => "https://giantbomb-pdl.akamaized.net/video/ft_nonsubs_060311_3500.mp4",
-                "high_url" => "https://giantbomb-pdl.akamaized.net/video/ft_nonsubs_060311_3500.mp4"
+                "description" => "addVideoToDatabase",
+                "published_date" => Carbon::now(),
+                "thumbnail_url" => "http://static.giantbomb.com/uploads/scale_small/23/233047/2867124-ddpsu31.jpg",
+                "video_url" => "https://giantbomb-pdl.akamaized.net/video/ft_nonsubs_060311_3500.mp4"
             ],
         ];
 
@@ -62,8 +46,7 @@ class VideoRepositoryTest extends TestCase
             1,
             $this->videoRepository->addVideoToDatabase(
                 1,
-                $videos,
-                $mappings
+                $videos
             )
         );
     }

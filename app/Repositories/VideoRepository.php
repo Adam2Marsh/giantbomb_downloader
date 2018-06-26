@@ -23,26 +23,31 @@ class VideoRepository
      * @param $mappings
      * @return int
      */
-    public function addVideoToDatabase($service_id, $videos, $mappings)
+    public function addVideoToDatabase($service_id, $videos)
     {
         Log::info("Adding new videos for service $service_id");
 
         $count = 0;
         foreach ($videos as $video) {
-            if(!$this->checkForVideo($video[$mappings["service_video_id"]])) {
-                $newVideo = new Video();
-                $newVideo->service_id = $service_id;
-                $newVideo->service_video_id = $video[$mappings["service_video_id"]];
-                $newVideo->name = $video[$mappings["name"]];
-                $newVideo->description = $video[$mappings["description"]];
-                $newVideo->video_url = is_null($video[$mappings["video_url"][0]]) ? $video[$mappings["video_url"][1]] : $video[$mappings["video_url"][0]];
-                $newVideo->thumbnail_url = $video["image"][$mappings["thumbnail_url"]];
-                $newVideo->size = -1;
-                $newVideo->state = "new";
-                $newVideo->published_date = $video[$mappings["publish_date"]];
-                $newVideo->save();
+            if(!$this->checkForVideo($video["service_video_id"])) {
 
-                $count++;
+                try {
+                    $newVideo = new Video();
+                    $newVideo->service_id = $service_id;
+                    $newVideo->service_video_id = $video["service_video_id"];
+                    $newVideo->name = $video["name"];
+                    $newVideo->description = $video["description"];
+                    $newVideo->video_url = $video["video_url"];
+                    $newVideo->thumbnail_url = $video["thumbnail_url"];
+                    $newVideo->size = -1;
+                    $newVideo->state = "new";
+                    $newVideo->published_date = $video["published_date"];
+                    $newVideo->save();
+
+                    $count++;
+                } catch (\Exception $exception) {
+                    Log::warn("Unable to add video: " . print_r($video, true) . " due to $exception");
+                }
             }
         }
 

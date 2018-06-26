@@ -14,7 +14,6 @@ interface VideoServiceInterface
 
     public function register($key);
     public function fetchLatestVideosFromApi();
-    public function returnVideoToDatabaseMappings();
     public function buildUrl($video);
 
 }

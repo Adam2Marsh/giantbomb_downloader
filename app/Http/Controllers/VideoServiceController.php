@@ -9,10 +9,12 @@ use Illuminate\Http\Request;
 class VideoServiceController
 {
 
+    /**
+     * Returns all the services supported
+     * @return mixed
+     */
     public function returnServices()
     {
-//        dd(Service::all()[0]->settings);
-
         $services = Service::all();
 
         $formattedServices = [];
@@ -40,22 +42,46 @@ class VideoServiceController
         return response()->json($formattedServices);
     }
 
+    /**
+     * Enables or disables a Service
+     *
+     * @param $id
+     * @param Request $request
+     * @return mixed
+     */
     public function updateService($id, Request $request)
     {
-        $rule = Service::findORFail($id);
-        $rule->enabled = ($request->enabled == "true") ? 1 : 0;
-        $rule->save();
-        return response()->json($rule);
+        $service = Service::findORFail($id);
+        $service->enabled = ($request->enabled == "true") ? 1 : 0;
+        $service->save();
+        return response()->json($service);
     }
 
+    /**
+     * Registers a service with an API Keys so it can be used
+     *
+     * @param $service
+     * @param Request $request
+     * @return mixed
+     */
     public function registerService($service, Request $request)
     {
         $newService = "\\App\Services\Video\\".$service."VideoService";
-        $service = new $newService;
+        $serviceClass = new $newService;
+        $serviceClass->register($request->key);
 
-        return response()->json($service->register($request->key));
+        $serviceModal = Service::where('name', '=', $service)->first();
+        $serviceModal->enabled = 1;
+        $serviceModal->save();
+
+        return response()->json("Service Registered and Enabled");
     }
 
+    /**
+     * Fetches all new videos from all enabled services
+     *
+     * @return mixed
+     */
     public function fetchVideosFromServices()
     {
         dispatch(new FetchNewVideosForAllServices());

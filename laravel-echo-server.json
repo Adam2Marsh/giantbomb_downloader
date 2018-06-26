@@ -1,5 +1,5 @@
 {
-	"authHost": "http://docker.local",
+	"authHost": "http://giantbomb_downloader.test",
 	"authEndpoint": "/broadcasting/auth",
 	"clients": [
 		{
