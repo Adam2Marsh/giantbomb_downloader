@@ -69,11 +69,11 @@ class VideoRepositoryTest extends TestCase
             [
                 "id" => 4,
                 "oldState" => "new",
-                "newState" => "invalid"
+                "newState" => "watched"
             ],
             $this->videoRepository->updateVideoState(
                 4,
-                "invalid"
+                "watched"
             )
         );
     }
