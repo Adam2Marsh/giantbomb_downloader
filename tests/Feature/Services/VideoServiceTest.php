@@ -64,8 +64,8 @@ class VideoServiceTest extends TestCase
      */
     public function test_getVideoFileSize()
     {
-        $this->assertEquals(
-            11334031,
+        $this->assertRegExp(
+            '/\d+/',
             $this->videoService->getVideoFileSize(
                 "https://giantbomb-pdl.akamaized.net/video/ft_nonsubs_060311_3500.mp4"
             )

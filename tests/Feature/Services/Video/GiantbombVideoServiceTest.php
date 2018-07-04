@@ -36,6 +36,6 @@ class GiantbombVideoServiceTest extends TestCase
     {
         $response = $this->giantbombVideoService->fetchLatestVideosFromApi();
 
-        $this->assertContains($response, "videos were added for Giantbomb");
+        $this->assertRegExp('/\d+ videos were added for Giantbomb/', $response);
     }
 }
