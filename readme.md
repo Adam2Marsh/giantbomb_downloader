@@ -15,6 +15,7 @@ vendor/bin/phpunit
 
 
 ### Run Inside Docker
-1. ```docker-compose up -d```
-2. ```docker exec -it gb_php php artisan migrate```
-3. ```docker exec -it gb_php php artisan db:seed```
+1. ```cp .env.docker .env```
+2. ```docker-compose up -d```
+3. ```docker exec -it gb_php php artisan migrate```
+4. ```docker exec -it gb_php php artisan db:seed```

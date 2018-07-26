@@ -1,64 +1,66 @@
 version: '3'
 services:
 
-  web:
+  gb_nginx:
     container_name: gb_nginx
     image: nginx:latest
     ports:
       - "8080:80"
     volumes:
       - ./:/var/www/html
-      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./.docker/nginx.conf:/etc/nginx/conf.d/default.conf
     links:
-      - php
+      - gb_php
     restart: always
 
-  php:
+  gb_php:
     container_name: gb_php
     build:
-      context: ./docker/php
+      context: ./.docker/php
     volumes:
       - ./:/var/www/html
     links:
-      - db
-      - redis
+      - gb_db
+      - gb_redis
     restart: always
 
-  redis:
+  gb_redis:
     container_name: gb_redis
     image: redis
     volumes:
-      - ./.docker/redis:/data
+      - ./.docker/cache/redis:/data
     links:
-      - echo-server
+      - gb_echo_server
     restart: always
 
-  db:
+  gb_db:
     container_name: gb_db
     image: postgres
     volumes:
-      - ./.docker/postgres:/var/lib/postgresql/data
+      - ./.docker/cache/postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=database
       - POSTGRES_PASSWORD=mysecretpassword
+    ports:
+     - "5432:5432"
     restart: always
 
-  echo-server:
+  gb_echo_server:
     container_name: gb_echo_server
     build:
-      context: ./docker/echo-server
+      context: ./.docker/echo-server
     ports:
      - "6001:6001"
     restart: always
 
-  queue-worker:
+  gb_queue_worker:
     container_name: gb_queue_worker
     build:
-      context: ./docker/queue-worker
+      context: ./.docker/queue-worker
     volumes:
       - ./:/var/www/html
     links:
-      - db
-      - redis
+      - gb_db
+      - gb_redis
     restart: always
