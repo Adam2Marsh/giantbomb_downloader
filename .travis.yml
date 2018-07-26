@@ -42,3 +42,4 @@ install:
 
 script:
   - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clove
+  - docker ps
