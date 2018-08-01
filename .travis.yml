@@ -36,10 +36,10 @@ before_install:
 install:
   - composer update --prefer-dist --no-interaction --prefer-stable --no-suggest
   - php artisan migrate:refresh && php artisan db:seed && php artisan db:seed --class CreateTestDataForTestsSeeder
-  - docker-compose up -d
-  - docker exec -it gb_php php artisan migrate
-  - docker exec -it gb_php php artisan db:seed --class CreateTestDataForTestsSeeder
+#  - docker-compose up -d
+#  - docker exec -it gb_php php artisan migrate
+#  - docker exec -it gb_php php artisan db:seed --class CreateTestDataForTestsSeeder
 
 script:
   - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clove
-  - docker ps
+#  - docker ps
