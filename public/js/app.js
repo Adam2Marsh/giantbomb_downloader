@@ -70286,6 +70286,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -70296,7 +70297,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             pagination: {
                 rowsPerPage: 8
             },
-            loading: true,
+            loading: false,
             items: [],
             diskSpacePercentage: "",
             diskSpaceHuman: ""
@@ -70324,8 +70325,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         getData: function getData() {
-            var tb = this;
-            tb.loading = true;
+            var self = this;
+            self.loading = true;
             $.ajax({
                 url: "/api/videos/all",
                 type: 'GET',
@@ -70333,11 +70334,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 success: function success(data) {
                     console.log(data);
                     // alert("Success");
-                    tb.items = data;
-                    tb.loading = false;
+                    self.items = data;
+                    self.loading = false;
                 },
                 error: function error() {
                     alert('Failed!');
+                    self.loading = false;
                 }
             });
         },
@@ -70381,9 +70383,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         updateLocalVideoStatus: function updateLocalVideoStatus(updatedVideo) {
-            var tb = this;
+            var self = this;
             console.log(updatedVideo);
-            tb.items.forEach(function (video) {
+            self.items.forEach(function (video) {
                 if (video.id == updatedVideo.id) {
                     console.log("Video updated");
                     video.human_size = updatedVideo.human_size;
@@ -70392,10 +70394,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         updateDownloadedPercentage: function updateDownloadedPercentage(downloadingPercentage) {
-            var tb = this;
+            var self = this;
             downloadingPercentage.forEach(function (downloadingVideo) {
                 console.log(downloadingVideo);
-                tb.items.forEach(function (video) {
+                self.items.forEach(function (video) {
                     if (video.id == downloadingVideo.id) {
                         video.downloaded_percentage = downloadingVideo.download_percentage;
                     }
@@ -70784,6 +70786,8 @@ var render = function() {
             slot: "progress"
           }),
           _vm._v(" "),
+          _c("loading-component", { attrs: { value: _vm.loading } }),
+          _vm._v(" "),
           _c(
             "template",
             { slot: "no-data" },
@@ -70905,7 +70909,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -70990,6 +70994,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "RuleComponent",
@@ -70998,7 +71003,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             search: '',
             headers: [{ text: 'Rule', value: 'rule', align: 'center' }, { text: 'Enabled', value: 'enabled', align: 'center' }, { text: 'Delete', value: 'delete', sortable: false, align: 'center' }],
             items: [],
-            rule: ''
+            rule: '',
+            loading: false
         };
     },
 
@@ -71007,8 +71013,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         getData: function getData() {
-            var tb = this;
-            tb.loading = true;
+            var self = this;
+            self.loading = true;
             $.ajax({
                 url: "/api/rules/all",
                 type: 'GET',
@@ -71016,30 +71022,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 success: function success(data) {
                     console.log(data);
                     // alert("Success");
-                    tb.items = data;
-                    tb.loading = false;
+                    self.items = data;
+                    self.loading = false;
                 },
                 error: function error() {
                     alert('Failed!');
+                    self.loading = false;
                 }
             });
         },
         deleteRule: function deleteRule(event, rule) {
             var self = this;
+            self.loading = true;
             $.ajax({
                 url: "/api/rule/" + rule.id + "/delete",
                 type: 'POST',
                 dataType: 'json',
                 success: function success(data, textStatus, jqXHR) {
                     self.getData();
+                    self.loading = false;
                 },
                 error: function error(jqXHR, textStatus, errorThrown) {
                     alert("Failed: " + textStatus);
+                    self.loading = false;
                 }
             });
         },
         toggleRule: function toggleRule(rule) {
             var self = this;
+            self.loading = true;
             console.log(rule);
             $.ajax({
                 url: "/api/rule/" + rule.id + "/update",
@@ -71050,10 +71061,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 },
                 success: function success(data, textStatus, jqXHR) {
                     self.getData();
+                    self.loading = false;
                 },
                 error: function error(jqXHR, textStatus, errorThrown) {
                     alert("Failed: " + textStatus);
-
+                    self.loading = false;
                     if (rule.enabled) {
                         rule.enabled = false;
                     } else {
@@ -71064,6 +71076,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         addRule: function addRule(event, rule) {
             var self = this;
+            self.loading = true;
             $.ajax({
                 url: "/api/rule/add",
                 type: 'POST',
@@ -71072,10 +71085,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     'rule': rule
                 },
                 success: function success(data, textStatus, jqXHR) {
+                    self.loading = false;
                     self.getData();
                 },
                 error: function error(jqXHR, textStatus, errorThrown) {
                     alert("Failed: " + textStatus);
+                    self.loading = false;
                 }
             });
         }
@@ -71094,6 +71109,8 @@ var render = function() {
     "v-container",
     { attrs: { fluid: "" } },
     [
+      _c("loading-component", { attrs: { value: _vm.loading } }),
+      _vm._v(" "),
       _c(
         "v-card",
         [
@@ -71385,7 +71402,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -71468,7 +71485,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         getServices: function getServices() {
-            var tb = this;
+            var self = this;
+            self.loading = true;
             $.ajax({
                 url: "/api/services",
                 type: 'GET',
@@ -71476,10 +71494,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 success: function success(data) {
                     console.log(data);
                     // alert("Success");
-                    tb.items = data;
+                    self.items = data;
+                    self.loading = false;
                 },
                 error: function error() {
                     alert('Failed!');
+                    self.loading = false;
                 }
             });
         },

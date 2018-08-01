@@ -1,6 +1,7 @@
 #FROM node:alpine
-#FROM container4armhf/armhf-alpine
-FROM easypi/alpine-arm
+ARG IMAGE=${OS_IMAGE}
+
+FROM ${IMAGE}
 
 # Create app directory
 RUN mkdir -p /usr/src/app

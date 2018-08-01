@@ -1,5 +1,6 @@
 <template>
     <v-container fluid>
+    <loading-component :value="loading"></loading-component>
     <v-card>
         <v-card-title>
             <input v-model="rule" placeholder="New Rule">
@@ -52,6 +53,7 @@
                 ],
                 items: [],
                 rule: '',
+                loading: false,
             }
         },
         mounted: function () {
@@ -59,8 +61,8 @@
         },
         methods: {
             getData() {
-                let tb = this;
-                tb.loading = true;
+                var self = this;
+                self.loading = true;
                 $.ajax({
                     url: "/api/rules/all" ,
                     type: 'GET',
@@ -68,31 +70,36 @@
                     success: function(data) {
                         console.log(data);
                         // alert("Success");
-                        tb.items = data;
-                        tb.loading = false;
+                        self.items = data;
+                        self.loading = false;
                     },
                     error: function() {
                         alert('Failed!');
+                        self.loading = false;
                     },
                 });
             },
             deleteRule(event, rule) {
                 var self = this;
+                self.loading = true;
                 $.ajax({
                     url: "/api/rule/" + rule.id + "/delete",
                     type: 'POST',
                     dataType: 'json',
                     success: function(data, textStatus, jqXHR) {
                         self.getData();
+                        self.loading = false;
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert("Failed: " + textStatus);
+                        self.loading = false;
                     }
                 })
             },
             toggleRule(rule)
             {
                 var self = this;
+                self.loading = true;
                 console.log(rule);
                 $.ajax({
                     url: "/api/rule/" + rule.id + "/update",
@@ -103,10 +110,11 @@
                     },
                     success: function(data, textStatus, jqXHR) {
                         self.getData();
+                        self.loading = false;
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert("Failed: " + textStatus);
-
+                        self.loading = false;
                         if(rule.enabled) {
                             rule.enabled = false;
                         } else {
@@ -118,6 +126,7 @@
             addRule(event, rule)
             {
                 var self = this;
+                self.loading = true;
                 $.ajax({
                     url: "/api/rule/add",
                     type: 'POST',
@@ -126,10 +135,12 @@
                         'rule' : rule
                     },
                     success: function(data, textStatus, jqXHR) {
+                        self.loading = false;
                         self.getData();
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert("Failed: " + textStatus);
+                        self.loading = false;
                     }
                 });
             }

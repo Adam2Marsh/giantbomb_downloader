@@ -33,6 +33,7 @@
                 :search="search"
         >
             <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+            <loading-component :value="loading"></loading-component>
             <v-flex
                     slot="item"
                     slot-scope="props"
@@ -116,7 +117,7 @@
                 pagination: {
                     rowsPerPage: 8
                 },
-                loading: true,
+                loading: false,
                 items: [
 
                 ],
@@ -143,8 +144,8 @@
         }
         ,methods:{
             getData() {
-                let tb = this;
-                tb.loading = true;
+                var self = this;
+                self.loading = true;
                 $.ajax({
                     url: "/api/videos/all" ,
                     type: 'GET',
@@ -152,11 +153,12 @@
                     success: function(data) {
                         console.log(data);
                         // alert("Success");
-                        tb.items = data;
-                        tb.loading = false;
+                        self.items = data;
+                        self.loading = false;
                     },
                     error: function() {
                         alert('Failed!');
+                        self.loading = false;
                     },
                 });
             },
@@ -200,9 +202,9 @@
                 })
             },
             updateLocalVideoStatus(updatedVideo) {
-                let tb = this;
+                var self = this;
                 console.log(updatedVideo);
-                tb.items.forEach(function(video) {
+                self.items.forEach(function(video) {
                     if(video.id == updatedVideo.id) {
                         console.log("Video updated");
                         video.human_size = updatedVideo.human_size;
@@ -211,10 +213,10 @@
                 });
             },
             updateDownloadedPercentage(downloadingPercentage) {
-                let tb = this;
+                var self = this;
                 downloadingPercentage.forEach(function (downloadingVideo) {
                     console.log(downloadingVideo);
-                    tb.items.forEach(function (video) {
+                    self.items.forEach(function (video) {
                         if(video.id == downloadingVideo.id) {
                             video.downloaded_percentage = downloadingVideo.download_percentage;
                         }

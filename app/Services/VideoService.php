@@ -29,7 +29,7 @@ class VideoService
             Storage::disk('thumbnails')->put($filename, file_get_contents($video->thumbnail_url, false, $context));
         }
 
-        return url('storage/thumbnails/' . $filename);
+        return 'storage/thumbnails/' . $filename;
     }
 
     public function downloadVideo($url, $savePath)

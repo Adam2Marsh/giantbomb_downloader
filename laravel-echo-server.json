@@ -1,12 +1,7 @@
 {
 	"authHost": "http://giantbomb_downloader.test",
 	"authEndpoint": "/broadcasting/auth",
-	"clients": [
-		{
-			"appId": "86aa43c6a2f8aa4c",
-			"key": "f732a1f84e84992888a130f6587a4e28"
-		}
-	],
+	"clients": [],
 	"database": "redis",
 	"databaseConfig": {
 		"redis": {

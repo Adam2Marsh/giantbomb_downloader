@@ -77,7 +77,8 @@
         },
         methods: {
             getServices() {
-                let tb = this;
+                var self = this;
+                self.loading = true;
                 $.ajax({
                     url: "/api/services",
                     type: 'GET',
@@ -85,10 +86,12 @@
                     success: function(data) {
                         console.log(data);
                         // alert("Success");
-                        tb.items = data;
+                        self.items = data;
+                        self.loading = false;
                     },
                     error: function() {
                         alert('Failed!');
+                        self.loading = false;
                     },
                 });
             },

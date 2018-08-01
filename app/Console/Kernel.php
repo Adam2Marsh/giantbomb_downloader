@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
             ->withoutOverlapping();
 
         $schedule->job(new FetchNewVideosForAllServices)
-            ->everyMinute();
+            ->everyThirtyMinutes();
     }
 
     /**

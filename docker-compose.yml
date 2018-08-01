@@ -50,6 +50,8 @@ services:
     container_name: gb_echo_server
     build:
       context: ./.docker/echo-server
+      args:
+        - OS_IMAGE=${IMAGE}
     ports:
      - "6001:6001"
     restart: always
