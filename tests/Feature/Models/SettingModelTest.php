@@ -25,7 +25,7 @@ class SettingModelTest extends TestCase
     public function test_getNiceFormatAttribute()
     {
         $this->assertEquals(
-            "Storage Limit",
+            "Storage Limit (Gb)",
             $this->setting->nice_format
         );
     }

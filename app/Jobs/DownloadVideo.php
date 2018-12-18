@@ -40,7 +40,7 @@ class DownloadVideo implements ShouldQueue
 
         $this->videoService = new VideoService($this->video->service->name);
 
-        $this->maxStorageLimit = Setting::where('key', '=', 'storage_limit')->first()->value . "000000000";
+        $this->maxStorageLimit = Setting::where('key', '=', 'storage_limit_(gb)')->first()->value . "000000000";
     }
 
     /**

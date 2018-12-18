@@ -20,7 +20,7 @@ class SettingsApiTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'key' => "storage_limit"
+            'key' => "storage_limit_(gb)"
         ]);
     }
 
@@ -35,7 +35,7 @@ class SettingsApiTest extends TestCase
             'POST',
             '/api/settings',
             [
-                'key' => "storage_limit",
+                'key' => "storage_limit_(gb)",
                 'value' => "20000000000"
             ]
         );
