@@ -19,3 +19,8 @@ vendor/bin/phpunit
 2. ```docker-compose up -d```
 3. ```docker exec -it gb_php php artisan migrate```
 4. ```docker exec -it gb_php php artisan db:seed```
+
+### Running Locally
+1. ```php artisan migrate:refresh && php artisan db:seed```
+2. ```supervisord -c supervisord.conf```
+3. ```npm run dev```

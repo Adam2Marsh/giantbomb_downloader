@@ -71746,7 +71746,7 @@ var render = function() {
                 fn: function(props) {
                   return [
                     _c("td", { staticClass: "text-xs-center" }, [
-                      _vm._v(_vm._s(props.item.nice_format) + " in GB")
+                      _vm._v(_vm._s(props.item.nice_format))
                     ]),
                     _vm._v(" "),
                     _c("td", { staticClass: "text-xs-center" }, [

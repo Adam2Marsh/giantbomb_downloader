@@ -118,9 +118,7 @@
                     rowsPerPage: 8
                 },
                 loading: false,
-                items: [
-
-                ],
+                items: [],
                 diskSpacePercentage: "",
                 diskSpaceHuman: "",
             }
